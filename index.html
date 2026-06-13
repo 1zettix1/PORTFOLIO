@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D0D0D;--bg2:#161616;--bg3:#1E1E1E;
+  --cream:#F0EBE0;--cream2:#B8B3A8;--cream3:#6B6660;
+  --violet:#8B5CF6;--violet2:#A78BFA;--orange:#F97316;
+  --border:rgba(240,235,224,0.08);--border2:rgba(240,235,224,0.15);
+}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at 50% 30%,#1a1230 0%,#0D0D0D 65%);color:var(--cream);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+
+/* DITHER BG */
+#dither-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%}
+
+.page{position:relative;z-index:1}
+
+/* ── SCROLL FADE ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-32px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(32px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.95);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.delay-1{transition-delay:.1s}.delay-2{transition-delay:.18s}.delay-3{transition-delay:.26s}.delay-4{transition-delay:.34s}.delay-5{transition-delay:.42s}.delay-6{transition-delay:.5s}
+
+/* ── STAGGERED MENU ── */
+.sm-wrapper{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:100;pointer-events:none}
+.sm-header{position:absolute;top:0;left:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2.5rem;pointer-events:none;z-index:20}
+.sm-header>*{pointer-events:auto}
+.sm-logo{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);text-decoration:none;cursor:pointer;display:inline-block;transition:transform .45s cubic-bezier(.34,1.56,.64,1),color .25s,letter-spacing .35s}
+.sm-logo:hover{transform:translateX(10px) rotate(-2deg);color:var(--violet2);letter-spacing:.18em}
+.sm-btn{display:inline-flex;align-items:center;gap:.55rem;background:transparent;border:none;cursor:pointer;color:var(--cream);font-family:'Inter',sans-serif;font-size:.83rem;font-weight:500;letter-spacing:.06em}
+.sm-icon{position:relative;width:16px;height:16px;flex-shrink:0}
+.sm-line{position:absolute;left:50%;top:50%;width:100%;height:1.5px;background:currentColor;border-radius:2px;transform-origin:50% 50%;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.sm-line.h{transform:translate(-50%,-50%)}
+.sm-line.v{transform:translate(-50%,-50%) rotate(90deg)}
+.sm-btn.open .sm-line.h{transform:translate(-50%,-50%) rotate(135deg)}
+.sm-btn.open .sm-line.v{transform:translate(-50%,-50%) rotate(45deg)}
+.sm-tw{height:1em;overflow:hidden}
+.sm-ti{display:flex;flex-direction:column;line-height:1;transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.sm-ti span{display:block;height:1em;line-height:1}
+.sm-pres{position:absolute;top:0;right:0;bottom:0;width:min(430px,88vw);pointer-events:none;z-index:5}
+.sm-pre{position:absolute;inset:0;transform:translateX(100%)}
+.sm-panel{position:absolute;top:0;right:0;width:min(430px,88vw);height:100%;background:#fff;display:flex;flex-direction:column;padding:5.5rem 2.5rem 2.5rem;overflow-y:auto;z-index:10;pointer-events:auto;transform:translateX(100%)}
+.sm-plist{list-style:none;display:flex;flex-direction:column;gap:.2rem}
+.sm-pitem{display:block;color:#000;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2.2rem,5vw,3.5rem);letter-spacing:-.03em;text-transform:uppercase;text-decoration:none;line-height:1.15;overflow:hidden;padding:.1rem 0;transition:color .2s}
+.sm-pitem:hover{color:#8B5CF6}
+.sm-pinner{display:block;transform:translateY(110%);transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.sm-socials{margin-top:auto;padding-top:2rem}
+.sm-stitle{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#8B5CF6;margin-bottom:.75rem}
+.sm-slist{list-style:none;display:flex;gap:1.25rem;flex-wrap:wrap}
+.sm-slink{color:#111;text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+.sm-slink:hover{color:#8B5CF6}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 5rem;position:relative;overflow:hidden}
+.hero-ascii{position:absolute;top:0;left:0;width:100%;height:54%;pointer-events:none;overflow:hidden}
+.hero-bottom{position:relative;z-index:2}
+.hero-ey{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--violet2);margin-bottom:1.2rem}
+.hero-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,8vw,7rem);font-weight:700;line-height:.95;letter-spacing:-.03em;color:var(--cream);margin-bottom:1.5rem;min-height:1.2em;display:flex;flex-wrap:wrap;align-items:baseline}
+.hero-desc{max-width:520px;color:var(--cream2);font-size:1rem;line-height:1.75;margin-bottom:2.5rem}
+.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:3rem}
+.tag{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border:.5px solid var(--border2);border-radius:100px;color:var(--cream2)}
+.hero-scroll{display:inline-flex;align-items:center;gap:.75rem;color:var(--cream3);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:color .2s}
+.hero-scroll:hover{color:var(--cream)}
+.scroll-line{width:38px;height:.5px;background:currentColor;transition:width .3s}
+.hero-scroll:hover .scroll-line{width:58px}
+
+/* ── SECTIONS ── */
+section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;z-index:1}
+.sec-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--violet2);margin-bottom:.5rem}
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600;letter-spacing:-.02em;color:var(--cream)}
+.sec-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+
+/* ── PREVIEW CAROUSEL (flat, centered active) ── */
+.carousel-wrap{position:relative;padding:1rem 0 2rem}
+.carousel-viewport{overflow:hidden;width:100%;position:relative}
+/* fade edges */
+.carousel-viewport::before,.carousel-viewport::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.carousel-viewport::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
+.carousel-viewport::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+.carousel-track{display:flex;align-items:center;gap:1.5rem;transition:transform .6s cubic-bezier(.25,.46,.45,.94);will-change:transform;padding:2rem 0}
+.preview-card{flex-shrink:0;width:280px;height:400px;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;background:var(--bg2);border:1px solid var(--border2);transition:transform .5s cubic-bezier(.25,.46,.45,.94),filter .5s,box-shadow .5s;filter:brightness(.45) scale(1);transform:scale(.88)}
+.preview-card.is-active{transform:scale(1);filter:brightness(1);box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.1)}
+.preview-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.preview-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;opacity:.18}
+.preview-placeholder span{font-size:2.5rem}
+.preview-placeholder p{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream3)}
+.preview-curtain{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,13,.95) 0%,rgba(13,13,13,.35) 55%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem;opacity:0;transition:opacity .4s}
+.preview-card.is-active .preview-curtain{opacity:1}
+.preview-card-cat{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--violet2);margin-bottom:.35rem}
+.preview-card-title{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:600;color:var(--cream);line-height:1.2}
+.preview-dot{position:absolute;top:.85rem;right:.85rem;width:8px;height:8px;border-radius:50%;background:var(--orange);opacity:0;transition:opacity .3s .1s}
+.preview-card.is-active .preview-dot{opacity:1}
+.admin-edit-preview{position:absolute;top:.5rem;left:.5rem;background:rgba(0,0,0,.65);border:none;border-radius:4px;color:#fff;font-size:.7rem;padding:.3rem .6rem;cursor:pointer;opacity:0;transition:opacity .2s;z-index:6}
+.preview-card.is-active .admin-edit-preview{opacity:1}
+/* dots */
+.car-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.25rem}
+.car-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);border:none;cursor:pointer;transition:all .3s;padding:0}
+.car-dot.active{background:var(--violet);width:20px;border-radius:3px}
+/* arrow nav */
+.car-arrows{display:flex;justify-content:center;gap:.75rem;margin-top:1rem}
+.car-arrow{width:46px;height:46px;border-radius:50%;border:1px solid var(--border2);background:var(--bg2);color:var(--cream);font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.car-arrow:hover{background:var(--violet);border-color:var(--violet);color:#fff;transform:scale(1.08)}
+.car-arrow:active{transform:scale(.95)}
+@media(max-width:768px){
+  .preview-card{width:220px;height:320px}
+  .carousel-viewport::before,.carousel-viewport::after{width:60px}
+}
+
+/* ── FOLDERS ── */
+.folders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:2rem 1.75rem}
+.folder-item{display:flex;flex-direction:column;align-items:center;gap:.85rem;cursor:pointer;text-decoration:none;padding:.85rem;border-radius:14px;transition:background .25s;position:relative}
+.folder-item:hover{background:rgba(139,92,246,.07)}
+.folder-label{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:500;color:var(--cream);text-align:center;line-height:1.35}
+.folder-item:hover .folder-label{color:var(--violet2)}
+.fwrap{position:relative;width:100px;height:80px;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.folder-item:hover .fwrap{transform:translateY(-10px) scale(1.06) rotate(-2deg)}
+.fback{position:relative;width:100px;height:80px;border-radius:0 10px 10px 10px}
+.fback::after{content:'';position:absolute;bottom:98%;left:0;width:30px;height:10px;border-radius:5px 5px 0 0;background:inherit}
+.fpaper{position:absolute;z-index:2;bottom:10%;left:50%;transform:translate(-50%,10%);border-radius:10px;transition:transform .3s ease-in-out}
+.fp1{width:70%;height:80%;background:#e6e6e6}
+.fp2{width:80%;height:70%;background:#f2f2f2}
+.fp3{width:90%;height:60%;background:#fff}
+.folder-item:hover .fp1{transform:translate(-50%,0%)}
+.folder-item:hover .fp2{transform:translate(-50%,0%)}
+.folder-item:hover .fp3{transform:translate(-50%,0%)}
+.ffront{position:absolute;z-index:3;width:100%;height:100%;border-radius:5px 10px 10px 10px;transform-origin:bottom;transition:transform .3s ease-in-out}
+.folder-item:hover .ffront{transform:skew(15deg) scaleY(.6)}
+.folder-edit-btn{position:absolute;top:.3rem;right:.3rem;background:rgba(0,0,0,.6);border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;color:#fff;font-size:.68rem;display:none;align-items:center;justify-content:center;z-index:5}
+.folder-item:hover .folder-edit-btn{display:flex}
+.add-folder-btn{display:flex;flex-direction:column;align-items:center;gap:.85rem;cursor:pointer;background:transparent;border:none;color:var(--cream3);font-family:'Inter',sans-serif;padding:.85rem;border-radius:14px;transition:color .2s}
+.add-folder-btn:hover{color:var(--violet2)}
+.add-fi{width:100px;height:80px;border-radius:0 10px 10px 10px;background:var(--bg3);border:1.5px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;transition:border-color .2s}
+.add-fi::after{content:'';position:absolute;bottom:98%;left:0;width:30px;height:10px;border-radius:5px 5px 0 0;background:var(--bg3);border:1.5px dashed var(--border2);border-bottom:none}
+.add-folder-btn:hover .add-fi{border-color:var(--violet2)}
+.add-fl{font-size:.82rem}
+
+/* ── BORDER GLOW ── */
+.bgc{
+  --ep:0;--ca:45deg;--es:30;--cs:50;--bgcr:var(--bg2);--gp:38px;--csp:25;
+  position:relative;isolation:isolate;transform:translate3d(0,0,.01px)
+}
+.bgc:not(.preview-card):not(.folder-item){border-radius:8px;border:1px solid rgba(255,255,255,.1);background:var(--bgcr);overflow:visible}
+.bgc::before,.bgc>.elight{content:'';position:absolute;inset:0;border-radius:inherit;transition:opacity .25s ease-out;z-index:-1}
+.bgc:not(:hover)::before,.bgc:not(:hover)>.elight{opacity:0;transition:opacity .7s ease-in-out}
+.bgc::before{border:1px solid transparent;background:linear-gradient(var(--bgcr) 0 100%) padding-box,linear-gradient(#8B5CF6 0 100%) border-box;-webkit-mask-image:conic-gradient(from var(--ca) at center,black calc(var(--csp)*1%),transparent calc((var(--csp)+15)*1%),transparent calc((100 - var(--csp) - 15)*1%),black calc((100 - var(--csp))*1%));mask-image:conic-gradient(from var(--ca) at center,black calc(var(--csp)*1%),transparent calc((var(--csp)+15)*1%),transparent calc((100 - var(--csp) - 15)*1%),black calc((100 - var(--csp))*1%));opacity:calc((var(--ep) - var(--cs))/(100 - var(--cs)))}
+.bgc>.elight{inset:calc(var(--gp)*-1);pointer-events:none;z-index:1;-webkit-mask-image:conic-gradient(from var(--ca) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%);mask-image:conic-gradient(from var(--ca) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%);opacity:calc((var(--ep) - var(--es))/(100 - var(--es)));mix-blend-mode:plus-lighter}
+.bgc>.elight::before{content:'';position:absolute;inset:var(--gp);border-radius:inherit;box-shadow:inset 0 0 0 1px hsl(260deg 80% 75%),inset 0 0 3px hsl(260deg 80% 75%/50%),inset 0 0 18px hsl(260deg 80% 75%/30%),0 0 8px hsl(260deg 80% 75%/40%),0 0 28px 2px hsl(260deg 80% 75%/18%)}
+
+.preview-card.bgc{--gp:18px;--es:20;--cs:45}
+.folder-item.bgc{--gp:14px;--es:15;--cs:40;border-radius:14px}
+.folder-item.bgc::before{border-radius:14px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.about-text{color:var(--cream2);line-height:1.8;font-size:1rem}
+.about-text p+p{margin-top:1rem}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.stat-box{background:var(--bg2);padding:1.75rem}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:700;color:var(--cream);letter-spacing:-.03em;line-height:1;margin-bottom:.35rem}
+.stat-num span{color:var(--violet)}
+.stat-lbl{font-size:.75rem;color:var(--cream3);letter-spacing:.06em;text-transform:uppercase}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border);margin-top:2rem}
+.skill-item{background:var(--bg2);padding:1.5rem;transition:background .2s}
+.skill-item:hover{background:var(--bg3)}
+.sk-icon{font-size:1.4rem;margin-bottom:.75rem;display:block}
+.sk-name{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:500;color:var(--cream);margin-bottom:.2rem}
+.sk-sub{font-size:.74rem;color:var(--cream3)}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.contact-big{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;color:var(--cream);margin-bottom:1.5rem}
+.contact-big span{color:var(--violet)}
+.contact-sub{color:var(--cream2);font-size:.95rem;line-height:1.75}
+.contact-links{display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.clink{background:var(--bg2);padding:1.5rem;display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:var(--cream);transition:background .2s}
+.clink:hover{background:var(--bg3)}
+.cl-lbl{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream3);margin-bottom:.2rem}
+.cl-val{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:500}
+.cl-arr{font-size:1.2rem;color:var(--violet2);transition:transform .2s;flex-shrink:0}
+.clink:hover .cl-arr{transform:translate(4px,-4px)}
+
+/* ── FOOTER ── */
+footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.footer-copy{font-size:.8rem;color:var(--cream3)}
+.footer-back{font-size:.8rem;color:var(--cream3);text-decoration:none;transition:color .2s}
+.footer-back:hover{color:var(--cream)}
+
+/* ── ADMIN FAB ── */
+.admin-fab{position:fixed;bottom:2rem;right:2rem;z-index:200;background:var(--violet);color:#fff;border:none;border-radius:100px;padding:.7rem 1.4rem;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.4rem;box-shadow:0 4px 22px rgba(139,92,246,.45);transition:all .2s}
+.admin-fab:hover{transform:translateY(-2px);box-shadow:0 7px 30px rgba(139,92,246,.55)}
+.admin-fab.hidden{display:none}
+
+/* ── MODALS ── */
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.83);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s;backdrop-filter:blur(12px)}
+.moverlay.open{opacity:1;pointer-events:all}
+.mbox{background:var(--bg2);border:.5px solid var(--border2);border-radius:6px;width:min(560px,93vw);max-height:88vh;overflow-y:auto;padding:2.25rem;transform:translateY(16px);transition:transform .28s;position:relative}
+.moverlay.open .mbox{transform:translateY(0)}
+.mclose{position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:var(--cream2);font-size:1.3rem;cursor:pointer;line-height:1;transition:color .2s}
+.mclose:hover{color:var(--cream)}
+.mtitle{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:600;color:var(--cream);margin-bottom:1.5rem}
+.fg{margin-bottom:1rem}
+.flbl{display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream3);margin-bottom:.4rem}
+.finput,.fsel,.ftarea{width:100%;background:var(--bg3);border:.5px solid var(--border2);border-radius:3px;color:var(--cream);font-family:'Inter',sans-serif;font-size:.88rem;padding:.6rem .85rem;outline:none;transition:border-color .2s}
+.finput:focus,.fsel:focus,.ftarea:focus{border-color:var(--violet2)}
+.fsel option{background:var(--bg3)}
+.ftarea{min-height:80px;resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn-row{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.5rem}
+.btn-c{background:transparent;border:.5px solid var(--border2);color:var(--cream2);padding:.55rem 1.1rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;cursor:pointer;transition:all .2s}
+.btn-c:hover{border-color:var(--cream2);color:var(--cream)}
+.btn-s{background:var(--violet);border:none;color:#fff;padding:.55rem 1.3rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;font-weight:500;cursor:pointer;transition:background .2s}
+.btn-s:hover{background:var(--violet2)}
+.btn-danger{background:#ef4444;border:none;color:#fff;padding:.55rem 1.1rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;cursor:pointer;transition:background .2s}
+.btn-danger:hover{background:#dc2626}
+.auth-err{font-size:.8rem;color:#f87171;margin-top:.5rem;min-height:1.1em}
+.inline-edit{display:none;position:absolute;top:0;right:0;background:rgba(139,92,246,.15);border:none;border-radius:4px;color:var(--violet2);font-size:.7rem;padding:.2rem .5rem;cursor:pointer;z-index:10}
+.editable-block:hover .inline-edit{display:block}
+.editable-block{position:relative}
+
+@media(max-width:768px){
+  .hero{padding:0 1.5rem 3rem}
+  section{padding:4rem 1.5rem}
+  .sm-header{padding:1.25rem 1.5rem}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem}
+  footer{flex-direction:column;gap:.75rem;text-align:center;padding:2rem 1.5rem}
+  .frow{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<canvas id="dither-canvas"></canvas>
+
+<!-- STAGGERED MENU -->
+<div class="sm-wrapper" id="smw">
+  <header class="sm-header">
+    <span class="sm-logo" id="nav-logo" onclick="scrollToTop()">Portfolio</span>
+    <button class="sm-btn" id="sm-btn" aria-label="Menú">
+      <span class="sm-tw"><span class="sm-ti" id="sm-ti"><span>Menú</span><span>Cerrar</span></span></span>
+      <span class="sm-icon"><span class="sm-line h"></span><span class="sm-line v"></span></span>
+    </button>
+  </header>
+  <div class="sm-pres" id="sm-pres">
+    <div class="sm-pre" style="background:#3a2878"></div>
+    <div class="sm-pre" style="background:#6d3fcf"></div>
+  </div>
+  <aside class="sm-panel" id="sm-panel">
+    <ul class="sm-plist">
+      <li><a href="#hero"    class="sm-pitem" onclick="closeMenu()"><span class="sm-pinner">Inicio</span></a></li>
+      <li><a href="#preview" class="sm-pitem" onclick="closeMenu()"><span class="sm-pinner">Trabajos</span></a></li>
+      <li><a href="#about"   class="sm-pitem" onclick="closeMenu()"><span class="sm-pinner">Acerca</span></a></li>
+      <li><a href="#contact" class="sm-pitem" onclick="closeMenu()"><span class="sm-pinner">Contacto</span></a></li>
+    </ul>
+    <div class="sm-socials">
+      <h3 class="sm-stitle">Redes</h3>
+      <ul class="sm-slist">
+        <li><a href="#" class="sm-slink" id="m-ig">Instagram</a></li>
+        <li><a href="#" class="sm-slink" id="m-be">Behance</a></li>
+        <li><a href="#" class="sm-slink" id="m-li">LinkedIn</a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div class="page">
+
+<!-- HERO -->
+<section class="hero" id="hero" style="border:none">
+  <div class="hero-ascii" id="ascii-root"></div>
+  <div class="hero-bottom">
+    <p class="hero-ey editable-block" id="hero-ey">Artista Digital · Buenos Aires<button class="inline-edit" onclick="openInlineEdit('hero-ey','Subtítulo hero')">✏️</button></p>
+    <h1 class="hero-name" id="hero-name"></h1>
+    <p class="hero-desc editable-block" id="hero-desc">Personajes 2D, animaciones, videojuegos y proyectos creativos.<button class="inline-edit" onclick="openInlineEdit('hero-desc','Descripción hero')">✏️</button></p>
+    <div class="hero-tags" id="hero-tags-wrap">
+      <span class="tag">Personajes 2D</span>
+      <span class="tag">Animación</span>
+      <span class="tag">Videojuegos</span>
+      <span class="tag">Diseño</span>
+      <span class="tag">3D · Video</span>
+    </div>
+    <a href="#preview" class="hero-scroll"><span class="scroll-line"></span><span>Ver trabajos</span></a>
+  </div>
+</section>
+
+<!-- PREVIEW WORKS -->
+<section id="preview">
+  <div class="sec-hdr">
+    <div class="reveal">
+      <p class="sec-label" id="preview-label">Destacados</p>
+      <h2 class="sec-title editable-block" id="preview-title">Trabajos<button class="inline-edit" onclick="openInlineEdit('preview-title','Título sección trabajos')">✏️</button></h2>
+    </div>
+    <a href="#works" class="hero-scroll reveal" style="margin-bottom:.4rem"><span class="scroll-line"></span><span>Ver todas las carpetas</span></a>
+  </div>
+  <div class="carousel-wrap reveal">
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="preview-grid"></div>
+    </div>
+    <div class="car-dots" id="car-dots"></div>
+    <div class="car-arrows">
+      <button class="car-arrow" id="car-prev" aria-label="Anterior">←</button>
+      <button class="car-arrow" id="car-next" aria-label="Siguiente">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOLDERS -->
+<section id="works">
+  <div class="sec-hdr">
+    <div class="reveal">
+      <p class="sec-label" id="folders-label">Proyectos</p>
+      <h2 class="sec-title editable-block" id="folders-title">Carpetas<button class="inline-edit" onclick="openInlineEdit('folders-title','Título sección carpetas')">✏️</button></h2>
+    </div>
+  </div>
+  <div class="folders-grid" id="folders-grid"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-hdr reveal">
+    <div>
+      <p class="sec-label">Quién soy</p>
+      <h2 class="sec-title editable-block" id="about-title">Acerca de mí<button class="inline-edit" onclick="openInlineEdit('about-title','Título sección acerca')">✏️</button></h2>
+    </div>
+  </div>
+  <div class="about-grid">
+    <div class="reveal-left editable-block" style="position:relative">
+      <div class="about-text" id="about-txt">
+        <p>Reemplazá este texto con tu historia.</p>
+        <p>Contá tu formación, clientes y objetivos profesionales.</p>
+      </div>
+      <button class="inline-edit" onclick="openInlineEdit('about-txt','Texto sobre mí',true)">✏️</button>
+    </div>
+    <div class="stats-grid reveal-right">
+      <div class="stat-box editable-block"><div class="stat-num" id="st1">0<span>+</span></div><div class="stat-lbl" id="st1-lbl">Proyectos</div><button class="inline-edit" onclick="openStatEdit(0)">✏️</button></div>
+      <div class="stat-box editable-block"><div class="stat-num" id="st2">0<span>+</span></div><div class="stat-lbl" id="st2-lbl">Personajes</div><button class="inline-edit" onclick="openStatEdit(1)">✏️</button></div>
+      <div class="stat-box editable-block"><div class="stat-num" id="st3">0<span>+</span></div><div class="stat-lbl" id="st3-lbl">Años exp.</div><button class="inline-edit" onclick="openStatEdit(2)">✏️</button></div>
+      <div class="stat-box editable-block"><div class="stat-num" id="st4">0<span>+</span></div><div class="stat-lbl" id="st4-lbl">Clientes</div><button class="inline-edit" onclick="openStatEdit(3)">✏️</button></div>
+    </div>
+  </div>
+  <p class="sec-label reveal" style="margin-top:3rem;margin-bottom:1rem" id="skills-label">Herramientas</p>
+  <div class="skills-grid" id="skills-grid">
+    <div class="skill-item reveal delay-1"><span class="sk-icon">✏️</span><div class="sk-name">Ilustración 2D</div><div class="sk-sub">Personajes, concept art</div></div>
+    <div class="skill-item reveal delay-2"><span class="sk-icon">🎬</span><div class="sk-name">Animación</div><div class="sk-sub">Frame a frame, rigging</div></div>
+    <div class="skill-item reveal delay-3"><span class="sk-icon">🎮</span><div class="sk-name">Videojuegos</div><div class="sk-sub">Assets, sprites, UI</div></div>
+    <div class="skill-item reveal delay-4"><span class="sk-icon">🎨</span><div class="sk-name">Diseño gráfico</div><div class="sk-sub">Branding, editorial</div></div>
+    <div class="skill-item reveal delay-5"><span class="sk-icon">📦</span><div class="sk-name">Modelado 3D</div><div class="sk-sub">Blender, estilizado</div></div>
+    <div class="skill-item reveal delay-6"><span class="sk-icon">🎞️</span><div class="sk-name">Video</div><div class="sk-sub">After Effects, Premiere</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-hdr reveal">
+    <div>
+      <p class="sec-label">Hablemos</p>
+      <h2 class="sec-title editable-block" id="contact-title">Contacto<button class="inline-edit" onclick="openInlineEdit('contact-title','Título sección contacto')">✏️</button></h2>
+    </div>
+  </div>
+  <div class="contact-grid">
+    <div class="reveal-left">
+      <p class="contact-big editable-block" id="contact-big">¿Tenés un <span>proyecto</span> en mente?<button class="inline-edit" onclick="openInlineEdit('contact-big','Frase de contacto')">✏️</button></p>
+      <p class="contact-sub editable-block" id="contact-sub">Siempre estoy abierta a nuevas colaboraciones y oportunidades creativas.<button class="inline-edit" onclick="openInlineEdit('contact-sub','Subtexto contacto')">✏️</button></p>
+    </div>
+    <div class="contact-links reveal-right">
+      <a href="#" class="clink bgc" id="c-email"><span class="elight"></span><div><div class="cl-lbl">Email</div><div class="cl-val" id="cv-email">tu@email.com</div></div><span class="cl-arr">↗</span></a>
+      <a href="#" class="clink bgc" id="c-be"><span class="elight"></span><div><div class="cl-lbl">Behance / ArtStation</div><div class="cl-val" id="cv-be">@tu_usuario</div></div><span class="cl-arr">↗</span></a>
+      <a href="#" class="clink bgc" id="c-ig"><span class="elight"></span><div><div class="cl-lbl">Instagram</div><div class="cl-val" id="cv-ig">@tu_usuario</div></div><span class="cl-arr">↗</span></a>
+      <a href="#" class="clink bgc" id="c-li"><span class="elight"></span><div><div class="cl-lbl">LinkedIn</div><div class="cl-val" id="cv-li">linkedin.com/in/tu-perfil</div></div><span class="cl-arr">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<footer class="reveal">
+  <span class="footer-copy editable-block" id="footer-copy">© 2025 Portfolio · Todos los derechos reservados<button class="inline-edit" onclick="openInlineEdit('footer-copy','Texto del footer')">✏️</button></span>
+  <a href="#" class="footer-back">Volver arriba ↑</a>
+</footer>
+</div>
+
+<!-- ADMIN FAB -->
+<button class="admin-fab hidden" id="admin-fab">⚙ Editar</button>
+
+<!-- AUTH MODAL -->
+<div class="moverlay" id="auth-m">
+  <div class="mbox" style="max-width:360px">
+    <h3 class="mtitle">Acceso admin</h3>
+    <div class="fg"><label class="flbl">Contraseña</label>
+      <input class="finput" id="auth-in" type="password" placeholder="••••••••" autocomplete="current-password">
+      <div class="auth-err" id="auth-err"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('auth-m')">Cancelar</button>
+      <button class="btn-s" id="auth-ok">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MENU MODAL -->
+<div class="moverlay" id="edit-m">
+  <div class="mbox" style="max-width:370px">
+    <button class="mclose" onclick="closeM('edit-m')">✕</button>
+    <h3 class="mtitle">¿Qué editás?</h3>
+    <div style="display:flex;flex-direction:column;gap:.75rem">
+      <button class="btn-s" style="width:100%;padding:.85rem" onclick="openSettings()">👤 Datos personales y contacto</button>
+      <button class="btn-s" style="width:100%;padding:.85rem;background:#3B82F6" onclick="openPreviewManager()">🖼️ Trabajos destacados</button>
+      <button class="btn-s" style="width:100%;padding:.85rem;background:var(--orange)" onclick="openFolderModal(null)">📁 Nueva carpeta</button>
+      <button class="btn-c" style="width:100%;padding:.85rem" onclick="doLogout()">🔒 Cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="moverlay" id="settings-m">
+  <div class="mbox">
+    <button class="mclose" onclick="closeM('settings-m')">✕</button>
+    <h3 class="mtitle">Datos personales y contacto</h3>
+    <div class="fg"><label class="flbl">Tu nombre</label><input class="finput" id="s-name" type="text" placeholder="Tu Nombre"></div>
+    <div class="fg"><label class="flbl">Subtítulo (hero)</label><input class="finput" id="s-ey" type="text" placeholder="Artista Digital · Buenos Aires"></div>
+    <div class="fg"><label class="flbl">Descripción (hero)</label><input class="finput" id="s-desc" type="text"></div>
+    <div class="fg"><label class="flbl">Tags del hero (separados por coma)</label><input class="finput" id="s-tags" type="text" placeholder="Personajes 2D, Animación, Diseño"></div>
+    <div class="fg"><label class="flbl">Sobre mí</label><textarea class="ftarea" id="s-about" style="min-height:90px"></textarea></div>
+    <div class="frow">
+      <div class="fg"><label class="flbl">Stat 1 — número</label><input class="finput" id="s-s1" type="text" placeholder="24"></div>
+      <div class="fg"><label class="flbl">Stat 1 — etiqueta</label><input class="finput" id="s-s1l" type="text" placeholder="Proyectos"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="flbl">Stat 2 — número</label><input class="finput" id="s-s2" type="text" placeholder="60"></div>
+      <div class="fg"><label class="flbl">Stat 2 — etiqueta</label><input class="finput" id="s-s2l" type="text" placeholder="Personajes"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="flbl">Stat 3 — número</label><input class="finput" id="s-s3" type="text" placeholder="5"></div>
+      <div class="fg"><label class="flbl">Stat 3 — etiqueta</label><input class="finput" id="s-s3l" type="text" placeholder="Años exp."></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="flbl">Stat 4 — número</label><input class="finput" id="s-s4" type="text" placeholder="12"></div>
+      <div class="fg"><label class="flbl">Stat 4 — etiqueta</label><input class="finput" id="s-s4l" type="text" placeholder="Clientes"></div>
+    </div>
+    <div class="fg"><label class="flbl">Email</label><input class="finput" id="s-email" type="text"></div>
+    <div class="fg"><label class="flbl">Behance / ArtStation (URL)</label><input class="finput" id="s-be" type="text"></div>
+    <div class="fg"><label class="flbl">Instagram (URL)</label><input class="finput" id="s-ig" type="text"></div>
+    <div class="fg"><label class="flbl">LinkedIn (URL)</label><input class="finput" id="s-li" type="text"></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('settings-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveSettings()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PREVIEW MANAGER MODAL -->
+<div class="moverlay" id="preview-m">
+  <div class="mbox">
+    <button class="mclose" onclick="closeM('preview-m')">✕</button>
+    <h3 class="mtitle" id="preview-m-title">Trabajos destacados</h3>
+    <div id="preview-list-admin" style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem"></div>
+    <button class="btn-s" style="width:100%" onclick="openAddPreview(null)">+ Agregar trabajo destacado</button>
+  </div>
+</div>
+
+<!-- ADD/EDIT PREVIEW MODAL -->
+<div class="moverlay" id="add-preview-m">
+  <div class="mbox" style="max-width:440px">
+    <button class="mclose" onclick="closeM('add-preview-m')">✕</button>
+    <h3 class="mtitle" id="add-preview-title">Agregar trabajo</h3>
+    <div class="fg"><label class="flbl">Título</label><input class="finput" id="pw-title" type="text" placeholder="Nombre del trabajo"></div>
+    <div class="fg"><label class="flbl">Categoría</label><input class="finput" id="pw-cat" type="text" placeholder="Personaje 2D, Animación..."></div>
+    <div class="fg"><label class="flbl">URL de imagen</label><input class="finput" id="pw-img" type="text" placeholder="https://..."></div>
+    <div class="fg"><label class="flbl">Link al proyecto (opcional)</label><input class="finput" id="pw-link" type="text" placeholder="project.html?id=1"></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('add-preview-m')">Cancelar</button>
+      <button class="btn-s" onclick="savePreview()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT FOLDER MODAL -->
+<div class="moverlay" id="folder-m">
+  <div class="mbox" style="max-width:400px">
+    <button class="mclose" onclick="closeM('folder-m')">✕</button>
+    <h3 class="mtitle" id="folder-m-title">Nueva carpeta</h3>
+    <div class="fg"><label class="flbl">Nombre</label><input class="finput" id="f-name" type="text" placeholder="Nombre del proyecto"></div>
+    <div class="fg"><label class="flbl">Color</label>
+      <select class="fsel" id="f-color">
+        <option value="#8B5CF6">Violeta</option>
+        <option value="#A78BFA">Lavanda</option>
+        <option value="#3B82F6">Azul</option>
+        <option value="#F97316">Naranja</option>
+        <option value="#10B981">Verde</option>
+        <option value="#EC4899">Rosa</option>
+        <option value="#F59E0B">Amarillo</option>
+        <option value="#EF4444">Rojo</option>
+      </select>
+    </div>
+    <div class="btn-row" id="folder-btn-row">
+      <button class="btn-c" onclick="closeM('folder-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveFolder()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- INLINE EDIT MODAL -->
+<div class="moverlay" id="inline-m">
+  <div class="mbox" style="max-width:440px">
+    <button class="mclose" onclick="closeM('inline-m')">✕</button>
+    <h3 class="mtitle" id="inline-m-title">Editar texto</h3>
+    <div class="fg">
+      <label class="flbl" id="inline-m-label">Contenido</label>
+      <input class="finput" id="inline-input" type="text" style="display:none">
+      <textarea class="ftarea" id="inline-textarea" style="display:none;min-height:100px"></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('inline-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveInlineEdit()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- STAT EDIT MODAL -->
+<div class="moverlay" id="stat-m">
+  <div class="mbox" style="max-width:380px">
+    <button class="mclose" onclick="closeM('stat-m')">✕</button>
+    <h3 class="mtitle">Editar estadística</h3>
+    <div class="fg"><label class="flbl">Número</label><input class="finput" id="stat-num-in" type="text"></div>
+    <div class="fg"><label class="flbl">Etiqueta</label><input class="finput" id="stat-lbl-in" type="text"></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('stat-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveStat()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ══════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════
+const PASS = 'Lourdes01*47593641';
+let isAdmin = false;
+
+const DEF_CFG = {
+  name:'Tu Nombre', ey:'Artista Digital · Buenos Aires',
+  desc:'Personajes 2D, animaciones, videojuegos y proyectos creativos.',
+  tags:'Personajes 2D,Animación,Videojuegos,Diseño,3D · Video',
+  about:'Reemplazá este texto con tu historia.\n\nContá tu formación, clientes y objetivos profesionales.',
+  s1:'0', s1l:'Proyectos', s2:'0', s2l:'Personajes',
+  s3:'0', s3l:'Años exp.', s4:'0', s4l:'Clientes',
+  email:'', be:'', ig:'', li:'',
+  'preview-title':'Trabajos', 'folders-title':'Carpetas',
+  'about-title':'Acerca de mí', 'contact-title':'Contacto',
+  'contact-big':'¿Tenés un proyecto en mente?',
+  'contact-sub':'Siempre estoy abierta a nuevas colaboraciones y oportunidades creativas.',
+  'footer-copy':'© 2025 Portfolio · Todos los derechos reservados'
+};
+
+let cfg     = Object.assign({}, DEF_CFG, JSON.parse(localStorage.getItem('pf4-cfg')    || '{}'));
+let folders = JSON.parse(localStorage.getItem('pf4-folders') || 'null') || [
+  {id:1, name:'Una Noche en Marte',  color:'#8B5CF6'},
+  {id:2, name:'Vostok',             color:'#3B82F6'},
+  {id:3, name:'Expedition_to_Mars', color:'#F97316'},
+  {id:4, name:'Modelados 3D',       color:'#10B981'},
+  {id:5, name:'Infografías',        color:'#F59E0B'},
+  {id:6, name:'Enchanted Chaos',    color:'#EC4899'},
+  {id:7, name:'The Unknown Shards', color:'#A78BFA'},
+];
+let previews = JSON.parse(localStorage.getItem('pf4-previews') || 'null') || [
+  {id:1, title:'Trabajo destacado 1', cat:'Personaje 2D', img:'', link:''},
+  {id:2, title:'Trabajo destacado 2', cat:'Animación',    img:'', link:''},
+  {id:3, title:'Trabajo destacado 3', cat:'Diseño',       img:'', link:''},
+];
+
+function persist() {
+  localStorage.setItem('pf4-cfg',      JSON.stringify(cfg));
+  localStorage.setItem('pf4-folders',  JSON.stringify(folders));
+  localStorage.setItem('pf4-previews', JSON.stringify(previews));
+}
+
+// ══════════════════════════════════════════════════
+// DITHER WEBGL BACKGROUND
+// ══════════════════════════════════════════════════
+(function(){
+  const cv = document.getElementById('dither-canvas');
+  const gl = cv.getContext('webgl') || cv.getContext('experimental-webgl');
+  if (!gl) return;
+  function resize(){cv.width=innerWidth;cv.height=innerHeight;gl.viewport(0,0,cv.width,cv.height);}
+  resize(); window.addEventListener('resize',resize);
+  const VS=`attribute vec2 p;void main(){gl_Position=vec4(p,0,1);}`;
+  const FS=`precision highp float;
+uniform vec2 R;uniform float T;uniform vec2 M;
+vec4 m9(vec4 x){return x-floor(x*(1./289.))*289.;}
+vec4 pm(vec4 x){return m9(((x*34.)+1.)*x);}
+vec4 ti(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+vec2 fd(vec2 t){return t*t*t*(t*(t*6.-15.)+10.);}
+float cn(vec2 P){
+  vec4 Pi=floor(P.xyxy)+vec4(0,0,1,1);vec4 Pf=fract(P.xyxy)-vec4(0,0,1,1);
+  Pi=m9(Pi);vec4 ix=Pi.xzxz,iy=Pi.yyww,fx=Pf.xzxz,fy=Pf.yyww;
+  vec4 i=pm(pm(ix)+iy);vec4 gx=fract(i*(1./41.))*2.-1.;vec4 gy=abs(gx)-.5;gx-=floor(gx+.5);
+  vec2 g00=vec2(gx.x,gy.x),g10=vec2(gx.y,gy.y),g01=vec2(gx.z,gy.z),g11=vec2(gx.w,gy.w);
+  vec4 n=ti(vec4(dot(g00,g00),dot(g01,g01),dot(g10,g10),dot(g11,g11)));
+  g00*=n.x;g01*=n.y;g10*=n.z;g11*=n.w;
+  vec2 f=fd(Pf.xy);
+  return 2.3*mix(mix(dot(g00,vec2(fx.x,fy.x)),dot(g10,vec2(fx.y,fy.y)),f.x),
+                 mix(dot(g01,vec2(fx.z,fy.z)),dot(g11,vec2(fx.w,fy.w)),f.x),f.y);
+}
+float fbm(vec2 p){float v=0.,a=1.,fr=2.7;for(int i=0;i<4;i++){v+=a*abs(cn(p));p*=fr;a*=0.15;}return v;}
+float pat(vec2 p){vec2 p2=p-T*0.04;return fbm(p+fbm(p2));}
+float bayer(vec2 uv){
+  float x=mod(uv.x,8.0);
+  float y=mod(uv.y,8.0);
+  float idx=y*8.0+x;
+  float v=0.0;
+  if(idx<32.0){
+    if(idx<16.0){
+      if(idx<8.0){
+        if(idx<4.0){ v = idx<2.0 ? (idx<1.0?0.0:48.0) : (idx<3.0?12.0:60.0); }
+        else { v = idx<6.0 ? (idx<5.0?3.0:51.0) : (idx<7.0?15.0:63.0); }
+      } else {
+        if(idx<12.0){ v = idx<10.0 ? (idx<9.0?32.0:16.0) : (idx<11.0?44.0:28.0); }
+        else { v = idx<14.0 ? (idx<13.0?35.0:19.0) : (idx<15.0?47.0:31.0); }
+      }
+    } else {
+      if(idx<24.0){
+        if(idx<20.0){ v = idx<18.0 ? (idx<17.0?8.0:56.0) : (idx<19.0?4.0:52.0); }
+        else { v = idx<22.0 ? (idx<21.0?11.0:59.0) : (idx<23.0?7.0:55.0); }
+      } else {
+        if(idx<28.0){ v = idx<26.0 ? (idx<25.0?40.0:24.0) : (idx<27.0?36.0:20.0); }
+        else { v = idx<30.0 ? (idx<29.0?43.0:27.0) : (idx<31.0?39.0:23.0); }
+      }
+    }
+  } else {
+    if(idx<48.0){
+      if(idx<40.0){
+        if(idx<36.0){ v = idx<34.0 ? (idx<33.0?2.0:50.0) : (idx<35.0?14.0:62.0); }
+        else { v = idx<38.0 ? (idx<37.0?1.0:49.0) : (idx<39.0?13.0:61.0); }
+      } else {
+        if(idx<44.0){ v = idx<42.0 ? (idx<41.0?34.0:18.0) : (idx<43.0?46.0:30.0); }
+        else { v = idx<46.0 ? (idx<45.0?33.0:17.0) : (idx<47.0?45.0:29.0); }
+      }
+    } else {
+      if(idx<56.0){
+        if(idx<52.0){ v = idx<50.0 ? (idx<49.0?10.0:58.0) : (idx<51.0?6.0:54.0); }
+        else { v = idx<54.0 ? (idx<53.0?9.0:57.0) : (idx<55.0?5.0:53.0); }
+      } else {
+        if(idx<60.0){ v = idx<58.0 ? (idx<57.0?42.0:26.0) : (idx<59.0?38.0:22.0); }
+        else { v = idx<62.0 ? (idx<61.0?41.0:25.0) : (idx<63.0?37.0:21.0); }
+      }
+    }
+  }
+  return (v-0.25)/64.0;
+}
+void main(){
+  vec2 uv=gl_FragCoord.xy/R,p=uv-.5;p.x*=R.x/R.y;
+  vec2 mn=(M/R-.5)*vec2(1.,-1.);mn.x*=R.x/R.y;
+  float d=length(p-mn),f=pat(p);
+  f-=0.5*(1.-smoothstep(0.,.4,d));
+  vec3 wc=vec3(0.545,0.361,0.965);
+  vec3 col=mix(vec3(0.04,0.03,0.07),wc,clamp(f,0.,1.));
+  float cn2=6.6,ps=2.;
+  col+=bayer(floor(gl_FragCoord.xy/ps))/(cn2-1.);
+  col=clamp(col-.18,0.,1.);
+  col=floor(col*(cn2-1.)+.5)/(cn2-1.);
+  gl_FragColor=vec4(col,1.);
+}`;
+  function mkS(t,s){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);
+    if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.error('Shader error:',gl.getShaderInfoLog(sh));}
+    return sh;}
+  const prog=gl.createProgram();
+  gl.attachShader(prog,mkS(gl.VERTEX_SHADER,VS));
+  gl.attachShader(prog,mkS(gl.FRAGMENT_SHADER,FS));
+  gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){console.error('Program link error:',gl.getProgramInfoLog(prog));return;}
+  gl.useProgram(prog);
+  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const al=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+  const uR=gl.getUniformLocation(prog,'R'),uT=gl.getUniformLocation(prog,'T'),uM=gl.getUniformLocation(prog,'M');
+  let mx=0,my=0;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  const t0=performance.now();
+  (function loop(){
+    const t=(performance.now()-t0)/1000;
+    gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,cv.height-my);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(loop);
+  })();
+})();
+
+// ══════════════════════════════════════════════════
+// ASCII TEXT — Three.js
+// ══════════════════════════════════════════════════
+(function(){
+  const container=document.getElementById('ascii-root');
+  if(!container||typeof THREE==='undefined')return;
+  const CHARSET=" .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+  const FS_PX=11,TEXT='PORTFOLIO';
+  const renderer=new THREE.WebGLRenderer({antialias:false,alpha:true});
+  renderer.setPixelRatio(1);renderer.setClearColor(0,0);
+  const pre=document.createElement('pre');
+  pre.style.cssText='position:absolute;left:0;top:0;z-index:9;pointer-events:none;font-family:"IBM Plex Mono",monospace;font-size:'+FS_PX+'px;margin:0;padding:0;line-height:1em;background-image:radial-gradient(circle,#ff6188 0%,#fc9867 50%,#ffd866 100%);background-attachment:fixed;-webkit-text-fill-color:transparent;-webkit-background-clip:text;mix-blend-mode:difference;user-select:none;white-space:pre';
+  container.appendChild(pre);
+  const oc=document.createElement('canvas'),ox=oc.getContext('2d');
+  const tc=document.createElement('canvas'),tx=tc.getContext('2d');
+  const fstr='600 200px "IBM Plex Mono",monospace';
+  tx.font=fstr;const met=tx.measureText(TEXT);
+  tc.width=Math.ceil(met.width)+20;tc.height=240;
+  tx.font=fstr;tx.fillStyle='#fdf9f3';tx.fillText(TEXT,10,195);
+  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,1,1,1000);
+  camera.position.z=30;
+  const tex=new THREE.CanvasTexture(tc);tex.minFilter=THREE.NearestFilter;
+  const asp=tc.width/tc.height;
+  const geo=new THREE.PlaneGeometry(8*asp,8,36,36);
+  const mat=new THREE.ShaderMaterial({transparent:true,
+    uniforms:{uTime:{value:0},uTex:{value:tex},uW:{value:1.0}},
+    vertexShader:`varying vec2 vUv;uniform float uTime,uW;void main(){vUv=uv;vec3 p=position;p.x+=sin(uTime*5.+position.y)*.5*uW;p.y+=cos(uTime*5.+position.z)*.15*uW;p.z+=sin(uTime*5.+position.x)*uW;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,
+    fragmentShader:`varying vec2 vUv;uniform float uTime;uniform sampler2D uTex;void main(){float t=uTime;vec2 p=vUv;float r=texture2D(uTex,p+cos(t*2.-t+p.x)*.01).r;float g=texture2D(uTex,p+tan(t*.5+p.x-t)*.01).g;float b=texture2D(uTex,p-cos(t*2.+t+p.y)*.01).b;gl_FragColor=vec4(r,g,b,texture2D(uTex,p).a);}`
+  });
+  const mesh=new THREE.Mesh(geo,mat);scene.add(mesh);
+  let W=0,H=0,cols=0,rows=0,mx=0,my=0,deg=0,hovering=false;
+  function resize(){
+    const r=container.getBoundingClientRect();
+    W=r.width||innerWidth;H=r.height||innerHeight*.54;
+    renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();
+    ox.font=FS_PX+'px "IBM Plex Mono",monospace';
+    const cw=ox.measureText('A').width;
+    cols=Math.floor(W/cw);rows=Math.floor(H/FS_PX);
+    oc.width=cols;oc.height=rows;
+  }
+  resize();window.addEventListener('resize',resize);
+  container.appendChild(renderer.domElement);
+  renderer.domElement.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;image-rendering:pixelated';
+  const hoverTarget=container.closest('.hero')||container;
+  hoverTarget.addEventListener('mousemove',e=>{const r=container.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;hovering=true;});
+  hoverTarget.addEventListener('mouseleave',()=>{hovering=false;});
+  function asciify(){
+    ox.clearRect(0,0,cols,rows);ox.drawImage(renderer.domElement,0,0,cols,rows);
+    const d=ox.getImageData(0,0,cols,rows).data;let s='';
+    for(let y=0;y<rows;y++){for(let x=0;x<cols;x++){const i=(x+y*cols)*4;if(d[i+3]===0){s+=' ';continue;}const g=(0.3*d[i]+0.6*d[i+1]+0.1*d[i+2])/255;s+=CHARSET[CHARSET.length-1-Math.floor((1-g)*(CHARSET.length-1))]||' ';}s+='\n';}
+    pre.textContent=s;
+  }
+  (function loop(){
+    requestAnimationFrame(loop);const t=performance.now()*.001;
+    tex.needsUpdate=true;mat.uniforms.uTime.value=Math.sin(t);
+    const tx_=hovering?((mx/W)-.5):0;
+    const ty_=hovering?((my/H)-.5):0;
+    mesh.rotation.x+=(ty_-mesh.rotation.x)*0.05;
+    mesh.rotation.y+=(tx_-mesh.rotation.y)*0.05;
+    const targetDeg=hovering?Math.atan2(my-H/2,mx-W/2)*180/Math.PI:0;
+    deg+=(targetDeg-deg)*0.075;
+    renderer.render(scene,camera);asciify();
+    pre.style.filter='hue-rotate('+deg.toFixed(1)+'deg)';
+  })();
+})();
+
+// ══════════════════════════════════════════════════
+// SPLIT TEXT — nombre hero
+// ══════════════════════════════════════════════════
+function renderName(name){
+  const el=document.getElementById('hero-name');
+  el.innerHTML='';
+  if(!name)name='Tu Nombre';
+  let idx=0;
+  name.trim().split(' ').forEach((w,wi)=>{
+    w.split('').forEach(ch=>{
+      const delay=idx*0.048;
+      const sp=document.createElement('span');
+      sp.style.cssText=`display:inline-block;color:${wi>0?'var(--violet)':'var(--cream)'};opacity:0;transform:translateY(42px);transition:opacity .75s cubic-bezier(.16,1,.3,1) ${delay}s,transform .75s cubic-bezier(.16,1,.3,1) ${delay}s`;
+      sp.textContent=ch;el.appendChild(sp);idx++;
+    });
+    if(wi<name.trim().split(' ').length-1){const sp=document.createElement('span');sp.style.display='inline-block';sp.innerHTML=' ';el.appendChild(sp);}
+  });
+  setTimeout(()=>el.querySelectorAll('span').forEach(s=>{s.style.opacity='1';s.style.transform='translateY(0)';}),120);
+}
+
+// ══════════════════════════════════════════════════
+// SCROLL REVEAL
+// ══════════════════════════════════════════════════
+const revealObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target);}
+  });
+},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+function observeReveals(){
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>{
+    if(!el.classList.contains('visible'))revealObs.observe(el);
+  });
+}
+
+// ══════════════════════════════════════════════════
+// STAGGERED MENU
+// ══════════════════════════════════════════════════
+let menuOpen=false;
+const smPanel=document.getElementById('sm-panel');
+const smPres=document.querySelectorAll('.sm-pre');
+const smBtn=document.getElementById('sm-btn');
+const smTi=document.getElementById('sm-ti');
+const smInners=document.querySelectorAll('.sm-pinner');
+function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'});}
+function openMenu(){
+  menuOpen=true;smBtn.classList.add('open');smTi.style.transform='translateY(-50%)';
+  smPres.forEach((l,i)=>{l.style.transition=`transform .48s cubic-bezier(.4,0,.2,1) ${i*.07}s`;l.style.transform='translateX(0)';});
+  setTimeout(()=>{smPanel.style.transition='transform .55s cubic-bezier(.4,0,.2,1)';smPanel.style.transform='translateX(0)';},95);
+  setTimeout(()=>smInners.forEach((it,i)=>{it.style.transition=`transform .62s cubic-bezier(.16,1,.3,1) ${.08+i*.1}s`;it.style.transform='translateY(0)';}),230);
+  document.getElementById('smw').style.pointerEvents='auto';
+}
+function closeMenu(){
+  menuOpen=false;smBtn.classList.remove('open');smTi.style.transform='';
+  smInners.forEach(it=>{it.style.transition='none';it.style.transform='translateY(110%)';});
+  smPanel.style.transition='transform .32s cubic-bezier(.4,0,.2,1)';smPanel.style.transform='translateX(100%)';
+  setTimeout(()=>smPres.forEach(l=>{l.style.transition='transform .3s cubic-bezier(.4,0,.2,1)';l.style.transform='translateX(100%)';}),65);
+  setTimeout(()=>document.getElementById('smw').style.pointerEvents='none',390);
+}
+smBtn.addEventListener('click',()=>menuOpen?closeMenu():openMenu());
+document.addEventListener('mousedown',e=>{if(menuOpen&&!smPanel.contains(e.target)&&!smBtn.contains(e.target))closeMenu();});
+
+// ══════════════════════════════════════════════════
+// BORDER GLOW
+// ══════════════════════════════════════════════════
+function applyGlow(el){
+  el.addEventListener('pointermove',e=>{
+    const r=el.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    const cx=r.width/2,cy=r.height/2,dx=x-cx,dy=y-cy;
+    const kx=dx?cx/Math.abs(dx):Infinity,ky=dy?cy/Math.abs(dy):Infinity;
+    const ep=Math.min(Math.max(1/Math.min(kx,ky),0),1)*100;
+    let ang=(Math.atan2(dy,dx)*180/Math.PI)+90;if(ang<0)ang+=360;
+    el.style.setProperty('--ep',ep.toFixed(2));el.style.setProperty('--ca',ang.toFixed(2)+'deg');
+  });
+}
+document.querySelectorAll('.clink.bgc').forEach(applyGlow);
+
+// ══════════════════════════════════════════════════
+// RENDER PREVIEWS — flat centered carousel
+// ══════════════════════════════════════════════════
+let carIndex = 0;
+const CARD_W  = 280;  // must match CSS width
+const CARD_GAP = 24;  // 1.5rem gap
+
+function renderPreviews() {
+  const track = document.getElementById('preview-grid');
+  track.innerHTML = '';
+  if (carIndex >= previews.length) carIndex = 0;
+  if (carIndex < 0) carIndex = previews.length - 1;
+
+  previews.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'preview-card bgc';
+    const href = p.link || '#';
+    card.innerHTML = `
+      <span class="elight"></span>
+      ${p.img
+        ? `<img src="${p.img}" alt="${p.title}" loading="lazy" onerror="this.style.display='none'">`
+        : '<div class="preview-placeholder"><span>🖼️</span><p>Sin imagen</p></div>'}
+      <div class="preview-dot"></div>
+      <div class="preview-curtain">
+        <div class="preview-card-cat">${p.cat}</div>
+        <div class="preview-card-title">${p.title}</div>
+      </div>
+      ${isAdmin ? `<button class="admin-edit-preview" onclick="event.stopPropagation();openAddPreview(${p.id})">✏️ Editar</button>` : ''}
+    `;
+    card.addEventListener('click', () => {
+      if (i !== carIndex) { carIndex = i; positionCarousel(); return; }
+      if (href !== '#') location.href = href;
+    });
+    applyGlow(card);
+    track.appendChild(card);
+  });
+
+  // dots
+  const dotsEl = document.getElementById('car-dots');
+  dotsEl.innerHTML = '';
+  previews.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'car-dot' + (i === carIndex ? ' active' : '');
+    d.onclick = () => { carIndex = i; positionCarousel(); };
+    dotsEl.appendChild(d);
+  });
+
+  positionCarousel();
+  observeReveals();
+}
+
+function positionCarousel() {
+  const track    = document.getElementById('preview-grid');
+  const viewport = track.parentElement;
+  const cards    = track.querySelectorAll('.preview-card');
+  const n        = cards.length;
+  if (!n) return;
+
+  // clamp index
+  if (carIndex >= n) carIndex = 0;
+  if (carIndex < 0)  carIndex = n - 1;
+
+  // center the active card inside the viewport
+  const vpW       = viewport.offsetWidth || window.innerWidth;
+  const totalCard = CARD_W + CARD_GAP;
+  // offset so active card centre aligns with viewport centre
+  const offset    = (vpW / 2) - (carIndex * totalCard) - (CARD_W / 2);
+  track.style.transform = `translateX(${offset}px)`;
+
+  cards.forEach((card, i) => {
+    card.classList.toggle('is-active', i === carIndex);
+  });
+
+  // update dots
+  document.querySelectorAll('.car-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === carIndex);
+  });
+}
+
+// arrows
+document.getElementById('car-prev').addEventListener('click', () => {
+  carIndex--; if (carIndex < 0) carIndex = previews.length - 1;
+  positionCarousel();
+});
+document.getElementById('car-next').addEventListener('click', () => {
+  carIndex++; if (carIndex >= previews.length) carIndex = 0;
+  positionCarousel();
+});
+
+// recalculate on resize
+window.addEventListener('resize', () => positionCarousel());
+
+// touch/swipe support
+(function(){
+  let startX = 0;
+  const vp = document.querySelector('.carousel-viewport');
+  if (!vp) return;
+  vp.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+  vp.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) < 40) return;
+    if (dx < 0) { carIndex++; if (carIndex >= previews.length) carIndex = 0; }
+    else        { carIndex--; if (carIndex < 0) carIndex = previews.length - 1; }
+    positionCarousel();
+  }, {passive:true});
+})();
+
+// ══════════════════════════════════════════════════
+// RENDER FOLDERS
+// ══════════════════════════════════════════════════
+function darken(hex,p){
+  let c=hex.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');
+  const n=parseInt(c,16);
+  return '#'+[[(n>>16)&255],[(n>>8)&255],[n&255]].map(([v])=>{
+    const r=Math.max(0,Math.floor(v*(1-p))).toString(16);return r.length===1?'0'+r:r;
+  }).join('');
+}
+function renderFolders(){
+  const grid=document.getElementById('folders-grid');grid.innerHTML='';
+  folders.forEach((f,fi)=>{
+    const dk=darken(f.color,.12);
+    const a=document.createElement('a');
+    a.href=`project.html?id=${f.id}`;
+    a.className='folder-item bgc reveal delay-'+(Math.min(fi+1,6));
+    a.innerHTML=`
+      <span class="elight"></span>
+      <div class="fwrap"><div class="fback" style="background:${dk}">
+        <div class="fpaper fp1"></div><div class="fpaper fp2"></div><div class="fpaper fp3"></div>
+        <div class="ffront" style="background:${f.color}"></div>
+      </div></div>
+      <span class="folder-label">${f.name}</span>
+      ${isAdmin?`<button class="folder-edit-btn" title="Editar">✏️</button>`:''}
+    `;
+    if(isAdmin){
+      const eb=a.querySelector('.folder-edit-btn');
+      if(eb)eb.onclick=e=>{e.preventDefault();e.stopPropagation();openFolderModal(f.id);};
+    }
+    applyGlow(a);
+    grid.appendChild(a);
+  });
+  if(isAdmin){
+    const btn=document.createElement('button');btn.className='add-folder-btn reveal';
+    btn.innerHTML=`<div class="add-fi">+</div><span class="add-fl">Nueva carpeta</span>`;
+    btn.onclick=()=>openFolderModal(null);grid.appendChild(btn);
+  }
+  observeReveals();
+}
+
+// ══════════════════════════════════════════════════
+// AUTH — FAB visible, acceso por contraseña
+// ══════════════════════════════════════════════════
+// El botón FAB siempre visible pero abre auth si no está logueado
+document.getElementById('admin-fab').classList.remove('hidden');
+document.getElementById('admin-fab').addEventListener('click',()=>{
+  if(isAdmin)openM('edit-m');
+  else openM('auth-m');
+});
+
+document.getElementById('auth-ok').addEventListener('click',doAuth);
+document.getElementById('auth-in').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth();});
+function doAuth(){
+  if(document.getElementById('auth-in').value===PASS){
+    isAdmin=true;
+    document.getElementById('auth-in').value='';
+    document.getElementById('auth-err').textContent='';
+    document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
+    document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='block');
+    closeM('auth-m');
+    renderPreviews();renderFolders();
+  } else {
+    document.getElementById('auth-err').textContent='Contraseña incorrecta.';
+    document.getElementById('auth-in').value='';
+  }
+}
+function doLogout(){
+  isAdmin=false;
+  document.getElementById('admin-fab').textContent='⚙ Editar';
+  document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='');
+  closeM('edit-m');renderPreviews();renderFolders();
+}
+
+// ══════════════════════════════════════════════════
+// MODALS
+// ══════════════════════════════════════════════════
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.moverlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+// ══════════════════════════════════════════════════
+// INLINE EDIT
+// ══════════════════════════════════════════════════
+let inlineTarget=null,inlineIsArea=false;
+function openInlineEdit(id,label,isArea){
+  if(!isAdmin)return;
+  inlineTarget=id;inlineIsArea=!!isArea;
+  document.getElementById('inline-m-title').textContent='Editar: '+label;
+  const el=document.getElementById(id);
+  const val=el?el.textContent.trim():'';
+  const inp=document.getElementById('inline-input');
+  const ta=document.getElementById('inline-textarea');
+  if(isArea){inp.style.display='none';ta.style.display='block';ta.value=val;}
+  else{ta.style.display='none';inp.style.display='block';inp.value=val;}
+  openM('inline-m');
+}
+function saveInlineEdit(){
+  if(!inlineTarget)return;
+  const val=inlineIsArea?document.getElementById('inline-textarea').value:document.getElementById('inline-input').value;
+  const el=document.getElementById(inlineTarget);
+  if(el){
+    // preserve child buttons
+    const btns=Array.from(el.querySelectorAll('.inline-edit'));
+    if(inlineIsArea)el.innerHTML='<p>'+val.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>';
+    else{el.childNodes[0]?el.childNodes[0].textContent=val:el.textContent=val;}
+    btns.forEach(b=>el.appendChild(b));
+  }
+  cfg[inlineTarget]=val;persist();
+  closeM('inline-m');
+}
+
+// ══════════════════════════════════════════════════
+// STAT EDIT
+// ══════════════════════════════════════════════════
+let editingStatIdx=null;
+const statIds=[['st1','st1-lbl'],['st2','st2-lbl'],['st3','st3-lbl'],['st4','st4-lbl']];
+const statCfgKeys=[['s1','s1l'],['s2','s2l'],['s3','s3l'],['s4','s4l']];
+function openStatEdit(idx){
+  if(!isAdmin)return;
+  editingStatIdx=idx;
+  const [nk,lk]=statCfgKeys[idx];
+  document.getElementById('stat-num-in').value=cfg[nk]||'0';
+  document.getElementById('stat-lbl-in').value=cfg[lk]||'';
+  openM('stat-m');
+}
+function saveStat(){
+  if(editingStatIdx===null)return;
+  const [nk,lk]=statCfgKeys[editingStatIdx];
+  const [nid,lid]=statIds[editingStatIdx];
+  cfg[nk]=document.getElementById('stat-num-in').value;
+  cfg[lk]=document.getElementById('stat-lbl-in').value;
+  document.getElementById(nid).innerHTML=cfg[nk]+'<span>+</span>';
+  document.getElementById(lid).textContent=cfg[lk];
+  persist();closeM('stat-m');
+}
+
+// ══════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════
+function openSettings(){
+  closeM('edit-m');
+  const fields=['name','ey','desc','tags','about','s1','s1l','s2','s2l','s3','s3l','s4','s4l','email','be','ig','li'];
+  fields.forEach(k=>{const el=document.getElementById('s-'+k);if(el)el.value=cfg[k]||'';});
+  openM('settings-m');
+}
+function saveSettings(){
+  const fields=['name','ey','desc','tags','about','s1','s1l','s2','s2l','s3','s3l','s4','s4l','email','be','ig','li'];
+  fields.forEach(k=>{const el=document.getElementById('s-'+k);if(el)cfg[k]=el.value;});
+  persist();applyConfig();closeM('settings-m');
+}
+
+// ══════════════════════════════════════════════════
+// PREVIEW MANAGER
+// ══════════════════════════════════════════════════
+function openPreviewManager(){
+  closeM('edit-m');
+  const list=document.getElementById('preview-list-admin');
+  list.innerHTML='';
+  previews.forEach(p=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;justify-content:space-between;align-items:center;background:var(--bg3);padding:.75rem 1rem;border-radius:4px;gap:.5rem';
+    row.innerHTML=`<span style="font-size:.85rem;color:var(--cream)">${p.title}</span><div style="display:flex;gap:.5rem"><button class="btn-s" style="padding:.3rem .7rem;font-size:.75rem" onclick="openAddPreview(${p.id})">✏️</button><button class="btn-danger" style="padding:.3rem .7rem;font-size:.75rem" onclick="deletePreview(${p.id})">🗑️</button></div>`;
+    list.appendChild(row);
+  });
+  openM('preview-m');
+}
+let editingPid=null;
+function openAddPreview(id){
+  editingPid=id;
+  const p=id?previews.find(x=>x.id===id):null;
+  document.getElementById('add-preview-title').textContent=id?'Editar trabajo':'Agregar trabajo';
+  document.getElementById('pw-title').value=p?p.title:'';
+  document.getElementById('pw-cat').value=p?p.cat:'';
+  document.getElementById('pw-img').value=p?p.img:'';
+  document.getElementById('pw-link').value=p?p.link:'';
+  closeM('preview-m');openM('add-preview-m');
+}
+function savePreview(){
+  const item={
+    id:editingPid||Date.now(),
+    title:document.getElementById('pw-title').value,
+    cat:document.getElementById('pw-cat').value,
+    img:document.getElementById('pw-img').value,
+    link:document.getElementById('pw-link').value,
+  };
+  if(editingPid)previews=previews.map(p=>p.id===editingPid?item:p);
+  else previews.push(item);
+  persist();renderPreviews();closeM('add-preview-m');
+}
+function deletePreview(id){
+  if(!confirm('¿Eliminar este trabajo?'))return;
+  previews=previews.filter(p=>p.id!==id);
+  persist();renderPreviews();openPreviewManager();
+}
+
+// ══════════════════════════════════════════════════
+// FOLDER CRUD
+// ══════════════════════════════════════════════════
+let editingFid=null;
+function openFolderModal(id){
+  closeM('edit-m');editingFid=id;
+  const f=id?folders.find(x=>x.id===id):null;
+  document.getElementById('folder-m-title').textContent=id?'Editar carpeta':'Nueva carpeta';
+  document.getElementById('f-name').value=f?f.name:'';
+  document.getElementById('f-color').value=f?f.color:'#8B5CF6';
+  // add delete btn if editing
+  const br=document.getElementById('folder-btn-row');
+  const old=br.querySelector('.btn-danger');if(old)old.remove();
+  if(id){const db=document.createElement('button');db.className='btn-danger';db.textContent='Eliminar';db.onclick=()=>{if(confirm('¿Eliminar esta carpeta?')){folders=folders.filter(x=>x.id!==id);persist();renderFolders();closeM('folder-m');}};br.prepend(db);}
+  openM('folder-m');
+}
+function saveFolder(){
+  const name=document.getElementById('f-name').value.trim();
+  const color=document.getElementById('f-color').value;
+  if(!name)return;
+  if(editingFid)folders=folders.map(f=>f.id===editingFid?{...f,name,color}:f);
+  else folders.push({id:Date.now(),name,color});
+  persist();renderFolders();closeM('folder-m');
+}
+
+// ══════════════════════════════════════════════════
+// APPLY CONFIG
+// ══════════════════════════════════════════════════
+function applyConfig(){
+  const c=cfg;
+  // name
+  if(c.name){
+    document.getElementById('nav-logo').textContent=c.name;
+    renderName(c.name);
+    document.title=c.name+' · Portfolio';
+  }
+  // hero texts
+  if(c.ey){const el=document.getElementById('hero-ey');el.childNodes[0].textContent=c.ey;}
+  if(c.desc){const el=document.getElementById('hero-desc');el.childNodes[0].textContent=c.desc;}
+  if(c.tags){
+    const wrap=document.getElementById('hero-tags-wrap');wrap.innerHTML='';
+    c.tags.split(',').map(t=>t.trim()).filter(Boolean).forEach(t=>{
+      const sp=document.createElement('span');sp.className='tag';sp.textContent=t;wrap.appendChild(sp);
+    });
+  }
+  // about
+  if(c.about){
+    const el=document.getElementById('about-txt');
+    const btns=Array.from(el.querySelectorAll('.inline-edit'));
+    el.innerHTML='<p>'+c.about.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>';
+    btns.forEach(b=>el.appendChild(b));
+  }
+  // stats
+  statCfgKeys.forEach(([nk,lk],i)=>{
+    const [nid,lid]=statIds[i];
+    if(c[nk])document.getElementById(nid).innerHTML=c[nk]+'<span>+</span>';
+    if(c[lk])document.getElementById(lid).textContent=c[lk];
+  });
+  // editable titles
+  ['preview-title','folders-title','about-title','contact-title'].forEach(k=>{
+    if(c[k]){const el=document.getElementById(k);if(el)el.childNodes[0].textContent=c[k];}
+  });
+  if(c['contact-big']){const el=document.getElementById('contact-big');if(el)el.childNodes[0].textContent=c['contact-big'];}
+  if(c['contact-sub']){const el=document.getElementById('contact-sub');if(el)el.childNodes[0].textContent=c['contact-sub'];}
+  if(c['footer-copy']){const el=document.getElementById('footer-copy');if(el)el.childNodes[0].textContent=c['footer-copy'];}
+  // contact links
+  function setLink(id,href,valId,val){
+    const el=document.getElementById(id);if(!el)return;
+    if(href)el.href=href;
+    const v=document.getElementById(valId);if(v&&val)v.textContent=val;
+  }
+  if(c.email)setLink('c-email','mailto:'+c.email,'cv-email',c.email);
+  if(c.be){setLink('c-be',c.be,'cv-be',c.be.replace(/https?:\/\//,''));document.getElementById('m-be').href=c.be;}
+  if(c.ig){const u='@'+(c.ig.split('/').pop()||'usuario');setLink('c-ig',c.ig,'cv-ig',u);document.getElementById('m-ig').href=c.ig;}
+  if(c.li){setLink('c-li',c.li,'cv-li',c.li.replace(/https?:\/\//,''));document.getElementById('m-li').href=c.li;}
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+applyConfig();
+renderName(cfg.name||'Tu Nombre');
+renderPreviews();
+renderFolders();
+observeReveals();
+// hide inline edit buttons for non-admin on load
+document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='none');
+</script>
+</body>
+</html>
