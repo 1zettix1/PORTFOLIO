@@ -190,6 +190,13 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 
 <canvas id="dither-canvas"></canvas>
 
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay" style="position:fixed;inset:0;z-index:500;background:#0D0D0D;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity .4s">
+  <div style="width:36px;height:36px;border:3px solid rgba(240,235,224,.15);border-top-color:#8B5CF6;border-radius:50%;animation:spin .8s linear infinite"></div>
+  <p style="font-family:'Inter',sans-serif;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:#B8B3A8">Cargando…</p>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
 <!-- STAGGERED MENU -->
 <div class="sm-wrapper" id="smw">
   <header class="sm-header">
@@ -370,16 +377,23 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
+// ══════════════════════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════════════════════
+const SUPABASE_URL = 'https://pxongmsjumipaaouetdi.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_LrnKJaAvYkLptp3qMcFoQg_mmn3kqEv';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // ══════════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════════
-const PASS = 'Lourdes01*47593641';
 let isAdmin = false;
 
 const DEF_CFG = { name:'Tu Nombre', be:'', ig:'', li:'', 'footer-copy':'© 2025 Portfolio · Todos los derechos reservados' };
-let cfg = Object.assign({}, DEF_CFG, JSON.parse(localStorage.getItem('pf4-cfg') || '{}'));
-let folders = JSON.parse(localStorage.getItem('pf4-folders') || 'null') || [
+let cfg = Object.assign({}, DEF_CFG);
+let folders = [
   {id:1, name:'Una Noche en Marte',  color:'#8B5CF6'},
   {id:2, name:'Vostok',             color:'#3B82F6'},
   {id:3, name:'Expedition_to_Mars', color:'#F97316'},
@@ -392,23 +406,57 @@ let folders = JSON.parse(localStorage.getItem('pf4-folders') || 'null') || [
 // current project id from URL
 const params = new URLSearchParams(location.search);
 const projectId = parseInt(params.get('id'), 10);
-const folder = folders.find(f => f.id === projectId);
+let folder = folders.find(f => f.id === projectId);
 
 // per-project data: description, about, tags, gallery images
 const PKEY = 'pf4-project-' + (projectId || 'default');
-let proj = JSON.parse(localStorage.getItem(PKEY) || 'null') || {
+let proj = {
   desc:'Descripción del proyecto. Contá de qué se trata, qué herramientas usaste y cualquier detalle relevante.',
   about:'Agregá aquí más información sobre el proceso creativo, herramientas utilizadas, tiempos de producción o cualquier dato que quieras compartir sobre este proyecto.',
   tags:'',
   images:[],
   bgColor:''
 };
-function persistProj(){ localStorage.setItem(PKEY, JSON.stringify(proj)); }
+
+// ══════════════════════════════════════════════════
+// LOAD / SAVE (Supabase)
+// ══════════════════════════════════════════════════
+async function loadData(){
+  try{
+    const [cfgRes, foldersRes, projRes] = await Promise.all([
+      sb.from('pf_config').select('data').eq('id',1).maybeSingle(),
+      sb.from('pf_folders').select('*').order('id',{ascending:true}),
+      projectId ? sb.from('pf_projects').select('data').eq('folder_id',projectId).maybeSingle() : Promise.resolve({data:null})
+    ]);
+    if(cfgRes.data && cfgRes.data.data) cfg = Object.assign({}, DEF_CFG, cfgRes.data.data);
+    if(foldersRes.data && foldersRes.data.length) folders = foldersRes.data.map(f=>({id:f.id,name:f.name,color:f.color}));
+    folder = folders.find(f => f.id === projectId);
+    if(projRes.data && projRes.data.data) proj = Object.assign({}, proj, projRes.data.data);
+  }catch(err){
+    console.error('Error cargando datos de Supabase:',err);
+  }
+}
+
+async function persistProj(){
+  try{
+    await sb.from('pf_projects').upsert({folder_id:projectId, data:proj});
+  }catch(err){
+    console.error('Error guardando proyecto en Supabase:',err);
+  }
+}
+
+async function persistFolders(){
+  try{
+    await sb.from('pf_folders').upsert(folders.map(f=>({id:f.id,name:f.name,color:f.color})));
+  }catch(err){
+    console.error('Error guardando carpetas en Supabase:',err);
+  }
+}
 
 // ══════════════════════════════════════════════════
 // DITHER WEBGL BACKGROUND
 // ══════════════════════════════════════════════════
-(function(){
+function initDither(){
   const cv = document.getElementById('dither-canvas');
   const gl = cv.getContext('webgl') || cv.getContext('experimental-webgl');
   if (!gl) return;
@@ -520,12 +568,12 @@ void main(){
     gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,cv.height-my);gl.uniform3f(uWC,WC[0],WC[1],WC[2]);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(loop);
   })();
-})();
+}
 
 // ══════════════════════════════════════════════════
 // ASCII TEXT — Three.js (título del proyecto)
 // ══════════════════════════════════════════════════
-(function(){
+function initAscii(){
   const container=document.getElementById('ascii-root');
   if(!container||typeof THREE==='undefined')return;
   const CHARSET=" .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
@@ -587,7 +635,7 @@ void main(){
     renderer.render(scene,camera);asciify();
     pre.style.filter='hue-rotate('+deg.toFixed(1)+'deg)';
   })();
-})();
+}
 
 // ══════════════════════════════════════════════════
 // SPLIT TEXT — nombre del proyecto (hero)
@@ -666,14 +714,16 @@ function applyGlow(el){
 // ══════════════════════════════════════════════════
 // PROJECT NOT FOUND
 // ══════════════════════════════════════════════════
-if(!folder){
-  document.getElementById('page-content').innerHTML = `
-    <div class="not-found reveal visible">
-      <h2>Proyecto no encontrado</h2>
-      <p style="color:var(--cream2);margin-bottom:1.5rem">El proyecto que buscás no existe o fue eliminado.</p>
-      <a href="index.html#works">← Volver a carpetas</a>
-    </div>
-  `;
+function checkNotFound(){
+  if(!folder){
+    document.getElementById('page-content').innerHTML = `
+      <div class="not-found reveal visible">
+        <h2>Proyecto no encontrado</h2>
+        <p style="color:var(--cream2);margin-bottom:1.5rem">El proyecto que buscás no existe o fue eliminado.</p>
+        <a href="index.html#works">← Volver a carpetas</a>
+      </div>
+    `;
+  }
 }
 
 // ══════════════════════════════════════════════════
@@ -819,20 +869,30 @@ document.getElementById('auth-toggle').addEventListener('click',()=>{
   else{inp.type='password';btn.textContent='👁️';btn.setAttribute('aria-label','Mostrar contraseña');}
   inp.focus();
 });
-function doAuth(){
-  if(document.getElementById('auth-in').value===PASS){
-    isAdmin=true;
-    localStorage.setItem('pf4-admin','1');
-    document.getElementById('auth-in').value='';
-    document.getElementById('auth-err').textContent='';
-    document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
-    document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='block');
-    closeM('auth-m');
-    renderGallery();
-  } else {
-    document.getElementById('auth-err').textContent='Contraseña incorrecta.';
-    document.getElementById('auth-in').value='';
+async function doAuth(){
+  const ok=document.getElementById('auth-ok');
+  const entered=document.getElementById('auth-in').value;
+  ok.disabled=true;ok.textContent='Verificando…';
+  try{
+    const {data,error}=await sb.from('pf_admin').select('password').eq('id',1).maybeSingle();
+    const correct = data ? data.password : 'Lourdes01*47593641';
+    if(!error && entered===correct){
+      isAdmin=true;
+      localStorage.setItem('pf4-admin','1');
+      document.getElementById('auth-in').value='';
+      document.getElementById('auth-err').textContent='';
+      document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
+      document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='block');
+      closeM('auth-m');
+      renderGallery();
+    } else {
+      document.getElementById('auth-err').textContent='Contraseña incorrecta.';
+      document.getElementById('auth-in').value='';
+    }
+  }catch(err){
+    document.getElementById('auth-err').textContent='Error de conexión. Probá de nuevo.';
   }
+  ok.disabled=false;ok.textContent='Entrar';
 }
 function doLogout(){
   isAdmin=false;
@@ -888,7 +948,7 @@ function saveInlineEdit(){
   } else if(inlineTarget==='hero-name'){
     if(folder){
       folder.name=val;
-      localStorage.setItem('pf4-folders',JSON.stringify(folders));
+      persistFolders();
       renderName(val);
       document.title=val+' · Portfolio';
     }
@@ -899,26 +959,34 @@ function saveInlineEdit(){
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
-if(localStorage.getItem('pf4-admin')==='1'){
-  isAdmin=true;
-  document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
-}
-if(folder){
-  renderName(folder.name);
-  document.title=folder.name+' · Portfolio';
-  document.getElementById('proj-desc').childNodes[0].textContent=proj.desc;
-  document.getElementById('proj-about-text').innerHTML='<p>'+proj.about.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>'
-    +'<button class="inline-edit" onclick="openInlineEdit(\'proj-about-text\',\'Detalles del proyecto\',true)">✏️</button>';
-  renderTags();
-  renderGallery();
-}
-renderOtherProjects();
-if(cfg['footer-copy'])document.getElementById('footer-copy').textContent=cfg['footer-copy'];
-if(cfg.be)document.getElementById('m-be').href=cfg.be;
-if(cfg.ig)document.getElementById('m-ig').href=cfg.ig;
-if(cfg.li)document.getElementById('m-li').href=cfg.li;
-observeReveals();
-document.querySelectorAll('.inline-edit').forEach(el=>el.style.display=isAdmin?'block':'none');
+(async function init(){
+  if(localStorage.getItem('pf4-admin')==='1'){
+    isAdmin=true;
+    document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
+  }
+  await loadData();
+  initDither();
+  initAscii();
+  checkNotFound();
+  if(folder){
+    renderName(folder.name);
+    document.title=folder.name+' · Portfolio';
+    document.getElementById('proj-desc').childNodes[0].textContent=proj.desc;
+    document.getElementById('proj-about-text').innerHTML='<p>'+proj.about.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>'
+      +'<button class="inline-edit" onclick="openInlineEdit(\'proj-about-text\',\'Detalles del proyecto\',true)">✏️</button>';
+    renderTags();
+    renderGallery();
+  }
+  renderOtherProjects();
+  if(cfg['footer-copy'])document.getElementById('footer-copy').textContent=cfg['footer-copy'];
+  if(cfg.be)document.getElementById('m-be').href=cfg.be;
+  if(cfg.ig)document.getElementById('m-ig').href=cfg.ig;
+  if(cfg.li)document.getElementById('m-li').href=cfg.li;
+  observeReveals();
+  document.querySelectorAll('.inline-edit').forEach(el=>el.style.display=isAdmin?'block':'none');
+  const ov=document.getElementById('loading-overlay');
+  if(ov){ov.style.opacity='0';setTimeout(()=>ov.remove(),420);}
+})();
 </script>
 </body>
 </html>
