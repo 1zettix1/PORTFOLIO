@@ -169,6 +169,8 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 .btn-danger{background:#ef4444;border:none;color:#fff;padding:.55rem 1.1rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;cursor:pointer;transition:background .2s}
 .btn-danger:hover{background:#dc2626}
 .auth-err{font-size:.8rem;color:#f87171;margin-top:.5rem;min-height:1.1em}
+.pw-toggle{position:absolute;top:0;right:0;height:100%;width:2.6rem;background:transparent;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--cream3);transition:color .2s;line-height:1}
+.pw-toggle:hover{color:var(--cream)}
 .inline-edit{display:none;position:absolute;top:0;right:0;background:rgba(139,92,246,.15);border:none;border-radius:4px;color:var(--violet2);font-size:.7rem;padding:.2rem .5rem;cursor:pointer;z-index:10}
 .editable-block:hover .inline-edit{display:block}
 .editable-block{position:relative}
@@ -290,7 +292,10 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   <div class="mbox" style="max-width:360px">
     <h3 class="mtitle">Acceso admin</h3>
     <div class="fg"><label class="flbl">Contraseña</label>
-      <input class="finput" id="auth-in" type="password" placeholder="••••••••" autocomplete="current-password">
+      <div style="position:relative">
+        <input class="finput" id="auth-in" type="password" placeholder="••••••••" autocomplete="current-password" style="padding-right:2.6rem">
+        <button type="button" class="pw-toggle" id="auth-toggle" aria-label="Mostrar contraseña" tabindex="-1">👁️</button>
+      </div>
       <div class="auth-err" id="auth-err"></div>
     </div>
     <div class="btn-row">
@@ -309,6 +314,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
       <button class="btn-s" style="width:100%;padding:.85rem" onclick="closeM('edit-m');openInlineEdit('hero-name','Título del proyecto')">✏️ Título del proyecto</button>
       <button class="btn-s" style="width:100%;padding:.85rem;background:#3B82F6" onclick="closeM('edit-m');openAddImage()">🖼️ Agregar imagen a la galería</button>
       <button class="btn-s" style="width:100%;padding:.85rem;background:var(--orange)" onclick="closeM('edit-m');openInlineEdit('proj-tags-edit','Etiquetas (separadas por coma)')">🏷️ Etiquetas</button>
+      <button class="btn-s" style="width:100%;padding:.85rem;background:#10B981" onclick="closeM('edit-m');openBgModal()">🎨 Color de fondo</button>
       <button class="btn-c" style="width:100%;padding:.85rem" onclick="doLogout()">🔒 Cerrar sesión</button>
     </div>
   </div>
@@ -323,6 +329,25 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
     <div class="btn-row">
       <button class="btn-c" onclick="closeM('add-image-m')">Cancelar</button>
       <button class="btn-s" onclick="saveImage()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- BACKGROUND COLOR MODAL -->
+<div class="moverlay" id="bg-m">
+  <div class="mbox" style="max-width:400px">
+    <button class="mclose" onclick="closeM('bg-m')">✕</button>
+    <h3 class="mtitle">Color de fondo del proyecto</h3>
+    <div class="fg"><label class="flbl">Color</label>
+      <div style="display:flex;gap:.6rem;align-items:center">
+        <input type="color" id="bg-color-in" value="#8B5CF6" style="width:48px;height:42px;padding:2px;border-radius:3px;border:.5px solid var(--border2);background:var(--bg3);cursor:pointer">
+        <span style="font-size:.85rem;color:var(--cream2)">Define el tono del fondo animado de esta página.</span>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('bg-m')">Cancelar</button>
+      <button class="btn-c" onclick="resetBgColor()">Restablecer</button>
+      <button class="btn-s" onclick="saveBgColor()">Guardar</button>
     </div>
   </div>
 </div>
@@ -375,7 +400,8 @@ let proj = JSON.parse(localStorage.getItem(PKEY) || 'null') || {
   desc:'Descripción del proyecto. Contá de qué se trata, qué herramientas usaste y cualquier detalle relevante.',
   about:'Agregá aquí más información sobre el proceso creativo, herramientas utilizadas, tiempos de producción o cualquier dato que quieras compartir sobre este proyecto.',
   tags:'',
-  images:[]
+  images:[],
+  bgColor:''
 };
 function persistProj(){ localStorage.setItem(PKEY, JSON.stringify(proj)); }
 
@@ -390,7 +416,7 @@ function persistProj(){ localStorage.setItem(PKEY, JSON.stringify(proj)); }
   resize(); window.addEventListener('resize',resize);
   const VS=`attribute vec2 p;void main(){gl_Position=vec4(p,0,1);}`;
   const FS=`precision highp float;
-uniform vec2 R;uniform float T;uniform vec2 M;
+uniform vec2 R;uniform float T;uniform vec2 M;uniform vec3 WC;
 vec4 m9(vec4 x){return x-floor(x*(1./289.))*289.;}
 vec4 pm(vec4 x){return m9(((x*34.)+1.)*x);}
 vec4 ti(vec4 r){return 1.79284291400159-0.85373472095314*r;}
@@ -457,7 +483,7 @@ void main(){
   vec2 mn=(M/R-.5)*vec2(1.,-1.);mn.x*=R.x/R.y;
   float d=length(p-mn),f=pat(p);
   f-=0.5*(1.-smoothstep(0.,.4,d));
-  vec3 wc=vec3(0.545,0.361,0.965);
+  vec3 wc=WC;
   vec3 col=mix(vec3(0.04,0.03,0.07),wc,clamp(f,0.,1.));
   float cn2=6.6,ps=2.;
   col+=bayer(floor(gl_FragCoord.xy/ps))/(cn2-1.);
@@ -477,13 +503,21 @@ void main(){
   const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
   gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const al=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
-  const uR=gl.getUniformLocation(prog,'R'),uT=gl.getUniformLocation(prog,'T'),uM=gl.getUniformLocation(prog,'M');
+  const uR=gl.getUniformLocation(prog,'R'),uT=gl.getUniformLocation(prog,'T'),uM=gl.getUniformLocation(prog,'M'),uWC=gl.getUniformLocation(prog,'WC');
+  function hexToRgb01(hex){
+    if(!hex)return [0.545,0.361,0.965];
+    let c=hex.startsWith('#')?hex.slice(1):hex;
+    if(c.length===3)c=c.split('').map(x=>x+x).join('');
+    const num=parseInt(c,16);
+    return [((num>>16)&255)/255, ((num>>8)&255)/255, (num&255)/255];
+  }
+  const WC=hexToRgb01(proj.bgColor);
   let mx=0,my=0;
   window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
   const t0=performance.now();
   (function loop(){
     const t=(performance.now()-t0)/1000;
-    gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,cv.height-my);
+    gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,cv.height-my);gl.uniform3f(uWC,WC[0],WC[1],WC[2]);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(loop);
   })();
 })();
@@ -691,6 +725,25 @@ function deleteImage(i){
 }
 
 // ══════════════════════════════════════════════════
+// BACKGROUND COLOR
+// ══════════════════════════════════════════════════
+function openBgModal(){
+  if(!isAdmin)return;
+  document.getElementById('bg-color-in').value=proj.bgColor||'#8B5CF6';
+  openM('bg-m');
+}
+function saveBgColor(){
+  proj.bgColor=document.getElementById('bg-color-in').value;
+  persistProj();closeM('bg-m');
+  location.reload();
+}
+function resetBgColor(){
+  proj.bgColor='';
+  persistProj();closeM('bg-m');
+  location.reload();
+}
+
+// ══════════════════════════════════════════════════
 // LIGHTBOX
 // ══════════════════════════════════════════════════
 function openLightbox(src){
@@ -759,9 +812,17 @@ document.getElementById('admin-fab').addEventListener('click',()=>{
 });
 document.getElementById('auth-ok').addEventListener('click',doAuth);
 document.getElementById('auth-in').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth();});
+document.getElementById('auth-toggle').addEventListener('click',()=>{
+  const inp=document.getElementById('auth-in');
+  const btn=document.getElementById('auth-toggle');
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.setAttribute('aria-label','Ocultar contraseña');}
+  else{inp.type='password';btn.textContent='👁️';btn.setAttribute('aria-label','Mostrar contraseña');}
+  inp.focus();
+});
 function doAuth(){
   if(document.getElementById('auth-in').value===PASS){
     isAdmin=true;
+    localStorage.setItem('pf4-admin','1');
     document.getElementById('auth-in').value='';
     document.getElementById('auth-err').textContent='';
     document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
@@ -775,6 +836,7 @@ function doAuth(){
 }
 function doLogout(){
   isAdmin=false;
+  localStorage.removeItem('pf4-admin');
   document.getElementById('admin-fab').textContent='⚙ Editar';
   document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='');
   closeM('edit-m');renderGallery();
@@ -837,6 +899,10 @@ function saveInlineEdit(){
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
+if(localStorage.getItem('pf4-admin')==='1'){
+  isAdmin=true;
+  document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
+}
 if(folder){
   renderName(folder.name);
   document.title=folder.name+' · Portfolio';
@@ -852,7 +918,7 @@ if(cfg.be)document.getElementById('m-be').href=cfg.be;
 if(cfg.ig)document.getElementById('m-ig').href=cfg.ig;
 if(cfg.li)document.getElementById('m-li').href=cfg.li;
 observeReveals();
-document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='none');
+document.querySelectorAll('.inline-edit').forEach(el=>el.style.display=isAdmin?'block':'none');
 </script>
 </body>
 </html>
