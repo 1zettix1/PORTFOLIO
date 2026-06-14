@@ -237,6 +237,13 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 
 <canvas id="dither-canvas"></canvas>
 
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay" style="position:fixed;inset:0;z-index:500;background:#0D0D0D;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity .4s">
+  <div style="width:36px;height:36px;border:3px solid rgba(240,235,224,.15);border-top-color:#8B5CF6;border-radius:50%;animation:spin .8s linear infinite"></div>
+  <p style="font-family:'Inter',sans-serif;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:#B8B3A8">Cargando…</p>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
 <!-- STAGGERED MENU -->
 <div class="sm-wrapper" id="smw">
   <header class="sm-header">
@@ -541,11 +548,18 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
+// ══════════════════════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════════════════════
+const SUPABASE_URL = 'https://pxongmsjumipaaouetdi.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_LrnKJaAvYkLptp3qMcFoQg_mmn3kqEv';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // ══════════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════════
-const PASS = 'Lourdes01*47593641';
 let isAdmin = false;
 
 const DEF_CFG = {
@@ -563,8 +577,8 @@ const DEF_CFG = {
   'footer-copy':'© 2025 Portfolio · Todos los derechos reservados'
 };
 
-let cfg     = Object.assign({}, DEF_CFG, JSON.parse(localStorage.getItem('pf4-cfg')    || '{}'));
-let folders = JSON.parse(localStorage.getItem('pf4-folders') || 'null') || [
+let cfg     = Object.assign({}, DEF_CFG);
+let folders = [
   {id:1, name:'Una Noche en Marte',  color:'#8B5CF6'},
   {id:2, name:'Vostok',             color:'#3B82F6'},
   {id:3, name:'Expedition_to_Mars', color:'#F97316'},
@@ -573,16 +587,52 @@ let folders = JSON.parse(localStorage.getItem('pf4-folders') || 'null') || [
   {id:6, name:'Enchanted Chaos',    color:'#EC4899'},
   {id:7, name:'The Unknown Shards', color:'#A78BFA'},
 ];
-let previews = JSON.parse(localStorage.getItem('pf4-previews') || 'null') || [
+let previews = [
   {id:1, title:'Trabajo destacado 1', cat:'Personaje 2D', img:'', link:''},
   {id:2, title:'Trabajo destacado 2', cat:'Animación',    img:'', link:''},
   {id:3, title:'Trabajo destacado 3', cat:'Diseño',       img:'', link:''},
 ];
 
-function persist() {
-  localStorage.setItem('pf4-cfg',      JSON.stringify(cfg));
-  localStorage.setItem('pf4-folders',  JSON.stringify(folders));
-  localStorage.setItem('pf4-previews', JSON.stringify(previews));
+// ══════════════════════════════════════════════════
+// LOAD / SAVE (Supabase)
+// ══════════════════════════════════════════════════
+async function loadData(){
+  try{
+    const [cfgRes, foldersRes, previewsRes] = await Promise.all([
+      sb.from('pf_config').select('data').eq('id',1).maybeSingle(),
+      sb.from('pf_folders').select('*').order('id',{ascending:true}),
+      sb.from('pf_previews').select('*').order('sort_order',{ascending:true})
+    ]);
+    if(cfgRes.data && cfgRes.data.data) cfg = Object.assign({}, DEF_CFG, cfgRes.data.data);
+    if(foldersRes.data && foldersRes.data.length) folders = foldersRes.data.map(f=>({id:f.id,name:f.name,color:f.color}));
+    if(previewsRes.data && previewsRes.data.length) previews = previewsRes.data.map(p=>({id:p.id,title:p.title,cat:p.cat,img:p.img,link:p.link}));
+  }catch(err){
+    console.error('Error cargando datos de Supabase:',err);
+  }
+}
+
+async function persist() {
+  try{
+    await sb.from('pf_config').upsert({id:1, data:cfg});
+    // folders: replace-all sync
+    const folderIds = folders.map(f=>f.id);
+    await sb.from('pf_folders').upsert(folders.map(f=>({id:f.id,name:f.name,color:f.color})));
+    const {data:existingFolders} = await sb.from('pf_folders').select('id');
+    if(existingFolders){
+      const toDelete = existingFolders.filter(r=>!folderIds.includes(r.id)).map(r=>r.id);
+      if(toDelete.length) await sb.from('pf_folders').delete().in('id',toDelete);
+    }
+    // previews: replace-all sync
+    const previewIds = previews.map(p=>p.id);
+    await sb.from('pf_previews').upsert(previews.map((p,i)=>({id:p.id,title:p.title,cat:p.cat,img:p.img,link:p.link,sort_order:i})));
+    const {data:existingPreviews} = await sb.from('pf_previews').select('id');
+    if(existingPreviews){
+      const toDelete = existingPreviews.filter(r=>!previewIds.includes(r.id)).map(r=>r.id);
+      if(toDelete.length) await sb.from('pf_previews').delete().in('id',toDelete);
+    }
+  }catch(err){
+    console.error('Error guardando datos en Supabase:',err);
+  }
 }
 
 // ══════════════════════════════════════════════════
@@ -1015,22 +1065,34 @@ document.getElementById('auth-toggle').addEventListener('click',()=>{
   else{inp.type='password';btn.textContent='👁️';btn.setAttribute('aria-label','Mostrar contraseña');}
   inp.focus();
 });
-function doAuth(){
-  if(document.getElementById('auth-in').value===PASS){
-    isAdmin=true;
-    document.getElementById('auth-in').value='';
-    document.getElementById('auth-err').textContent='';
-    document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
-    document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='block');
-    closeM('auth-m');
-    renderPreviews();renderFolders();
-  } else {
-    document.getElementById('auth-err').textContent='Contraseña incorrecta.';
-    document.getElementById('auth-in').value='';
+async function doAuth(){
+  const ok=document.getElementById('auth-ok');
+  const entered=document.getElementById('auth-in').value;
+  ok.disabled=true;ok.textContent='Verificando…';
+  try{
+    const {data,error}=await sb.from('pf_admin').select('password').eq('id',1).maybeSingle();
+    const correct = data ? data.password : 'Lourdes01*47593641';
+    if(!error && entered===correct){
+      isAdmin=true;
+      localStorage.setItem('pf4-admin','1');
+      document.getElementById('auth-in').value='';
+      document.getElementById('auth-err').textContent='';
+      document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
+      document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='block');
+      closeM('auth-m');
+      renderPreviews();renderFolders();
+    } else {
+      document.getElementById('auth-err').textContent='Contraseña incorrecta.';
+      document.getElementById('auth-in').value='';
+    }
+  }catch(err){
+    document.getElementById('auth-err').textContent='Error de conexión. Probá de nuevo.';
   }
+  ok.disabled=false;ok.textContent='Entrar';
 }
 function doLogout(){
   isAdmin=false;
+  localStorage.removeItem('pf4-admin');
   document.getElementById('admin-fab').textContent='⚙ Editar';
   document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='');
   closeM('edit-m');renderPreviews();renderFolders();
@@ -1249,13 +1311,23 @@ function applyConfig(){
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
-applyConfig();
-renderName(cfg.name||'Tu Nombre');
-renderPreviews();
-renderFolders();
-observeReveals();
-// hide inline edit buttons for non-admin on load
-document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='none');
+(async function init(){
+  if(localStorage.getItem('pf4-admin')==='1'){
+    isAdmin=true;
+    document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
+  }
+  await loadData();
+  applyConfig();
+  renderName(cfg.name||'Tu Nombre');
+  renderPreviews();
+  renderFolders();
+  observeReveals();
+  // hide inline edit buttons for non-admin on load
+  document.querySelectorAll('.inline-edit').forEach(el=>el.style.display=isAdmin?'block':'none');
+  const ov=document.getElementById('loading-overlay');
+  ov.style.opacity='0';
+  setTimeout(()=>ov.remove(),420);
+})();
 </script>
 </body>
 </html>
