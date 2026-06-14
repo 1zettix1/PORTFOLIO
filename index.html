@@ -84,12 +84,8 @@ section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;
 /* ── PREVIEW CAROUSEL (flat, centered active) ── */
 .carousel-wrap{position:relative;padding:1rem 0 2rem}
 .carousel-viewport{overflow:hidden;width:100%;position:relative}
-/* fade edges */
-.carousel-viewport::before,.carousel-viewport::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
-.carousel-viewport::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
-.carousel-viewport::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
-.carousel-track{display:flex;align-items:center;gap:1.5rem;transition:transform .6s cubic-bezier(.25,.46,.45,.94);will-change:transform;padding:2rem 0}
-.preview-card{flex-shrink:0;width:280px;height:400px;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;background:var(--bg2);border:1px solid var(--border2);transition:transform .5s cubic-bezier(.25,.46,.45,.94),filter .5s,box-shadow .5s;filter:brightness(.45) scale(1);transform:scale(.88)}
+.carousel-track{display:flex;align-items:center;gap:2rem;transition:transform .6s cubic-bezier(.25,.46,.45,.94);will-change:transform;padding:2rem 0}
+.preview-card{flex-shrink:0;width:480px;height:680px;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;background:var(--bg2);border:1px solid var(--border2);transition:transform .5s cubic-bezier(.25,.46,.45,.94),filter .5s,box-shadow .5s;filter:brightness(.45) scale(1);transform:scale(.88)}
 .preview-card.is-active{transform:scale(1);filter:brightness(1);box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.1)}
 .preview-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .preview-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;opacity:.18}
@@ -113,8 +109,7 @@ section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;
 .car-arrow:hover{background:var(--violet);border-color:var(--violet);color:#fff;transform:scale(1.08)}
 .car-arrow:active{transform:scale(.95)}
 @media(max-width:768px){
-  .preview-card{width:220px;height:320px}
-  .carousel-viewport::before,.carousel-viewport::after{width:60px}
+  .preview-card{width:300px;height:420px}
 }
 
 /* ── FOLDERS ── */
@@ -836,8 +831,8 @@ document.querySelectorAll('.clink.bgc').forEach(applyGlow);
 // RENDER PREVIEWS — flat centered carousel
 // ══════════════════════════════════════════════════
 let carIndex = 0;
-const CARD_W  = 280;  // must match CSS width
-const CARD_GAP = 24;  // 1.5rem gap
+const CARD_W  = 480;  // must match CSS width
+const CARD_GAP = 32;  // 2rem gap
 
 function renderPreviews() {
   const track = document.getElementById('preview-grid');
@@ -880,6 +875,7 @@ function renderPreviews() {
   });
 
   positionCarousel();
+  requestAnimationFrame(positionCarousel);
   observeReveals();
 }
 
@@ -894,11 +890,18 @@ function positionCarousel() {
   if (carIndex >= n) carIndex = 0;
   if (carIndex < 0)  carIndex = n - 1;
 
-  // center the active card inside the viewport
-  const vpW       = viewport.offsetWidth || window.innerWidth;
-  const totalCard = CARD_W + CARD_GAP;
+  // center the active card inside the viewport using real measurements
+  const vpW = viewport.offsetWidth || window.innerWidth;
+  const gap = parseFloat(getComputedStyle(track).gap) || CARD_GAP;
+  const activeW = cards[carIndex].offsetWidth || CARD_W;
+
+  // sum of widths+gaps of all cards before the active one
+  let before = 0;
+  for (let i = 0; i < carIndex; i++) {
+    before += (cards[i].offsetWidth || CARD_W) + gap;
+  }
   // offset so active card centre aligns with viewport centre
-  const offset    = (vpW / 2) - (carIndex * totalCard) - (CARD_W / 2);
+  const offset = (vpW / 2) - before - (activeW / 2);
   track.style.transform = `translateX(${offset}px)`;
 
   cards.forEach((card, i) => {
@@ -923,6 +926,10 @@ document.getElementById('car-next').addEventListener('click', () => {
 
 // recalculate on resize
 window.addEventListener('resize', () => positionCarousel());
+if (window.ResizeObserver) {
+  const carViewport = document.querySelector('.carousel-viewport');
+  if (carViewport) new ResizeObserver(() => positionCarousel()).observe(carViewport);
+}
 
 // touch/swipe support
 (function(){
@@ -1206,10 +1213,17 @@ function applyConfig(){
     if(href)el.href=href;
     const v=document.getElementById(valId);if(v&&val)v.textContent=val;
   }
+  function normUrl(u){
+    u=(u||'').trim();
+    if(!u)return u;
+    if(/^https?:\/\//i.test(u))return u;
+    if(/^mailto:/i.test(u))return u;
+    return 'https://'+u.replace(/^\/+/,'');
+  }
   if(c.email)setLink('c-email','mailto:'+c.email,'cv-email',c.email);
-  if(c.be){setLink('c-be',c.be,'cv-be',c.be.replace(/https?:\/\//,''));document.getElementById('m-be').href=c.be;}
-  if(c.ig){const u='@'+(c.ig.split('/').pop()||'usuario');setLink('c-ig',c.ig,'cv-ig',u);document.getElementById('m-ig').href=c.ig;}
-  if(c.li){setLink('c-li',c.li,'cv-li',c.li.replace(/https?:\/\//,''));document.getElementById('m-li').href=c.li;}
+  if(c.be){const url=normUrl(c.be);setLink('c-be',url,'cv-be',c.be.replace(/^https?:\/\//,''));document.getElementById('c-be').target='_blank';document.getElementById('c-be').rel='noopener';document.getElementById('m-be').href=url;document.getElementById('m-be').target='_blank';}
+  if(c.ig){const url=normUrl(c.ig);const u='@'+(c.ig.split('/').filter(Boolean).pop()||'usuario');setLink('c-ig',url,'cv-ig',u);document.getElementById('c-ig').target='_blank';document.getElementById('c-ig').rel='noopener';document.getElementById('m-ig').href=url;document.getElementById('m-ig').target='_blank';}
+  if(c.li){const url=normUrl(c.li);setLink('c-li',url,'cv-li',c.li.replace(/^https?:\/\//,''));document.getElementById('c-li').target='_blank';document.getElementById('c-li').rel='noopener';document.getElementById('m-li').href=url;document.getElementById('m-li').target='_blank';}
 }
 
 // ══════════════════════════════════════════════════
