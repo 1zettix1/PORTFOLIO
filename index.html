@@ -217,6 +217,8 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 .btn-danger{background:#ef4444;border:none;color:#fff;padding:.55rem 1.1rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;cursor:pointer;transition:background .2s}
 .btn-danger:hover{background:#dc2626}
 .auth-err{font-size:.8rem;color:#f87171;margin-top:.5rem;min-height:1.1em}
+.pw-toggle{position:absolute;top:0;right:0;height:100%;width:2.6rem;background:transparent;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--cream3);transition:color .2s;line-height:1}
+.pw-toggle:hover{color:var(--cream)}
 .inline-edit{display:none;position:absolute;top:0;right:0;background:rgba(139,92,246,.15);border:none;border-radius:4px;color:var(--violet2);font-size:.7rem;padding:.2rem .5rem;cursor:pointer;z-index:10}
 .editable-block:hover .inline-edit{display:block}
 .editable-block{position:relative}
@@ -388,7 +390,10 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   <div class="mbox" style="max-width:360px">
     <h3 class="mtitle">Acceso admin</h3>
     <div class="fg"><label class="flbl">Contraseña</label>
-      <input class="finput" id="auth-in" type="password" placeholder="••••••••" autocomplete="current-password">
+      <div style="position:relative">
+        <input class="finput" id="auth-in" type="password" placeholder="••••••••" autocomplete="current-password" style="padding-right:2.6rem">
+        <button type="button" class="pw-toggle" id="auth-toggle" aria-label="Mostrar contraseña" tabindex="-1">👁️</button>
+      </div>
       <div class="auth-err" id="auth-err"></div>
     </div>
     <div class="btn-row">
@@ -482,16 +487,20 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
     <h3 class="mtitle" id="folder-m-title">Nueva carpeta</h3>
     <div class="fg"><label class="flbl">Nombre</label><input class="finput" id="f-name" type="text" placeholder="Nombre del proyecto"></div>
     <div class="fg"><label class="flbl">Color</label>
-      <select class="fsel" id="f-color">
-        <option value="#8B5CF6">Violeta</option>
-        <option value="#A78BFA">Lavanda</option>
-        <option value="#3B82F6">Azul</option>
-        <option value="#F97316">Naranja</option>
-        <option value="#10B981">Verde</option>
-        <option value="#EC4899">Rosa</option>
-        <option value="#F59E0B">Amarillo</option>
-        <option value="#EF4444">Rojo</option>
-      </select>
+      <div style="display:flex;gap:.6rem;align-items:center">
+        <select class="fsel" id="f-color-preset" style="flex:1" onchange="document.getElementById('f-color').value=this.value">
+          <option value="#8B5CF6">Violeta</option>
+          <option value="#A78BFA">Lavanda</option>
+          <option value="#3B82F6">Azul</option>
+          <option value="#F97316">Naranja</option>
+          <option value="#10B981">Verde</option>
+          <option value="#EC4899">Rosa</option>
+          <option value="#F59E0B">Amarillo</option>
+          <option value="#EF4444">Rojo</option>
+          <option value="">Personalizado…</option>
+        </select>
+        <input type="color" id="f-color" value="#8B5CF6" style="width:48px;height:42px;padding:2px;border-radius:3px;border:.5px solid var(--border2);background:var(--bg3);cursor:pointer">
+      </div>
     </div>
     <div class="btn-row" id="folder-btn-row">
       <button class="btn-c" onclick="closeM('folder-m')">Cancelar</button>
@@ -999,6 +1008,13 @@ document.getElementById('admin-fab').addEventListener('click',()=>{
 
 document.getElementById('auth-ok').addEventListener('click',doAuth);
 document.getElementById('auth-in').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth();});
+document.getElementById('auth-toggle').addEventListener('click',()=>{
+  const inp=document.getElementById('auth-in');
+  const btn=document.getElementById('auth-toggle');
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.setAttribute('aria-label','Ocultar contraseña');}
+  else{inp.type='password';btn.textContent='👁️';btn.setAttribute('aria-label','Mostrar contraseña');}
+  inp.focus();
+});
 function doAuth(){
   if(document.getElementById('auth-in').value===PASS){
     isAdmin=true;
@@ -1151,7 +1167,11 @@ function openFolderModal(id){
   const f=id?folders.find(x=>x.id===id):null;
   document.getElementById('folder-m-title').textContent=id?'Editar carpeta':'Nueva carpeta';
   document.getElementById('f-name').value=f?f.name:'';
-  document.getElementById('f-color').value=f?f.color:'#8B5CF6';
+  const color=f?f.color:'#8B5CF6';
+  document.getElementById('f-color').value=color;
+  const preset=document.getElementById('f-color-preset');
+  const presetOpts=Array.from(preset.options).map(o=>o.value.toLowerCase());
+  preset.value=presetOpts.includes(color.toLowerCase())?color:'';
   // add delete btn if editing
   const br=document.getElementById('folder-btn-row');
   const old=br.querySelector('.btn-danger');if(old)old.remove();
