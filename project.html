@@ -899,15 +899,26 @@ function openAddLinkModal(idx) {
   document.getElementById('lk-url').value = '';
   openM('add-link-m');
 }
-function saveLinkItem() {
+async function saveLinkItem() {
   const title = document.getElementById('lk-title').value.trim();
   const url   = document.getElementById('lk-url').value.trim();
-  if (!title || !url) return;
+  if (!title || !url) {
+    alert('Completá el título y la URL antes de guardar.');
+    return;
+  }
+  if (editingBlockIdx === null || editingBlockIdx === undefined) {
+    alert('Error: no hay bloque seleccionado. Cerrá y volvé a abrir el modal.');
+    return;
+  }
   if (!proj.blocks[editingBlockIdx].items) proj.blocks[editingBlockIdx].items = [];
   proj.blocks[editingBlockIdx].items.push({
-    title, label: document.getElementById('lk-label').value, url
+    title,
+    label: document.getElementById('lk-label').value.trim(),
+    url
   });
-  persistProj(); renderBlocks(); closeM('add-link-m');
+  closeM('add-link-m');
+  await persistProj();
+  renderBlocks();
 }
 function deleteLinkItem(blockIdx, itemIdx) {
   if (!confirm('¿Eliminar este link?')) return;
@@ -1030,6 +1041,16 @@ async function doAuth() {
   }
   await loadData();
   if (proj.bgColor && window._ditherSetColor) window._ditherSetColor(proj.bgColor); // ← NUEVO
+if (globalCfg.favicon) {
+  let faviconEl = document.getElementById('favicon-link');
+  if (!faviconEl) {
+    faviconEl = document.createElement('link');
+    faviconEl.rel = 'icon';
+    faviconEl.id = 'favicon-link';
+    document.head.appendChild(faviconEl);
+  }
+  faviconEl.href = globalCfg.favicon;
+}
 
   if (!folder) {
     document.querySelector('.page').innerHTML = `<div class="not-found reveal visible"><h2>Proyecto no encontrado</h2><p style="color:var(--cream2);margin-bottom:1.5rem">El proyecto que buscás no existe o fue eliminado.</p><a href="index.html#works">← Volver a carpetas</a></div>`;
