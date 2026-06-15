@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="page-title">Portfolio</title>
+<link rel="icon" id="favicon-link" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -163,12 +164,23 @@ section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;
 .stat-num{font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:700;color:var(--cream);letter-spacing:-.03em;line-height:1;margin-bottom:.35rem}
 .stat-num span{color:var(--violet)}
 .stat-lbl{font-size:.75rem;color:var(--cream3);letter-spacing:.06em;text-transform:uppercase}
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border);margin-top:2rem}
-.skill-item{background:var(--bg2);padding:1.5rem;transition:background .2s}
+/* ── TOOLS CAROUSEL ── */
+.skills-carousel{position:relative;margin-top:2rem;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);cursor:grab}
+.skills-carousel.dragging{cursor:grabbing}
+.skills-track{display:flex;width:max-content;will-change:transform}
+.skills-track.anim{animation:skills-scroll linear infinite}
+.skills-carousel:hover .skills-track.anim,.skills-carousel.dragging .skills-track.anim{animation-play-state:paused}
+@keyframes skills-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.skill-item{position:relative;flex-shrink:0;width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:0;display:flex;flex-direction:column;transition:background .2s;user-select:none}
 .skill-item:hover{background:var(--bg3)}
-.sk-icon{font-size:1.4rem;margin-bottom:.75rem;display:block}
+.sk-media{width:100%;height:140px;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sk-media img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.sk-icon{font-size:2.4rem;display:block}
+.sk-body{padding:1.25rem}
 .sk-name{font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:500;color:var(--cream);margin-bottom:.2rem}
 .sk-sub{font-size:.74rem;color:var(--cream3)}
+.sk-edit{position:absolute;top:.5rem;right:.5rem;background:rgba(0,0,0,.65);border:none;border-radius:4px;color:#fff;font-size:.7rem;padding:.3rem .5rem;cursor:pointer;opacity:0;transition:opacity .2s;z-index:5}
+.skill-item:hover .sk-edit{opacity:1}
 
 /* ── CONTACT ── */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
@@ -351,14 +363,10 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
     </div>
   </div>
   <p class="sec-label reveal" style="margin-top:3rem;margin-bottom:1rem" id="skills-label">Herramientas</p>
-  <div class="skills-grid" id="skills-grid">
-    <div class="skill-item reveal delay-1"><span class="sk-icon">✏️</span><div class="sk-name">Ilustración 2D</div><div class="sk-sub">Personajes, concept art</div></div>
-    <div class="skill-item reveal delay-2"><span class="sk-icon">🎬</span><div class="sk-name">Animación</div><div class="sk-sub">Frame a frame, rigging</div></div>
-    <div class="skill-item reveal delay-3"><span class="sk-icon">🎮</span><div class="sk-name">Videojuegos</div><div class="sk-sub">Assets, sprites, UI</div></div>
-    <div class="skill-item reveal delay-4"><span class="sk-icon">🎨</span><div class="sk-name">Diseño gráfico</div><div class="sk-sub">Branding, editorial</div></div>
-    <div class="skill-item reveal delay-5"><span class="sk-icon">📦</span><div class="sk-name">Modelado 3D</div><div class="sk-sub">Blender, estilizado</div></div>
-    <div class="skill-item reveal delay-6"><span class="sk-icon">🎞️</span><div class="sk-name">Video</div><div class="sk-sub">After Effects, Premiere</div></div>
+  <div class="skills-carousel reveal" id="skills-carousel">
+    <div class="skills-track" id="skills-track"></div>
   </div>
+  <button class="btn-s admin-only" id="skills-add-btn" style="margin-top:1rem;display:none" onclick="openAddSkill(null)">+ Agregar herramienta</button>
 </section>
 
 <!-- CONTACT -->
@@ -419,6 +427,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
       <button class="btn-s" style="width:100%;padding:.85rem" onclick="openSettings()">👤 Datos personales y contacto</button>
       <button class="btn-s" style="width:100%;padding:.85rem;background:#3B82F6" onclick="openPreviewManager()">🖼️ Trabajos destacados</button>
       <button class="btn-s" style="width:100%;padding:.85rem;background:var(--orange)" onclick="openFolderModal(null)">📁 Nueva carpeta</button>
+      <button class="btn-s" style="width:100%;padding:.85rem;background:#10B981" onclick="closeM('edit-m');openFaviconModal()">🔖 Ícono de la pestaña</button>
       <button class="btn-c" style="width:100%;padding:.85rem" onclick="doLogout()">🔒 Cerrar sesión</button>
     </div>
   </div>
@@ -483,6 +492,36 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
     <div class="btn-row">
       <button class="btn-c" onclick="closeM('add-preview-m')">Cancelar</button>
       <button class="btn-s" onclick="savePreview()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT SKILL MODAL -->
+<div class="moverlay" id="add-skill-m">
+  <div class="mbox" style="max-width:440px">
+    <button class="mclose" onclick="closeM('add-skill-m')">✕</button>
+    <h3 class="mtitle" id="add-skill-title">Agregar herramienta</h3>
+    <div class="fg"><label class="flbl">Título</label><input class="finput" id="sk-title-in" type="text" placeholder="Ilustración 2D"></div>
+    <div class="fg"><label class="flbl">Pie de imagen / descripción</label><input class="finput" id="sk-sub-in" type="text" placeholder="Personajes, concept art"></div>
+    <div class="fg"><label class="flbl">URL de imagen (opcional)</label><input class="finput" id="sk-img-in" type="text" placeholder="https://..."></div>
+    <div class="fg"><label class="flbl">Emoji / ícono (si no hay imagen)</label><input class="finput" id="sk-emoji-in" type="text" placeholder="✏️" maxlength="4"></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('add-skill-m')">Cancelar</button>
+      <button class="btn-danger" id="sk-delete-btn" style="display:none" onclick="deleteSkill()">Eliminar</button>
+      <button class="btn-s" onclick="saveSkill()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAVICON MODAL -->
+<div class="moverlay" id="favicon-m">
+  <div class="mbox" style="max-width:400px">
+    <button class="mclose" onclick="closeM('favicon-m')">✕</button>
+    <h3 class="mtitle">Ícono de la pestaña (favicon)</h3>
+    <div class="fg"><label class="flbl">URL de la imagen</label><input class="finput" id="favicon-in" type="text" placeholder="https://..."></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('favicon-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveFavicon()">Guardar</button>
     </div>
   </div>
 </div>
@@ -574,7 +613,16 @@ const DEF_CFG = {
   'about-title':'Acerca de mí', 'contact-title':'Contacto',
   'contact-big':'¿Tenés un proyecto en mente?',
   'contact-sub':'Siempre estoy abierta a nuevas colaboraciones y oportunidades creativas.',
-  'footer-copy':'© 2025 Portfolio · Todos los derechos reservados'
+  'footer-copy':'© 2025 Portfolio · Todos los derechos reservados',
+  favicon:'',
+  skills:[
+    {id:1, emoji:'✏️', img:'', title:'Ilustración 2D', sub:'Personajes, concept art'},
+    {id:2, emoji:'🎬', img:'', title:'Animación',      sub:'Frame a frame, rigging'},
+    {id:3, emoji:'🎮', img:'', title:'Videojuegos',    sub:'Assets, sprites, UI'},
+    {id:4, emoji:'🎨', img:'', title:'Diseño gráfico', sub:'Branding, editorial'},
+    {id:5, emoji:'📦', img:'', title:'Modelado 3D',    sub:'Blender, estilizado'},
+    {id:6, emoji:'🎞️', img:'', title:'Video',          sub:'After Effects, Premiere'},
+  ]
 };
 
 let cfg     = Object.assign({}, DEF_CFG);
@@ -1047,6 +1095,134 @@ function renderFolders(){
 }
 
 // ══════════════════════════════════════════════════
+// SKILLS / TOOLS CAROUSEL
+// ══════════════════════════════════════════════════
+let skillsDragState=null;
+function renderSkills(){
+  const track=document.getElementById('skills-track');
+  const carousel=document.getElementById('skills-carousel');
+  const skills=cfg.skills&&cfg.skills.length?cfg.skills:DEF_CFG.skills;
+
+  function cardHTML(s){
+    const media = s.img
+      ? `<img src="${s.img}" alt="${s.title}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\'sk-icon\\'>${s.emoji||'🛠️'}</span>'">`
+      : `<span class="sk-icon">${s.emoji||'🛠️'}</span>`;
+    return `
+      <div class="skill-item" data-id="${s.id}">
+        ${isAdmin?`<button class="sk-edit" onclick="event.stopPropagation();openAddSkill(${s.id})">✏️</button>`:''}
+        <div class="sk-media">${media}</div>
+        <div class="sk-body">
+          <div class="sk-name">${s.title}</div>
+          <div class="sk-sub">${s.sub||''}</div>
+        </div>
+      </div>`;
+  }
+
+  // duplicate the list so the marquee can loop seamlessly
+  track.innerHTML = skills.map(cardHTML).join('') + skills.map(cardHTML).join('');
+
+  // restart animation
+  track.classList.remove('anim');
+  track.style.transform='';
+  void track.offsetWidth; // reflow
+  const durSec = Math.max(skills.length*6, 18);
+  track.style.animationDuration = durSec+'s';
+  track.classList.add('anim');
+
+  // admin add button visibility
+  document.getElementById('skills-add-btn').style.display = isAdmin?'inline-flex':'none';
+
+  // drag-to-scroll (pauses the auto animation while dragging)
+  if(skillsDragState && skillsDragState.cleanup) skillsDragState.cleanup();
+  let isDown=false, startX=0, currentOffset=0;
+  function onDown(e){
+    isDown=true;carousel.classList.add('dragging');
+    startX=(e.touches?e.touches[0].clientX:e.clientX);
+    track.style.animationPlayState='paused';
+  }
+  function onMove(e){
+    if(!isDown)return;
+    const x=(e.touches?e.touches[0].clientX:e.clientX);
+    currentOffset += (x-startX);
+    startX=x;
+    track.style.transform=`translateX(${currentOffset}px)`;
+  }
+  function onUp(){
+    if(!isDown)return;
+    isDown=false;carousel.classList.remove('dragging');
+    // resume the loop from the beginning, smoothly
+    track.style.transition='transform .4s ease-out';
+    track.style.transform='translateX(0px)';
+    setTimeout(()=>{
+      track.style.transition='';
+      track.style.transform='';
+      track.style.animationPlayState='';
+      currentOffset=0;
+    },400);
+  }
+  carousel.addEventListener('mousedown',onDown);
+  window.addEventListener('mousemove',onMove);
+  window.addEventListener('mouseup',onUp);
+  carousel.addEventListener('touchstart',onDown,{passive:true});
+  carousel.addEventListener('touchmove',onMove,{passive:true});
+  carousel.addEventListener('touchend',onUp);
+  skillsDragState={cleanup(){
+    carousel.removeEventListener('mousedown',onDown);
+    window.removeEventListener('mousemove',onMove);
+    window.removeEventListener('mouseup',onUp);
+    carousel.removeEventListener('touchstart',onDown);
+    carousel.removeEventListener('touchmove',onMove);
+    carousel.removeEventListener('touchend',onUp);
+  }};
+}
+
+let editingSkid=null;
+function openAddSkill(id){
+  editingSkid=id;
+  const skills=cfg.skills&&cfg.skills.length?cfg.skills:DEF_CFG.skills;
+  const s=id?skills.find(x=>x.id===id):null;
+  document.getElementById('add-skill-title').textContent=id?'Editar herramienta':'Agregar herramienta';
+  document.getElementById('sk-title-in').value=s?s.title:'';
+  document.getElementById('sk-sub-in').value=s?(s.sub||''):'';
+  document.getElementById('sk-img-in').value=s?(s.img||''):'';
+  document.getElementById('sk-emoji-in').value=s?(s.emoji||''):'';
+  document.getElementById('sk-delete-btn').style.display=id?'inline-flex':'none';
+  openM('add-skill-m');
+}
+function saveSkill(){
+  if(!cfg.skills||!cfg.skills.length)cfg.skills=DEF_CFG.skills.map(s=>({...s}));
+  const item={
+    id:editingSkid||Date.now(),
+    title:document.getElementById('sk-title-in').value||'Herramienta',
+    sub:document.getElementById('sk-sub-in').value,
+    img:document.getElementById('sk-img-in').value,
+    emoji:document.getElementById('sk-emoji-in').value,
+  };
+  if(editingSkid)cfg.skills=cfg.skills.map(s=>s.id===editingSkid?item:s);
+  else cfg.skills.push(item);
+  persist();renderSkills();closeM('add-skill-m');
+}
+function deleteSkill(){
+  if(!editingSkid)return;
+  if(!confirm('¿Eliminar esta herramienta?'))return;
+  cfg.skills=(cfg.skills&&cfg.skills.length?cfg.skills:DEF_CFG.skills).filter(s=>s.id!==editingSkid);
+  persist();renderSkills();closeM('add-skill-m');
+}
+
+// ══════════════════════════════════════════════════
+// FAVICON
+// ══════════════════════════════════════════════════
+function openFaviconModal(){
+  document.getElementById('favicon-in').value=cfg.favicon||'';
+  openM('favicon-m');
+}
+function saveFavicon(){
+  cfg.favicon=document.getElementById('favicon-in').value;
+  if(cfg.favicon)document.getElementById('favicon-link').href=cfg.favicon;
+  persist();closeM('favicon-m');
+}
+
+// ══════════════════════════════════════════════════
 // AUTH — FAB visible, acceso por contraseña
 // ══════════════════════════════════════════════════
 // El botón FAB siempre visible pero abre auth si no está logueado
@@ -1080,7 +1256,7 @@ async function doAuth(){
       document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
       document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='block');
       closeM('auth-m');
-      renderPreviews();renderFolders();
+      renderPreviews();renderFolders();renderSkills();
     } else {
       document.getElementById('auth-err').textContent='Contraseña incorrecta.';
       document.getElementById('auth-in').value='';
@@ -1095,7 +1271,7 @@ function doLogout(){
   localStorage.removeItem('pf4-admin');
   document.getElementById('admin-fab').textContent='⚙ Editar';
   document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='');
-  closeM('edit-m');renderPreviews();renderFolders();
+  closeM('edit-m');renderPreviews();renderFolders();renderSkills();
 }
 
 // ══════════════════════════════════════════════════
@@ -1254,6 +1430,8 @@ function saveFolder(){
 // ══════════════════════════════════════════════════
 function applyConfig(){
   const c=cfg;
+  // favicon
+  if(c.favicon)document.getElementById('favicon-link').href=c.favicon;
   // name
   if(c.name){
     document.getElementById('nav-logo').textContent=c.name;
@@ -1321,6 +1499,7 @@ function applyConfig(){
   renderName(cfg.name||'Tu Nombre');
   renderPreviews();
   renderFolders();
+  renderSkills();
   observeReveals();
   // hide inline edit buttons for non-admin on load
   document.querySelectorAll('.inline-edit').forEach(el=>el.style.display=isAdmin?'block':'none');
