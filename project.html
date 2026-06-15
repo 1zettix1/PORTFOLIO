@@ -15,28 +15,23 @@
 }
 html{scroll-behavior:smooth}
 body{background:radial-gradient(ellipse at 50% 30%,#1a1230 0%,#0D0D0D 65%);color:var(--cream);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
-
-/* DITHER BG */
 #dither-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%}
-
 .page{position:relative;z-index:1}
 
-/* ── SCROLL FADE ANIMATIONS ── */
+/* REVEAL ANIMATIONS */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 .reveal-left{opacity:0;transform:translateX(-32px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
 .reveal-left.visible{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(32px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
-.reveal-right.visible{opacity:1;transform:translateX(0)}
 .reveal-scale{opacity:0;transform:scale(.95);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
 .reveal-scale.visible{opacity:1;transform:scale(1)}
-.delay-1{transition-delay:.1s}.delay-2{transition-delay:.18s}.delay-3{transition-delay:.26s}.delay-4{transition-delay:.34s}.delay-5{transition-delay:.42s}.delay-6{transition-delay:.5s}
+.delay-1{transition-delay:.08s}.delay-2{transition-delay:.16s}.delay-3{transition-delay:.24s}.delay-4{transition-delay:.32s}.delay-5{transition-delay:.4s}.delay-6{transition-delay:.48s}
 
-/* ── STAGGERED MENU ── */
+/* STAGGERED MENU */
 .sm-wrapper{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:100;pointer-events:none}
 .sm-header{position:absolute;top:0;left:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2.5rem;pointer-events:none;z-index:20}
 .sm-header>*{pointer-events:auto}
-.sm-logo{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);text-decoration:none;cursor:pointer;display:inline-block;transition:transform .45s cubic-bezier(.34,1.56,.64,1),color .25s,letter-spacing .35s}
+.sm-logo{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);cursor:pointer;display:inline-block;transition:transform .45s cubic-bezier(.34,1.56,.64,1),color .25s,letter-spacing .35s;text-decoration:none}
 .sm-logo:hover{transform:translateX(10px) rotate(-2deg);color:var(--violet2);letter-spacing:.18em}
 .sm-btn{display:inline-flex;align-items:center;gap:.55rem;background:transparent;border:none;cursor:pointer;color:var(--cream);font-family:'Inter',sans-serif;font-size:.83rem;font-weight:500;letter-spacing:.06em}
 .sm-icon{position:relative;width:16px;height:16px;flex-shrink:0}
@@ -61,66 +56,81 @@ body{background:radial-gradient(ellipse at 50% 30%,#1a1230 0%,#0D0D0D 65%);color
 .sm-slink{color:#111;text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
 .sm-slink:hover{color:#8B5CF6}
 
-/* ── HERO ── */
+/* HERO */
 .hero{min-height:70vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 4rem;position:relative;overflow:hidden}
 .hero-ascii{position:absolute;top:0;left:0;width:100%;height:60%;pointer-events:none;overflow:hidden}
 .hero-bottom{position:relative;z-index:2}
 .hero-ey{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--violet2);margin-bottom:1.2rem}
 .hero-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.4rem,7vw,6rem);font-weight:700;line-height:.95;letter-spacing:-.03em;color:var(--cream);margin-bottom:1.5rem;min-height:1.2em;display:flex;flex-wrap:wrap;align-items:baseline}
-.hero-desc{max-width:620px;color:var(--cream2);font-size:1rem;line-height:1.75;margin-bottom:1rem}
-.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.hero-desc{max-width:620px;color:var(--cream2);font-size:1rem;line-height:1.75;margin-bottom:1.5rem}
+.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
 .tag{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border:.5px solid var(--border2);border-radius:100px;color:var(--cream2)}
 .hero-back{display:inline-flex;align-items:center;gap:.75rem;color:var(--cream3);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:color .2s}
 .hero-back:hover{color:var(--cream)}
 .back-line{width:38px;height:.5px;background:currentColor;transition:width .3s}
 .hero-back:hover .back-line{width:58px}
 
-/* ── SECTIONS ── */
+/* SECTIONS */
 section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;z-index:1}
 .sec-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--violet2);margin-bottom:.5rem}
 .sec-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600;letter-spacing:-.02em;color:var(--cream)}
-.sec-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+.sec-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem}
 
-/* ── ABOUT / DESCRIPTION ── */
-.about-text{color:var(--cream2);line-height:1.8;font-size:1rem;max-width:760px}
-.about-text p+p{margin-top:1rem}
+/* ── BLOCK SYSTEM ── */
+#blocks-container{display:flex;flex-direction:column;gap:0}
 
-/* ── GALLERY ── */
-.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
+.block-wrap{position:relative;border-top:.5px solid var(--border);padding:4rem 3rem}
+.block-wrap:first-child{border-top:none}
+
+/* block admin controls */
+.block-controls{position:absolute;top:1rem;right:1rem;display:none;align-items:center;gap:.4rem;z-index:10;background:rgba(13,13,13,.8);border:.5px solid var(--border2);border-radius:6px;padding:.35rem .5rem}
+.block-wrap:hover .block-controls{display:flex}
+.bc-btn{background:transparent;border:none;color:var(--cream2);cursor:pointer;font-size:.75rem;padding:.2rem .4rem;border-radius:3px;transition:all .2s;white-space:nowrap}
+.bc-btn:hover{background:var(--bg3);color:var(--cream)}
+.bc-btn.danger:hover{background:#ef4444;color:#fff}
+.bc-btn.up:hover{background:var(--violet);color:#fff}
+.bc-btn.down:hover{background:var(--violet);color:#fff}
+.bc-sep{width:1px;height:16px;background:var(--border2)}
+
+/* TEXT BLOCK */
+.block-text-content{max-width:760px;color:var(--cream2);font-size:1rem;line-height:1.85}
+.block-text-content p+p{margin-top:1rem}
+.block-text-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:600;letter-spacing:-.02em;color:var(--cream);margin-bottom:1.25rem}
+
+/* GALLERY BLOCK */
+.block-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5px;background:var(--border)}
 .gallery-item{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--bg2);cursor:pointer}
 .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s cubic-bezier(.25,.46,.45,.94)}
 .gallery-item:hover img{transform:scale(1.05)}
-.gallery-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;opacity:.18}
-.gallery-placeholder span{font-size:2.5rem}
-.gallery-placeholder p{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cream3)}
-.gallery-edit{position:absolute;top:.5rem;left:.5rem;background:rgba(0,0,0,.65);border:none;border-radius:4px;color:#fff;font-size:.7rem;padding:.3rem .6rem;cursor:pointer;opacity:0;transition:opacity .2s;z-index:5}
-.gallery-item:hover .gallery-edit{opacity:1}
-.gallery-add{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.6rem;aspect-ratio:4/3;background:var(--bg2);border:1px dashed var(--border2);cursor:pointer;color:var(--cream3);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;transition:all .2s}
-.gallery-add:hover{color:var(--violet2);border-color:var(--violet2);background:rgba(139,92,246,.06)}
-.gallery-add span{font-size:2rem;line-height:1}
+.gallery-item-del{position:absolute;top:.5rem;right:.5rem;background:rgba(0,0,0,.7);border:none;border-radius:4px;color:#fff;font-size:.7rem;padding:.3rem .6rem;cursor:pointer;opacity:0;transition:opacity .2s;z-index:5}
+.gallery-item:hover .gallery-item-del{opacity:1}
+.gallery-add-img{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;aspect-ratio:4/3;background:var(--bg2);border:1.5px dashed var(--border2);cursor:pointer;color:var(--cream3);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;transition:all .2s}
+.gallery-add-img:hover{color:var(--violet2);border-color:var(--violet2);background:rgba(139,92,246,.06)}
+.gallery-add-img span:first-child{font-size:1.8rem;line-height:1}
 
-/* ── LIGHTBOX ── */
-.lightbox{position:fixed;inset:0;background:rgba(8,8,12,.92);z-index:250;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(8px)}
-.lightbox.open{opacity:1;pointer-events:all}
-.lightbox img{max-width:90vw;max-height:85vh;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
-.lightbox-close{position:absolute;top:1.5rem;right:1.5rem;background:rgba(255,255,255,.08);border:none;border-radius:50%;width:42px;height:42px;color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.lightbox-close:hover{background:rgba(255,255,255,.18)}
+/* LINKS BLOCK */
+.links-list{display:flex;flex-direction:column;gap:1px;background:var(--border);max-width:680px}
+.link-row{background:var(--bg2);padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:var(--cream);transition:background .2s;gap:1rem}
+.link-row:hover{background:var(--bg3)}
+.link-row-left{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.link-row-label{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream3)}
+.link-row-title{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.link-row-right{display:flex;align-items:center;gap:.75rem;flex-shrink:0}
+.link-arr{font-size:1.1rem;color:var(--violet2);transition:transform .2s}
+.link-row:hover .link-arr{transform:translate(3px,-3px)}
+.link-del-btn{background:rgba(239,68,68,.12);border:none;border-radius:3px;color:#f87171;font-size:.7rem;padding:.25rem .5rem;cursor:pointer;opacity:0;transition:opacity .2s}
+.link-row:hover .link-del-btn{opacity:1}
+.link-add-btn{display:flex;align-items:center;gap:.5rem;background:transparent;border:1.5px dashed var(--border2);color:var(--cream3);font-family:'Inter',sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:1rem 1.5rem;transition:all .2s;width:100%;max-width:680px;margin-top:1px}
+.link-add-btn:hover{color:var(--violet2);border-color:var(--violet2)}
 
-/* ── BORDER GLOW ── */
-.bgc{
-  --ep:0;--ca:45deg;--es:30;--cs:50;--bgcr:var(--bg2);--gp:38px;--csp:25;
-  position:relative;isolation:isolate;transform:translate3d(0,0,.01px)
-}
-.bgc:not(.preview-card):not(.folder-item){border-radius:8px;border:1px solid rgba(255,255,255,.1);background:var(--bgcr);overflow:visible}
-.bgc::before,.bgc>.elight{content:'';position:absolute;inset:0;border-radius:inherit;transition:opacity .25s ease-out;z-index:-1}
-.bgc:not(:hover)::before,.bgc:not(:hover)>.elight{opacity:0;transition:opacity .7s ease-in-out}
-.bgc::before{border:1px solid transparent;background:linear-gradient(var(--bgcr) 0 100%) padding-box,linear-gradient(#8B5CF6 0 100%) border-box;-webkit-mask-image:conic-gradient(from var(--ca) at center,black calc(var(--csp)*1%),transparent calc((var(--csp)+15)*1%),transparent calc((100 - var(--csp) - 15)*1%),black calc((100 - var(--csp))*1%));mask-image:conic-gradient(from var(--ca) at center,black calc(var(--csp)*1%),transparent calc((var(--csp)+15)*1%),transparent calc((100 - var(--csp) - 15)*1%),black calc((100 - var(--csp))*1%));opacity:calc((var(--ep) - var(--cs))/(100 - var(--cs)))}
-.bgc>.elight{inset:calc(var(--gp)*-1);pointer-events:none;z-index:1;-webkit-mask-image:conic-gradient(from var(--ca) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%);mask-image:conic-gradient(from var(--ca) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%);opacity:calc((var(--ep) - var(--es))/(100 - var(--es)));mix-blend-mode:plus-lighter}
-.bgc>.elight::before{content:'';position:absolute;inset:var(--gp);border-radius:inherit;box-shadow:inset 0 0 0 1px hsl(260deg 80% 75%),inset 0 0 3px hsl(260deg 80% 75%/50%),inset 0 0 18px hsl(260deg 80% 75%/30%),0 0 8px hsl(260deg 80% 75%/40%),0 0 28px 2px hsl(260deg 80% 75%/18%)}
-.folder-item.bgc{--gp:14px;--es:15;--cs:40;border-radius:14px}
-.folder-item.bgc::before{border-radius:14px}
+/* VIDEO BLOCK */
+.video-embed-wrap{position:relative;width:100%;max-width:900px;aspect-ratio:16/9;background:var(--bg2);border-radius:8px;overflow:hidden}
+.video-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.video-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;color:var(--cream3)}
+.video-placeholder span{font-size:2.5rem;opacity:.3}
+.video-placeholder p{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
 
-/* ── OTHER PROJECTS (folders) ── */
+/* OTHER FOLDERS */
 .folders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:2rem 1.75rem}
 .folder-item{display:flex;flex-direction:column;align-items:center;gap:.85rem;cursor:pointer;text-decoration:none;padding:.85rem;border-radius:14px;transition:background .25s;position:relative}
 .folder-item:hover{background:rgba(139,92,246,.07)}
@@ -131,27 +141,55 @@ section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;
 .fback{position:relative;width:100px;height:80px;border-radius:0 10px 10px 10px}
 .fback::after{content:'';position:absolute;bottom:98%;left:0;width:30px;height:10px;border-radius:5px 5px 0 0;background:inherit}
 .fpaper{position:absolute;z-index:2;bottom:10%;left:50%;transform:translate(-50%,10%);border-radius:10px;transition:transform .3s ease-in-out}
-.fpaper.fp1{width:70%;height:80%;background:#e6e6e6}
-.fpaper.fp2{width:80%;height:70%;background:#f2f2f2}
-.fpaper.fp3{width:90%;height:60%;background:#fff}
+.fp1{width:70%;height:80%;background:#e6e6e6}
+.fp2{width:80%;height:70%;background:#f2f2f2}
+.fp3{width:90%;height:60%;background:#fff}
+.folder-item:hover .fp1{transform:translate(-50%,0%)}
+.folder-item:hover .fp2{transform:translate(-50%,0%)}
+.folder-item:hover .fp3{transform:translate(-50%,0%)}
 .ffront{position:absolute;z-index:3;width:100%;height:100%;border-radius:5px 10px 10px 10px;transform-origin:bottom;transition:transform .3s ease-in-out}
 .folder-item:hover .ffront{transform:skew(15deg) scaleY(.6)}
 
-/* ── FOOTER ── */
+/* BORDER GLOW */
+.bgc{--ep:0;--ca:45deg;--es:30;--cs:50;--bgcr:var(--bg2);--gp:38px;--csp:25;position:relative;isolation:isolate;transform:translate3d(0,0,.01px)}
+.bgc:not(.folder-item){border-radius:8px;border:1px solid rgba(255,255,255,.1);background:var(--bgcr);overflow:visible}
+.bgc::before,.bgc>.elight{content:'';position:absolute;inset:0;border-radius:inherit;transition:opacity .25s ease-out;z-index:-1}
+.bgc:not(:hover)::before,.bgc:not(:hover)>.elight{opacity:0;transition:opacity .7s ease-in-out}
+.bgc::before{border:1px solid transparent;background:linear-gradient(var(--bgcr) 0 100%) padding-box,linear-gradient(#8B5CF6 0 100%) border-box;-webkit-mask-image:conic-gradient(from var(--ca) at center,black calc(var(--csp)*1%),transparent calc((var(--csp)+15)*1%),transparent calc((100 - var(--csp) - 15)*1%),black calc((100 - var(--csp))*1%));mask-image:conic-gradient(from var(--ca) at center,black calc(var(--csp)*1%),transparent calc((var(--csp)+15)*1%),transparent calc((100 - var(--csp) - 15)*1%),black calc((100 - var(--csp))*1%));opacity:calc((var(--ep) - var(--cs))/(100 - var(--cs)))}
+.bgc>.elight{inset:calc(var(--gp)*-1);pointer-events:none;z-index:1;-webkit-mask-image:conic-gradient(from var(--ca) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%);mask-image:conic-gradient(from var(--ca) at center,black 2.5%,transparent 10%,transparent 90%,black 97.5%);opacity:calc((var(--ep) - var(--es))/(100 - var(--es)));mix-blend-mode:plus-lighter}
+.bgc>.elight::before{content:'';position:absolute;inset:var(--gp);border-radius:inherit;box-shadow:inset 0 0 0 1px hsl(260deg 80% 75%),inset 0 0 3px hsl(260deg 80% 75%/50%),inset 0 0 18px hsl(260deg 80% 75%/30%),0 0 8px hsl(260deg 80% 75%/40%),0 0 28px 2px hsl(260deg 80% 75%/18%)}
+.folder-item.bgc{--gp:14px;--es:15;--cs:40;border-radius:14px}
+.folder-item.bgc::before{border-radius:14px}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(8,8,12,.92);z-index:250;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(8px)}
+.lightbox.open{opacity:1;pointer-events:all}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.lb-close{position:absolute;top:1.5rem;right:1.5rem;background:rgba(255,255,255,.08);border:none;border-radius:50%;width:42px;height:42px;color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lb-close:hover{background:rgba(255,255,255,.18)}
+
+/* FOOTER */
 footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
 .footer-copy{font-size:.8rem;color:var(--cream3)}
-.footer-back{font-size:.8rem;color:var(--cream3);text-decoration:none;transition:color .2s}
-.footer-back:hover{color:var(--cream)}
+.footer-back-btn{font-size:.8rem;color:var(--cream3);background:none;border:none;cursor:pointer;transition:color .2s;font-family:'Inter',sans-serif}
+.footer-back-btn:hover{color:var(--cream)}
 
-/* ── ADMIN FAB ── */
+/* ADMIN FAB */
 .admin-fab{position:fixed;bottom:2rem;right:2rem;z-index:200;background:var(--violet);color:#fff;border:none;border-radius:100px;padding:.7rem 1.4rem;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.4rem;box-shadow:0 4px 22px rgba(139,92,246,.45);transition:all .2s}
 .admin-fab:hover{transform:translateY(-2px);box-shadow:0 7px 30px rgba(139,92,246,.55)}
-.admin-fab.hidden{display:none}
 
-/* ── MODALS ── */
+/* ADD BLOCK BAR (admin only) */
+.add-block-bar{display:none;position:relative;z-index:1;padding:1.5rem 3rem;border-top:.5px solid var(--border);background:rgba(139,92,246,.04)}
+.add-block-bar.visible{display:block}
+.add-block-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--violet2);margin-bottom:1rem}
+.add-block-btns{display:flex;flex-wrap:wrap;gap:.6rem}
+.add-block-btn{display:flex;align-items:center;gap:.4rem;background:var(--bg2);border:.5px solid var(--border2);border-radius:6px;color:var(--cream2);font-family:'Inter',sans-serif;font-size:.8rem;padding:.55rem 1rem;cursor:pointer;transition:all .2s}
+.add-block-btn:hover{border-color:var(--violet2);color:var(--cream);background:rgba(139,92,246,.1)}
+
+/* MODALS */
 .moverlay{position:fixed;inset:0;background:rgba(0,0,0,.83);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s;backdrop-filter:blur(12px)}
 .moverlay.open{opacity:1;pointer-events:all}
-.mbox{background:var(--bg2);border:.5px solid var(--border2);border-radius:6px;width:min(560px,93vw);max-height:88vh;overflow-y:auto;padding:2.25rem;transform:translateY(16px);transition:transform .28s;position:relative}
+.mbox{background:var(--bg2);border:.5px solid var(--border2);border-radius:6px;width:min(580px,93vw);max-height:88vh;overflow-y:auto;padding:2.25rem;transform:translateY(16px);transition:transform .28s;position:relative}
 .moverlay.open .mbox{transform:translateY(0)}
 .mclose{position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:var(--cream2);font-size:1.3rem;cursor:pointer;line-height:1;transition:color .2s}
 .mclose:hover{color:var(--cream)}
@@ -160,7 +198,8 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 .flbl{display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream3);margin-bottom:.4rem}
 .finput,.fsel,.ftarea{width:100%;background:var(--bg3);border:.5px solid var(--border2);border-radius:3px;color:var(--cream);font-family:'Inter',sans-serif;font-size:.88rem;padding:.6rem .85rem;outline:none;transition:border-color .2s}
 .finput:focus,.fsel:focus,.ftarea:focus{border-color:var(--violet2)}
-.ftarea{min-height:80px;resize:vertical}
+.fsel option{background:var(--bg3)}
+.ftarea{min-height:100px;resize:vertical}
 .btn-row{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.5rem}
 .btn-c{background:transparent;border:.5px solid var(--border2);color:var(--cream2);padding:.55rem 1.1rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;cursor:pointer;transition:all .2s}
 .btn-c:hover{border-color:var(--cream2);color:var(--cream)}
@@ -169,17 +208,17 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 .btn-danger{background:#ef4444;border:none;color:#fff;padding:.55rem 1.1rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;cursor:pointer;transition:background .2s}
 .btn-danger:hover{background:#dc2626}
 .auth-err{font-size:.8rem;color:#f87171;margin-top:.5rem;min-height:1.1em}
-.pw-toggle{position:absolute;top:0;right:0;height:100%;width:2.6rem;background:transparent;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--cream3);transition:color .2s;line-height:1}
+.pw-toggle{position:absolute;top:0;right:0;height:100%;width:2.6rem;background:transparent;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--cream3);transition:color .2s}
 .pw-toggle:hover{color:var(--cream)}
-.inline-edit{display:none;position:absolute;top:0;right:0;background:rgba(139,92,246,.15);border:none;border-radius:4px;color:var(--violet2);font-size:.7rem;padding:.2rem .5rem;cursor:pointer;z-index:10}
-.editable-block:hover .inline-edit{display:block}
-.editable-block{position:relative}
 .not-found{padding:8rem 3rem;text-align:center}
 .not-found h2{font-family:'Space Grotesk',sans-serif;font-size:2rem;color:var(--cream);margin-bottom:1rem}
 .not-found a{color:var(--violet2);text-decoration:none}
+.inline-edit-btn{display:none;background:rgba(139,92,246,.15);border:none;border-radius:3px;color:var(--violet2);font-size:.7rem;padding:.2rem .5rem;cursor:pointer;margin-left:.5rem}
 
 @media(max-width:768px){
   .hero{padding:0 1.5rem 3rem}
+  .block-wrap{padding:3rem 1.5rem}
+  .add-block-bar{padding:1.25rem 1.5rem}
   section{padding:4rem 1.5rem}
   .sm-header{padding:1.25rem 1.5rem}
   footer{flex-direction:column;gap:.75rem;text-align:center;padding:2rem 1.5rem}
@@ -190,17 +229,17 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 
 <canvas id="dither-canvas"></canvas>
 
-<!-- LOADING OVERLAY -->
+<!-- LOADING -->
 <div id="loading-overlay" style="position:fixed;inset:0;z-index:500;background:#0D0D0D;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity .4s">
   <div style="width:36px;height:36px;border:3px solid rgba(240,235,224,.15);border-top-color:#8B5CF6;border-radius:50%;animation:spin .8s linear infinite"></div>
   <p style="font-family:'Inter',sans-serif;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:#B8B3A8">Cargando…</p>
 </div>
 <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
-<!-- STAGGERED MENU -->
+<!-- MENU -->
 <div class="sm-wrapper" id="smw">
   <header class="sm-header">
-    <span class="sm-logo" id="nav-logo" onclick="location.href='index.html'">Portfolio</span>
+    <a href="index.html" class="sm-logo" id="nav-logo">Portfolio</a>
     <button class="sm-btn" id="sm-btn" aria-label="Menú">
       <span class="sm-tw"><span class="sm-ti" id="sm-ti"><span>Menú</span><span>Cerrar</span></span></span>
       <span class="sm-icon"><span class="sm-line h"></span><span class="sm-line v"></span></span>
@@ -229,7 +268,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   </aside>
 </div>
 
-<div class="page" id="page-content">
+<div class="page">
 
 <!-- HERO -->
 <section class="hero" id="hero" style="border:none">
@@ -237,39 +276,28 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   <div class="hero-bottom">
     <p class="hero-ey" id="hero-ey">Proyecto</p>
     <h1 class="hero-name" id="hero-name"></h1>
-    <p class="hero-desc editable-block" id="proj-desc">Descripción del proyecto. Contá de qué se trata, qué herramientas usaste y cualquier detalle relevante.<button class="inline-edit" onclick="openInlineEdit('proj-desc','Descripción del proyecto',true)">✏️</button></p>
+    <p class="hero-desc" id="proj-desc">Descripción del proyecto.</p>
     <div class="hero-tags" id="proj-tags-wrap"></div>
     <a href="index.html#works" class="hero-back"><span class="back-line"></span><span>Volver a carpetas</span></a>
   </div>
 </section>
 
-<!-- GALLERY -->
-<section id="gallery">
-  <div class="sec-hdr">
-    <div class="reveal">
-      <p class="sec-label">Galería</p>
-      <h2 class="sec-title">Imágenes del proyecto</h2>
-    </div>
-  </div>
-  <div class="gallery-grid reveal" id="gallery-grid"></div>
-</section>
+<!-- DYNAMIC BLOCKS -->
+<div id="blocks-container"></div>
 
-<!-- ABOUT PROJECT -->
-<section id="proj-about">
-  <div class="sec-hdr">
-    <div class="reveal">
-      <p class="sec-label">Detalles</p>
-      <h2 class="sec-title">Sobre este trabajo</h2>
-    </div>
+<!-- ADD BLOCK BAR (admin) -->
+<div class="add-block-bar" id="add-block-bar">
+  <p class="add-block-label">+ Agregar sección</p>
+  <div class="add-block-btns">
+    <button class="add-block-btn" onclick="addBlock('text')">📝 Texto</button>
+    <button class="add-block-btn" onclick="addBlock('gallery')">🖼️ Galería</button>
+    <button class="add-block-btn" onclick="addBlock('links')">🔗 Links</button>
+    <button class="add-block-btn" onclick="addBlock('video')">🎬 Video</button>
   </div>
-  <div class="about-text editable-block reveal" id="proj-about-text">
-    <p>Agregá aquí más información sobre el proceso creativo, herramientas utilizadas, tiempos de producción o cualquier dato que quieras compartir sobre este proyecto.</p>
-    <button class="inline-edit" onclick="openInlineEdit('proj-about-text','Detalles del proyecto',true)">✏️</button>
-  </div>
-</section>
+</div>
 
 <!-- OTHER PROJECTS -->
-<section id="more-projects">
+<section id="more-projects" style="display:none">
   <div class="sec-hdr">
     <div class="reveal">
       <p class="sec-label">Más</p>
@@ -281,18 +309,18 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 
 <footer class="reveal">
   <span class="footer-copy" id="footer-copy">© 2025 Portfolio · Todos los derechos reservados</span>
-  <a href="#" class="footer-back" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Volver arriba ↑</a>
+  <button class="footer-back-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Volver arriba ↑</button>
 </footer>
 </div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lightbox-img" src="" alt="">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <img id="lb-img" src="" alt="">
 </div>
 
 <!-- ADMIN FAB -->
-<button class="admin-fab hidden" id="admin-fab">⚙ Editar</button>
+<button class="admin-fab" id="admin-fab">⚙ Editar</button>
 
 <!-- AUTH MODAL -->
 <div class="moverlay" id="auth-m">
@@ -301,7 +329,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
     <div class="fg"><label class="flbl">Contraseña</label>
       <div style="position:relative">
         <input class="finput" id="auth-in" type="password" placeholder="••••••••" autocomplete="current-password" style="padding-right:2.6rem">
-        <button type="button" class="pw-toggle" id="auth-toggle" aria-label="Mostrar contraseña" tabindex="-1">👁️</button>
+        <button type="button" class="pw-toggle" id="auth-toggle" tabindex="-1">👁️</button>
       </div>
       <div class="auth-err" id="auth-err"></div>
     </div>
@@ -312,66 +340,99 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   </div>
 </div>
 
-<!-- EDIT MENU MODAL -->
-<div class="moverlay" id="edit-m">
-  <div class="mbox" style="max-width:370px">
-    <button class="mclose" onclick="closeM('edit-m')">✕</button>
-    <h3 class="mtitle">¿Qué editás?</h3>
-    <div style="display:flex;flex-direction:column;gap:.75rem">
-      <button class="btn-s" style="width:100%;padding:.85rem" onclick="closeM('edit-m');openInlineEdit('hero-name','Título del proyecto')">✏️ Título del proyecto</button>
-      <button class="btn-s" style="width:100%;padding:.85rem;background:#3B82F6" onclick="closeM('edit-m');openAddImage()">🖼️ Agregar imagen a la galería</button>
-      <button class="btn-s" style="width:100%;padding:.85rem;background:var(--orange)" onclick="closeM('edit-m');openInlineEdit('proj-tags-edit','Etiquetas (separadas por coma)')">🏷️ Etiquetas</button>
-      <button class="btn-s" style="width:100%;padding:.85rem;background:#10B981" onclick="closeM('edit-m');openBgModal()">🎨 Color de fondo</button>
-      <button class="btn-c" style="width:100%;padding:.85rem" onclick="doLogout()">🔒 Cerrar sesión</button>
+<!-- EDIT HERO MODAL -->
+<div class="moverlay" id="hero-edit-m">
+  <div class="mbox" style="max-width:520px">
+    <button class="mclose" onclick="closeM('hero-edit-m')">✕</button>
+    <h3 class="mtitle">Editar información del proyecto</h3>
+    <div class="fg"><label class="flbl">Descripción</label><textarea class="ftarea" id="he-desc" style="min-height:90px"></textarea></div>
+    <div class="fg"><label class="flbl">Tags (separados por coma)</label><input class="finput" id="he-tags" type="text" placeholder="Procreate, 2024, Personal"></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('hero-edit-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveHeroEdit()">Guardar</button>
     </div>
   </div>
 </div>
 
-<!-- ADD IMAGE MODAL -->
-<div class="moverlay" id="add-image-m">
+<!-- EDIT TEXT BLOCK MODAL -->
+<div class="moverlay" id="text-block-m">
+  <div class="mbox">
+    <button class="mclose" onclick="closeM('text-block-m')">✕</button>
+    <h3 class="mtitle" id="text-block-m-title">Bloque de texto</h3>
+    <div class="fg"><label class="flbl">Título (opcional)</label><input class="finput" id="tb-title" type="text" placeholder="Título de la sección"></div>
+    <div class="fg"><label class="flbl">Contenido</label><textarea class="ftarea" id="tb-content" style="min-height:140px" placeholder="Escribí el contenido de esta sección..."></textarea></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('text-block-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveTextBlock()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT GALLERY BLOCK MODAL (add image) -->
+<div class="moverlay" id="gallery-img-m">
   <div class="mbox" style="max-width:440px">
-    <button class="mclose" onclick="closeM('add-image-m')">✕</button>
+    <button class="mclose" onclick="closeM('gallery-img-m')">✕</button>
     <h3 class="mtitle">Agregar imagen</h3>
-    <div class="fg"><label class="flbl">URL de la imagen</label><input class="finput" id="img-url-in" type="text" placeholder="https://..."></div>
+    <div class="fg"><label class="flbl">URL de la imagen</label><input class="finput" id="gi-url" type="text" placeholder="https://..."></div>
     <div class="btn-row">
-      <button class="btn-c" onclick="closeM('add-image-m')">Cancelar</button>
-      <button class="btn-s" onclick="saveImage()">Guardar</button>
+      <button class="btn-c" onclick="closeM('gallery-img-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveGalleryImg()">Agregar</button>
     </div>
   </div>
 </div>
 
-<!-- BACKGROUND COLOR MODAL -->
-<div class="moverlay" id="bg-m">
-  <div class="mbox" style="max-width:400px">
-    <button class="mclose" onclick="closeM('bg-m')">✕</button>
-    <h3 class="mtitle">Color de fondo del proyecto</h3>
-    <div class="fg"><label class="flbl">Color</label>
-      <div style="display:flex;gap:.6rem;align-items:center">
-        <input type="color" id="bg-color-in" value="#8B5CF6" style="width:48px;height:42px;padding:2px;border-radius:3px;border:.5px solid var(--border2);background:var(--bg3);cursor:pointer">
-        <span style="font-size:.85rem;color:var(--cream2)">Define el tono del fondo animado de esta página.</span>
-      </div>
-    </div>
-    <div class="btn-row">
-      <button class="btn-c" onclick="closeM('bg-m')">Cancelar</button>
-      <button class="btn-c" onclick="resetBgColor()">Restablecer</button>
-      <button class="btn-s" onclick="saveBgColor()">Guardar</button>
-    </div>
-  </div>
-</div>
-
-<!-- INLINE EDIT MODAL -->
-<div class="moverlay" id="inline-m">
+<!-- EDIT GALLERY BLOCK TITLE MODAL -->
+<div class="moverlay" id="gallery-title-m">
   <div class="mbox" style="max-width:440px">
-    <button class="mclose" onclick="closeM('inline-m')">✕</button>
-    <h3 class="mtitle" id="inline-m-title">Editar texto</h3>
-    <div class="fg">
-      <label class="flbl" id="inline-m-label">Contenido</label>
-      <input class="finput" id="inline-input" type="text" style="display:none">
-      <textarea class="ftarea" id="inline-textarea" style="display:none;min-height:100px"></textarea>
-    </div>
+    <button class="mclose" onclick="closeM('gallery-title-m')">✕</button>
+    <h3 class="mtitle">Editar galería</h3>
+    <div class="fg"><label class="flbl">Título de la galería (opcional)</label><input class="finput" id="gt-title" type="text" placeholder="Galería de imágenes"></div>
     <div class="btn-row">
-      <button class="btn-c" onclick="closeM('inline-m')">Cancelar</button>
-      <button class="btn-s" onclick="saveInlineEdit()">Guardar</button>
+      <button class="btn-c" onclick="closeM('gallery-title-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveGalleryTitle()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD LINK MODAL -->
+<div class="moverlay" id="add-link-m">
+  <div class="mbox" style="max-width:480px">
+    <button class="mclose" onclick="closeM('add-link-m')">✕</button>
+    <h3 class="mtitle" id="add-link-m-title">Agregar link</h3>
+    <div class="fg"><label class="flbl">Título del link</label><input class="finput" id="lk-title" type="text" placeholder="Ver en Behance"></div>
+    <div class="fg"><label class="flbl">Etiqueta (opcional)</label><input class="finput" id="lk-label" type="text" placeholder="Portafolio externo, Referencia..."></div>
+    <div class="fg"><label class="flbl">URL</label><input class="finput" id="lk-url" type="text" placeholder="https://..."></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('add-link-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveLinkItem()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT LINKS BLOCK TITLE MODAL -->
+<div class="moverlay" id="links-title-m">
+  <div class="mbox" style="max-width:440px">
+    <button class="mclose" onclick="closeM('links-title-m')">✕</button>
+    <h3 class="mtitle">Editar sección de links</h3>
+    <div class="fg"><label class="flbl">Título de la sección</label><input class="finput" id="lt-title" type="text" placeholder="Links"></div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('links-title-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveLinksTitle()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT VIDEO BLOCK MODAL -->
+<div class="moverlay" id="video-block-m">
+  <div class="mbox" style="max-width:520px">
+    <button class="mclose" onclick="closeM('video-block-m')">✕</button>
+    <h3 class="mtitle" id="video-block-m-title">Bloque de video</h3>
+    <div class="fg"><label class="flbl">Título (opcional)</label><input class="finput" id="vb-title" type="text" placeholder="Video del proceso"></div>
+    <div class="fg"><label class="flbl">URL de YouTube o Vimeo</label><input class="finput" id="vb-url" type="text" placeholder="https://www.youtube.com/watch?v=..."></div>
+    <p style="font-size:.75rem;color:var(--cream3);margin-top:-.5rem;margin-bottom:1rem">Pegá la URL normal del video — se convierte automáticamente.</p>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('video-block-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveVideoBlock()">Guardar</button>
     </div>
   </div>
 </div>
@@ -390,320 +451,182 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // DATA
 // ══════════════════════════════════════════════════
 let isAdmin = false;
-
-const DEF_CFG = { name:'Tu Nombre', be:'', ig:'', li:'', 'footer-copy':'© 2025 Portfolio · Todos los derechos reservados' };
-let cfg = Object.assign({}, DEF_CFG);
-let folders = [
-  {id:1, name:'Una Noche en Marte',  color:'#8B5CF6'},
-  {id:2, name:'Vostok',             color:'#3B82F6'},
-  {id:3, name:'Expedition_to_Mars', color:'#F97316'},
-  {id:4, name:'Modelados 3D',       color:'#10B981'},
-  {id:5, name:'Infografías',        color:'#F59E0B'},
-  {id:6, name:'Enchanted Chaos',    color:'#EC4899'},
-  {id:7, name:'The Unknown Shards', color:'#A78BFA'},
-];
-
-// current project id from URL
 const params = new URLSearchParams(location.search);
 const projectId = parseInt(params.get('id'), 10);
+
+const DEF_GLOBAL_CFG = { name:'Portfolio', be:'', ig:'', li:'', 'footer-copy':'© 2025 Portfolio · Todos los derechos reservados' };
+let globalCfg = Object.assign({}, DEF_GLOBAL_CFG);
+let folders = [
+  {id:1,name:'Una Noche en Marte',color:'#8B5CF6'},
+  {id:2,name:'Vostok',color:'#3B82F6'},
+  {id:3,name:'Expedition_to_Mars',color:'#F97316'},
+  {id:4,name:'Modelados 3D',color:'#10B981'},
+  {id:5,name:'Infografías',color:'#F59E0B'},
+  {id:6,name:'Enchanted Chaos',color:'#EC4899'},
+  {id:7,name:'The Unknown Shards',color:'#A78BFA'},
+];
 let folder = folders.find(f => f.id === projectId);
 
-// per-project data: description, about, tags, gallery images
-const PKEY = 'pf4-project-' + (projectId || 'default');
+// Project data: hero info + array of blocks
+// Block types: { type:'text', id, title, content }
+//              { type:'gallery', id, title, images:[] }
+//              { type:'links', id, title, items:[{title,label,url}] }
+//              { type:'video', id, title, url }
 let proj = {
-  desc:'Descripción del proyecto. Contá de qué se trata, qué herramientas usaste y cualquier detalle relevante.',
-  about:'Agregá aquí más información sobre el proceso creativo, herramientas utilizadas, tiempos de producción o cualquier dato que quieras compartir sobre este proyecto.',
-  tags:'',
-  images:[],
-  bgColor:''
+  desc: 'Descripción del proyecto.',
+  tags: '',
+  blocks: []
 };
 
 // ══════════════════════════════════════════════════
-// LOAD / SAVE (Supabase)
+// SUPABASE LOAD / SAVE
 // ══════════════════════════════════════════════════
-async function loadData(){
-  try{
+async function loadData() {
+  try {
     const [cfgRes, foldersRes, projRes] = await Promise.all([
       sb.from('pf_config').select('data').eq('id',1).maybeSingle(),
       sb.from('pf_folders').select('*').order('id',{ascending:true}),
       projectId ? sb.from('pf_projects').select('data').eq('folder_id',projectId).maybeSingle() : Promise.resolve({data:null})
     ]);
-    if(cfgRes.data && cfgRes.data.data) cfg = Object.assign({}, DEF_CFG, cfgRes.data.data);
-    if(foldersRes.data && foldersRes.data.length) folders = foldersRes.data.map(f=>({id:f.id,name:f.name,color:f.color}));
+    if (cfgRes.data?.data) globalCfg = Object.assign({}, DEF_GLOBAL_CFG, cfgRes.data.data);
+    if (foldersRes.data?.length) folders = foldersRes.data.map(f=>({id:f.id,name:f.name,color:f.color}));
     folder = folders.find(f => f.id === projectId);
-    if(projRes.data && projRes.data.data) proj = Object.assign({}, proj, projRes.data.data);
-  }catch(err){
-    console.error('Error cargando datos de Supabase:',err);
+    if (projRes.data?.data) proj = Object.assign({desc:'',tags:'',blocks:[]}, projRes.data.data);
+    if (!proj.blocks) proj.blocks = [];
+  } catch(err) {
+    console.error('Error cargando datos:', err);
   }
 }
 
-async function persistProj(){
-  try{
-    await sb.from('pf_projects').upsert({folder_id:projectId, data:proj});
-  }catch(err){
-    console.error('Error guardando proyecto en Supabase:',err);
-  }
-}
-
-async function persistFolders(){
-  try{
-    await sb.from('pf_folders').upsert(folders.map(f=>({id:f.id,name:f.name,color:f.color})));
-  }catch(err){
-    console.error('Error guardando carpetas en Supabase:',err);
+async function persistProj() {
+  try {
+    await sb.from('pf_projects').upsert({ folder_id: projectId, data: proj });
+  } catch(err) {
+    console.error('Error guardando proyecto:', err);
   }
 }
 
 // ══════════════════════════════════════════════════
-// DITHER WEBGL BACKGROUND
+// DITHER BACKGROUND
 // ══════════════════════════════════════════════════
-function initDither(){
+(function() {
   const cv = document.getElementById('dither-canvas');
   const gl = cv.getContext('webgl') || cv.getContext('experimental-webgl');
   if (!gl) return;
   function resize(){cv.width=innerWidth;cv.height=innerHeight;gl.viewport(0,0,cv.width,cv.height);}
   resize(); window.addEventListener('resize',resize);
   const VS=`attribute vec2 p;void main(){gl_Position=vec4(p,0,1);}`;
-  const FS=`precision highp float;
-uniform vec2 R;uniform float T;uniform vec2 M;uniform vec3 WC;
+  const FS=`precision highp float;uniform vec2 R;uniform float T;uniform vec2 M;
 vec4 m9(vec4 x){return x-floor(x*(1./289.))*289.;}
 vec4 pm(vec4 x){return m9(((x*34.)+1.)*x);}
 vec4 ti(vec4 r){return 1.79284291400159-0.85373472095314*r;}
 vec2 fd(vec2 t){return t*t*t*(t*(t*6.-15.)+10.);}
-float cn(vec2 P){
-  vec4 Pi=floor(P.xyxy)+vec4(0,0,1,1);vec4 Pf=fract(P.xyxy)-vec4(0,0,1,1);
-  Pi=m9(Pi);vec4 ix=Pi.xzxz,iy=Pi.yyww,fx=Pf.xzxz,fy=Pf.yyww;
-  vec4 i=pm(pm(ix)+iy);vec4 gx=fract(i*(1./41.))*2.-1.;vec4 gy=abs(gx)-.5;gx-=floor(gx+.5);
-  vec2 g00=vec2(gx.x,gy.x),g10=vec2(gx.y,gy.y),g01=vec2(gx.z,gy.z),g11=vec2(gx.w,gy.w);
-  vec4 n=ti(vec4(dot(g00,g00),dot(g01,g01),dot(g10,g10),dot(g11,g11)));
-  g00*=n.x;g01*=n.y;g10*=n.z;g11*=n.w;
-  vec2 f=fd(Pf.xy);
-  return 2.3*mix(mix(dot(g00,vec2(fx.x,fy.x)),dot(g10,vec2(fx.y,fy.y)),f.x),
-                 mix(dot(g01,vec2(fx.z,fy.z)),dot(g11,vec2(fx.w,fy.w)),f.x),f.y);
-}
-float fbm(vec2 p){float v=0.,a=1.,fr=2.7;for(int i=0;i<4;i++){v+=a*abs(cn(p));p*=fr;a*=0.15;}return v;}
-float pat(vec2 p){vec2 p2=p-T*0.04;return fbm(p+fbm(p2));}
-float bayer(vec2 uv){
-  float x=mod(uv.x,8.0);
-  float y=mod(uv.y,8.0);
-  float idx=y*8.0+x;
-  float v=0.0;
-  if(idx<32.0){
-    if(idx<16.0){
-      if(idx<8.0){
-        if(idx<4.0){ v = idx<2.0 ? (idx<1.0?0.0:48.0) : (idx<3.0?12.0:60.0); }
-        else { v = idx<6.0 ? (idx<5.0?3.0:51.0) : (idx<7.0?15.0:63.0); }
-      } else {
-        if(idx<12.0){ v = idx<10.0 ? (idx<9.0?32.0:16.0) : (idx<11.0?44.0:28.0); }
-        else { v = idx<14.0 ? (idx<13.0?35.0:19.0) : (idx<15.0?47.0:31.0); }
-      }
-    } else {
-      if(idx<24.0){
-        if(idx<20.0){ v = idx<18.0 ? (idx<17.0?8.0:56.0) : (idx<19.0?4.0:52.0); }
-        else { v = idx<22.0 ? (idx<21.0?11.0:59.0) : (idx<23.0?7.0:55.0); }
-      } else {
-        if(idx<28.0){ v = idx<26.0 ? (idx<25.0?40.0:24.0) : (idx<27.0?36.0:20.0); }
-        else { v = idx<30.0 ? (idx<29.0?43.0:27.0) : (idx<31.0?39.0:23.0); }
-      }
-    }
-  } else {
-    if(idx<48.0){
-      if(idx<40.0){
-        if(idx<36.0){ v = idx<34.0 ? (idx<33.0?2.0:50.0) : (idx<35.0?14.0:62.0); }
-        else { v = idx<38.0 ? (idx<37.0?1.0:49.0) : (idx<39.0?13.0:61.0); }
-      } else {
-        if(idx<44.0){ v = idx<42.0 ? (idx<41.0?34.0:18.0) : (idx<43.0?46.0:30.0); }
-        else { v = idx<46.0 ? (idx<45.0?33.0:17.0) : (idx<47.0?45.0:29.0); }
-      }
-    } else {
-      if(idx<56.0){
-        if(idx<52.0){ v = idx<50.0 ? (idx<49.0?10.0:58.0) : (idx<51.0?6.0:54.0); }
-        else { v = idx<54.0 ? (idx<53.0?9.0:57.0) : (idx<55.0?5.0:53.0); }
-      } else {
-        if(idx<60.0){ v = idx<58.0 ? (idx<57.0?42.0:26.0) : (idx<59.0?38.0:22.0); }
-        else { v = idx<62.0 ? (idx<61.0?41.0:25.0) : (idx<63.0?37.0:21.0); }
-      }
-    }
-  }
-  return (v-0.25)/64.0;
-}
-void main(){
-  vec2 uv=gl_FragCoord.xy/R,p=uv-.5;p.x*=R.x/R.y;
-  vec2 mn=(M/R-.5)*vec2(1.,-1.);mn.x*=R.x/R.y;
-  float d=length(p-mn),f=pat(p);
-  f-=0.5*(1.-smoothstep(0.,.4,d));
-  vec3 wc=WC;
-  vec3 col=mix(vec3(0.04,0.03,0.07),wc,clamp(f,0.,1.));
-  float cn2=6.6,ps=2.;
-  col+=bayer(floor(gl_FragCoord.xy/ps))/(cn2-1.);
-  col=clamp(col-.18,0.,1.);
-  col=floor(col*(cn2-1.)+.5)/(cn2-1.);
-  gl_FragColor=vec4(col,1.);
-}`;
-  function mkS(t,s){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);
-    if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.error('Shader error:',gl.getShaderInfoLog(sh));}
-    return sh;}
-  const prog=gl.createProgram();
-  gl.attachShader(prog,mkS(gl.VERTEX_SHADER,VS));
-  gl.attachShader(prog,mkS(gl.FRAGMENT_SHADER,FS));
-  gl.linkProgram(prog);
-  if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){console.error('Program link error:',gl.getProgramInfoLog(prog));return;}
-  gl.useProgram(prog);
-  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
-  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+float cn(vec2 P){vec4 Pi=floor(P.xyxy)+vec4(0,0,1,1);vec4 Pf=fract(P.xyxy)-vec4(0,0,1,1);Pi=m9(Pi);vec4 ix=Pi.xzxz,iy=Pi.yyww,fx=Pf.xzxz,fy=Pf.yyww;vec4 i=pm(pm(ix)+iy);vec4 gx=fract(i*(1./41.))*2.-1.;vec4 gy=abs(gx)-.5;gx-=floor(gx+.5);vec2 g00=vec2(gx.x,gy.x),g10=vec2(gx.y,gy.y),g01=vec2(gx.z,gy.z),g11=vec2(gx.w,gy.w);vec4 n=ti(vec4(dot(g00,g00),dot(g01,g01),dot(g10,g10),dot(g11,g11)));g00*=n.x;g01*=n.y;g10*=n.z;g11*=n.w;vec2 f=fd(Pf.xy);return 2.3*mix(mix(dot(g00,vec2(fx.x,fy.x)),dot(g10,vec2(fx.y,fy.y)),f.x),mix(dot(g01,vec2(fx.z,fy.z)),dot(g11,vec2(fx.w,fy.w)),f.x),f.y);}
+float fbm(vec2 p){float v=0.,a=1.,fr=2.7;for(int i=0;i<4;i++){v+=a*abs(cn(p));p*=fr;a*=.15;}return v;}
+float pat(vec2 p){vec2 p2=p-T*.04;return fbm(p+fbm(p2));}
+void main(){vec2 uv=gl_FragCoord.xy/R,p=uv-.5;p.x*=R.x/R.y;vec2 mn=(M/R-.5)*vec2(1.,-1.);mn.x*=R.x/R.y;float d=length(p-mn),f=pat(p);f-=.5*(1.-smoothstep(0.,.4,d));vec3 wc=vec3(.545,.361,.965);vec3 col=mix(vec3(.04,.03,.07),wc,clamp(f,0.,1.));float cn2=6.6,ps=2.;float bx=mod(gl_FragCoord.x,8.),by=mod(gl_FragCoord.y,8.);col+=(.5/cn2)*sin(bx*1.5+by*1.5);col=clamp(col-.18,0.,1.);col=floor(col*(cn2-1.)+.5)/(cn2-1.);gl_FragColor=vec4(col,1.);}`;
+  function mkS(t,s){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);return sh;}
+  const prog=gl.createProgram();gl.attachShader(prog,mkS(gl.VERTEX_SHADER,VS));gl.attachShader(prog,mkS(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prog);gl.useProgram(prog);
+  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const al=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
-  const uR=gl.getUniformLocation(prog,'R'),uT=gl.getUniformLocation(prog,'T'),uM=gl.getUniformLocation(prog,'M'),uWC=gl.getUniformLocation(prog,'WC');
-  function hexToRgb01(hex){
-    if(!hex)return [0.545,0.361,0.965];
-    let c=hex.startsWith('#')?hex.slice(1):hex;
-    if(c.length===3)c=c.split('').map(x=>x+x).join('');
-    const num=parseInt(c,16);
-    return [((num>>16)&255)/255, ((num>>8)&255)/255, (num&255)/255];
-  }
-  const WC=hexToRgb01(proj.bgColor);
-  let mx=0,my=0;
-  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  const uR=gl.getUniformLocation(prog,'R'),uT=gl.getUniformLocation(prog,'T'),uM=gl.getUniformLocation(prog,'M');
+  let mx=0,my=0;window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
   const t0=performance.now();
-  (function loop(){
-    const t=(performance.now()-t0)/1000;
-    gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,cv.height-my);gl.uniform3f(uWC,WC[0],WC[1],WC[2]);
-    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(loop);
-  })();
-}
+  (function loop(){const t=(performance.now()-t0)/1000;gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,cv.height-my);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(loop);})();
+})();
 
 // ══════════════════════════════════════════════════
-// ASCII TEXT — Three.js (título del proyecto)
+// ASCII
 // ══════════════════════════════════════════════════
-function initAscii(){
-  const container=document.getElementById('ascii-root');
-  if(!container||typeof THREE==='undefined')return;
-  const CHARSET=" .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
-  const FS_PX=11;
-  const TEXT=((folder&&folder.name)||'PROYECTO').toUpperCase();
-  const renderer=new THREE.WebGLRenderer({antialias:false,alpha:true});
-  renderer.setPixelRatio(1);renderer.setClearColor(0,0);
-  const pre=document.createElement('pre');
-  pre.style.cssText='position:absolute;left:0;top:0;z-index:9;pointer-events:none;font-family:"IBM Plex Mono",monospace;font-size:'+FS_PX+'px;margin:0;padding:0;line-height:1em;background-image:radial-gradient(circle,#ff6188 0%,#fc9867 50%,#ffd866 100%);background-attachment:fixed;-webkit-text-fill-color:transparent;-webkit-background-clip:text;mix-blend-mode:difference;user-select:none;white-space:pre';
+function initAscii(text) {
+  const container = document.getElementById('ascii-root');
+  if (!container || typeof THREE === 'undefined') return;
+  const CHARSET = " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+  const FS_PX = 11;
+  const TEXT = (text || 'PROYECTO').toUpperCase();
+  const renderer = new THREE.WebGLRenderer({antialias:false,alpha:true});
+  renderer.setPixelRatio(1); renderer.setClearColor(0,0);
+  const pre = document.createElement('pre');
+  pre.style.cssText = 'position:absolute;left:0;top:0;z-index:9;pointer-events:none;font-family:"IBM Plex Mono",monospace;font-size:'+FS_PX+'px;margin:0;padding:0;line-height:1em;background-image:radial-gradient(circle,#ff6188 0%,#fc9867 50%,#ffd866 100%);background-attachment:fixed;-webkit-text-fill-color:transparent;-webkit-background-clip:text;mix-blend-mode:difference;user-select:none;white-space:pre';
   container.appendChild(pre);
   const oc=document.createElement('canvas'),ox=oc.getContext('2d');
   const tc=document.createElement('canvas'),tx=tc.getContext('2d');
-  const fstr='600 200px "IBM Plex Mono",monospace';
-  tx.font=fstr;const met=tx.measureText(TEXT);
-  tc.width=Math.ceil(met.width)+20;tc.height=240;
-  tx.font=fstr;tx.fillStyle='#fdf9f3';tx.fillText(TEXT,10,195);
+  tx.font='600 200px "IBM Plex Mono",monospace';
+  const met=tx.measureText(TEXT);
+  tc.width=Math.ceil(met.width)+20; tc.height=240;
+  tx.font='600 200px "IBM Plex Mono",monospace'; tx.fillStyle='#fdf9f3'; tx.fillText(TEXT,10,195);
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,1,1,1000);
   camera.position.z=30;
-  const tex=new THREE.CanvasTexture(tc);tex.minFilter=THREE.NearestFilter;
+  const tex=new THREE.CanvasTexture(tc); tex.minFilter=THREE.NearestFilter;
   const asp=tc.width/tc.height;
   const geo=new THREE.PlaneGeometry(8*asp,8,36,36);
-  const mat=new THREE.ShaderMaterial({transparent:true,
-    uniforms:{uTime:{value:0},uTex:{value:tex},uW:{value:1.0}},
-    vertexShader:`varying vec2 vUv;uniform float uTime,uW;void main(){vUv=uv;vec3 p=position;p.x+=sin(uTime*5.+position.y)*.5*uW;p.y+=cos(uTime*5.+position.z)*.15*uW;p.z+=sin(uTime*5.+position.x)*uW;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,
-    fragmentShader:`varying vec2 vUv;uniform float uTime;uniform sampler2D uTex;void main(){float t=uTime;vec2 p=vUv;float r=texture2D(uTex,p+cos(t*2.-t+p.x)*.01).r;float g=texture2D(uTex,p+tan(t*.5+p.x-t)*.01).g;float b=texture2D(uTex,p-cos(t*2.+t+p.y)*.01).b;gl_FragColor=vec4(r,g,b,texture2D(uTex,p).a);}`
+  const mat=new THREE.ShaderMaterial({transparent:true,uniforms:{uTime:{value:0},uTex:{value:tex},uW:{value:1.0}},
+    vertexShader:'varying vec2 vUv;uniform float uTime,uW;void main(){vUv=uv;vec3 p=position;p.x+=sin(uTime*5.+position.y)*.5*uW;p.y+=cos(uTime*5.+position.z)*.15*uW;p.z+=sin(uTime*5.+position.x)*uW;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}',
+    fragmentShader:'varying vec2 vUv;uniform float uTime;uniform sampler2D uTex;void main(){float t=uTime;vec2 p=vUv;float r=texture2D(uTex,p+cos(t*2.-t+p.x)*.01).r;float g=texture2D(uTex,p+tan(t*.5+p.x-t)*.01).g;float b=texture2D(uTex,p-cos(t*2.+t+p.y)*.01).b;gl_FragColor=vec4(r,g,b,texture2D(uTex,p).a);}'
   });
-  const mesh=new THREE.Mesh(geo,mat);scene.add(mesh);
-  let W=0,H=0,cols=0,rows=0,mx=0,my=0,deg=0,hovering=false;
-  function resize(){
-    const r=container.getBoundingClientRect();
-    W=r.width||innerWidth;H=r.height||innerHeight*.54;
-    renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();
-    ox.font=FS_PX+'px "IBM Plex Mono",monospace';
-    const cw=ox.measureText('A').width;
-    cols=Math.floor(W/cw);rows=Math.floor(H/FS_PX);
-    oc.width=cols;oc.height=rows;
-  }
-  resize();window.addEventListener('resize',resize);
+  const mesh=new THREE.Mesh(geo,mat); scene.add(mesh);
+  let W=0,H=0,cols=0,rows=0,mx=0,my=0,deg=0,hov=false;
+  function resize(){const r=container.getBoundingClientRect();W=r.width||innerWidth;H=r.height||innerHeight*.6;renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();ox.font=FS_PX+'px "IBM Plex Mono",monospace';const cw=ox.measureText('A').width;cols=Math.floor(W/cw);rows=Math.floor(H/FS_PX);oc.width=cols;oc.height=rows;}
+  resize(); window.addEventListener('resize',resize);
   container.appendChild(renderer.domElement);
   renderer.domElement.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;image-rendering:pixelated';
-  const hoverTarget=container.closest('.hero')||container;
-  hoverTarget.addEventListener('mousemove',e=>{const r=container.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;hovering=true;});
-  hoverTarget.addEventListener('mouseleave',()=>{hovering=false;});
-  function asciify(){
-    ox.clearRect(0,0,cols,rows);ox.drawImage(renderer.domElement,0,0,cols,rows);
-    const d=ox.getImageData(0,0,cols,rows).data;let s='';
-    for(let y=0;y<rows;y++){for(let x=0;x<cols;x++){const i=(x+y*cols)*4;if(d[i+3]===0){s+=' ';continue;}const g=(0.3*d[i]+0.6*d[i+1]+0.1*d[i+2])/255;s+=CHARSET[CHARSET.length-1-Math.floor((1-g)*(CHARSET.length-1))]||' ';}s+='\n';}
-    pre.textContent=s;
-  }
-  (function loop(){
-    requestAnimationFrame(loop);const t=performance.now()*.001;
-    tex.needsUpdate=true;mat.uniforms.uTime.value=Math.sin(t);
-    const tx_=hovering?((mx/W)-.5):0;
-    const ty_=hovering?((my/H)-.5):0;
-    mesh.rotation.x+=(ty_-mesh.rotation.x)*0.05;
-    mesh.rotation.y+=(tx_-mesh.rotation.y)*0.05;
-    const targetDeg=hovering?Math.atan2(my-H/2,mx-W/2)*180/Math.PI:0;
-    deg+=(targetDeg-deg)*0.075;
-    renderer.render(scene,camera);asciify();
-    pre.style.filter='hue-rotate('+deg.toFixed(1)+'deg)';
-  })();
+  const ht=container.closest('.hero')||container;
+  ht.addEventListener('mousemove',e=>{const r=container.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;hov=true;});
+  ht.addEventListener('mouseleave',()=>{hov=false;});
+  function asciify(){ox.clearRect(0,0,cols,rows);ox.drawImage(renderer.domElement,0,0,cols,rows);const d=ox.getImageData(0,0,cols,rows).data;let s='';for(let y=0;y<rows;y++){for(let x=0;x<cols;x++){const i=(x+y*cols)*4;if(d[i+3]===0){s+=' ';continue;}const g=(0.3*d[i]+0.6*d[i+1]+0.1*d[i+2])/255;s+=CHARSET[CHARSET.length-1-Math.floor((1-g)*(CHARSET.length-1))]||' ';}s+='\n';}pre.textContent=s;}
+  (function loop(){requestAnimationFrame(loop);const t=performance.now()*.001;tex.needsUpdate=true;mat.uniforms.uTime.value=Math.sin(t);const tx_=hov?(mx/W-.5):0,ty_=hov?(my/H-.5):0;mesh.rotation.x+=(ty_-mesh.rotation.x)*0.05;mesh.rotation.y+=(tx_-mesh.rotation.y)*0.05;const tDeg=hov?Math.atan2(my-H/2,mx-W/2)*180/Math.PI:0;deg+=(tDeg-deg)*.075;renderer.render(scene,camera);asciify();pre.style.filter='hue-rotate('+deg.toFixed(1)+'deg)';})();
 }
 
 // ══════════════════════════════════════════════════
-// SPLIT TEXT — nombre del proyecto (hero)
+// SPLIT TEXT
 // ══════════════════════════════════════════════════
-function renderName(name){
-  const el=document.getElementById('hero-name');
-  el.innerHTML='';
-  if(!name)name='Proyecto';
-  let idx=0;
-  name.trim().split(' ').forEach((w,wi)=>{
-    w.split('').forEach(ch=>{
-      const delay=idx*0.048;
-      const sp=document.createElement('span');
-      sp.style.cssText=`display:inline-block;color:${wi>0?'var(--violet)':'var(--cream)'};opacity:0;transform:translateY(42px);transition:opacity .75s cubic-bezier(.16,1,.3,1) ${delay}s,transform .75s cubic-bezier(.16,1,.3,1) ${delay}s`;
-      sp.textContent=ch;el.appendChild(sp);idx++;
+function renderName(name) {
+  const el = document.getElementById('hero-name');
+  el.innerHTML = '';
+  if (!name) name = 'Proyecto';
+  let idx = 0;
+  name.trim().split(' ').forEach((w, wi) => {
+    w.split('').forEach(ch => {
+      const delay = idx * 0.048;
+      const sp = document.createElement('span');
+      sp.style.cssText = `display:inline-block;color:${wi>0?'var(--violet)':'var(--cream)'};opacity:0;transform:translateY(42px);transition:opacity .75s cubic-bezier(.16,1,.3,1) ${delay}s,transform .75s cubic-bezier(.16,1,.3,1) ${delay}s`;
+      sp.textContent = ch; el.appendChild(sp); idx++;
     });
-    if(wi<name.trim().split(' ').length-1){const sp=document.createElement('span');sp.style.display='inline-block';sp.innerHTML=' ';el.appendChild(sp);}
+    if (wi < name.trim().split(' ').length - 1) {
+      const sp = document.createElement('span'); sp.style.display = 'inline-block'; sp.innerHTML = ' '; el.appendChild(sp);
+    }
   });
-  setTimeout(()=>el.querySelectorAll('span').forEach(s=>{s.style.opacity='1';s.style.transform='translateY(0)';}),120);
+  setTimeout(() => el.querySelectorAll('span').forEach(s => { s.style.opacity='1'; s.style.transform='translateY(0)'; }), 120);
 }
 
 // ══════════════════════════════════════════════════
 // SCROLL REVEAL
 // ══════════════════════════════════════════════════
-const revealObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target);}
-  });
-},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
-function observeReveals(){
-  document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>{
-    if(!el.classList.contains('visible'))revealObs.observe(el);
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold:0.1, rootMargin:'0px 0px -40px 0px' });
+function observeReveals() {
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-scale').forEach(el => {
+    if (!el.classList.contains('visible')) revealObs.observe(el);
   });
 }
 
 // ══════════════════════════════════════════════════
 // STAGGERED MENU
 // ══════════════════════════════════════════════════
-let menuOpen=false;
-const smPanel=document.getElementById('sm-panel');
-const smPres=document.querySelectorAll('.sm-pre');
-const smBtn=document.getElementById('sm-btn');
-const smTi=document.getElementById('sm-ti');
-const smInners=document.querySelectorAll('.sm-pinner');
-function openMenu(){
-  menuOpen=true;smBtn.classList.add('open');smTi.style.transform='translateY(-50%)';
-  smPres.forEach((l,i)=>{l.style.transition=`transform .48s cubic-bezier(.4,0,.2,1) ${i*.07}s`;l.style.transform='translateX(0)';});
-  setTimeout(()=>{smPanel.style.transition='transform .55s cubic-bezier(.4,0,.2,1)';smPanel.style.transform='translateX(0)';},95);
-  setTimeout(()=>smInners.forEach((it,i)=>{it.style.transition=`transform .62s cubic-bezier(.16,1,.3,1) ${.08+i*.1}s`;it.style.transform='translateY(0)';}),230);
-  document.getElementById('smw').style.pointerEvents='auto';
-}
-function closeMenu(){
-  menuOpen=false;smBtn.classList.remove('open');smTi.style.transform='';
-  smInners.forEach(it=>{it.style.transition='none';it.style.transform='translateY(110%)';});
-  smPanel.style.transition='transform .32s cubic-bezier(.4,0,.2,1)';smPanel.style.transform='translateX(100%)';
-  setTimeout(()=>smPres.forEach(l=>{l.style.transition='transform .3s cubic-bezier(.4,0,.2,1)';l.style.transform='translateX(100%)';}),65);
-  setTimeout(()=>document.getElementById('smw').style.pointerEvents='none',390);
-}
+let menuOpen = false;
+const smPanel=document.getElementById('sm-panel'),smPres=document.querySelectorAll('.sm-pre'),smBtn=document.getElementById('sm-btn'),smTi=document.getElementById('sm-ti'),smInners=document.querySelectorAll('.sm-pinner');
+function openMenu(){menuOpen=true;smBtn.classList.add('open');smTi.style.transform='translateY(-50%)';smPres.forEach((l,i)=>{l.style.transition=`transform .48s cubic-bezier(.4,0,.2,1) ${i*.07}s`;l.style.transform='translateX(0)';});setTimeout(()=>{smPanel.style.transition='transform .55s cubic-bezier(.4,0,.2,1)';smPanel.style.transform='translateX(0)';},95);setTimeout(()=>smInners.forEach((it,i)=>{it.style.transition=`transform .62s cubic-bezier(.16,1,.3,1) ${.08+i*.1}s`;it.style.transform='translateY(0)';}),230);document.getElementById('smw').style.pointerEvents='auto';}
+function closeMenu(){menuOpen=false;smBtn.classList.remove('open');smTi.style.transform='';smInners.forEach(it=>{it.style.transition='none';it.style.transform='translateY(110%)';});smPanel.style.transition='transform .32s cubic-bezier(.4,0,.2,1)';smPanel.style.transform='translateX(100%)';setTimeout(()=>smPres.forEach(l=>{l.style.transition='transform .3s cubic-bezier(.4,0,.2,1)';l.style.transform='translateX(100%)';}),65);setTimeout(()=>document.getElementById('smw').style.pointerEvents='none',390);}
 smBtn.addEventListener('click',()=>menuOpen?closeMenu():openMenu());
 document.addEventListener('mousedown',e=>{if(menuOpen&&!smPanel.contains(e.target)&&!smBtn.contains(e.target))closeMenu();});
 
 // ══════════════════════════════════════════════════
 // BORDER GLOW
 // ══════════════════════════════════════════════════
-function applyGlow(el){
-  el.addEventListener('pointermove',e=>{
-    const r=el.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
-    const cx=r.width/2,cy=r.height/2,dx=x-cx,dy=y-cy;
+function applyGlow(el) {
+  el.addEventListener('pointermove', e => {
+    const r=el.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,cx=r.width/2,cy=r.height/2,dx=x-cx,dy=y-cy;
     const kx=dx?cx/Math.abs(dx):Infinity,ky=dy?cy/Math.abs(dy):Infinity;
     const ep=Math.min(Math.max(1/Math.min(kx,ky),0),1)*100;
     let ang=(Math.atan2(dy,dx)*180/Math.PI)+90;if(ang<0)ang+=360;
@@ -712,195 +635,12 @@ function applyGlow(el){
 }
 
 // ══════════════════════════════════════════════════
-// PROJECT NOT FOUND
-// ══════════════════════════════════════════════════
-function checkNotFound(){
-  if(!folder){
-    document.getElementById('page-content').innerHTML = `
-      <div class="not-found reveal visible">
-        <h2>Proyecto no encontrado</h2>
-        <p style="color:var(--cream2);margin-bottom:1.5rem">El proyecto que buscás no existe o fue eliminado.</p>
-        <a href="index.html#works">← Volver a carpetas</a>
-      </div>
-    `;
-  }
-}
-
-// ══════════════════════════════════════════════════
-// RENDER GALLERY
-// ══════════════════════════════════════════════════
-function renderGallery(){
-  const grid=document.getElementById('gallery-grid');
-  grid.innerHTML='';
-  proj.images.forEach((src,i)=>{
-    const item=document.createElement('div');
-    item.className='gallery-item reveal-scale delay-'+(Math.min(i+1,6));
-    item.innerHTML=`
-      <img src="${src}" alt="Imagen ${i+1}" loading="lazy" onerror="this.style.display='none'">
-      ${isAdmin?`<button class="gallery-edit" onclick="event.stopPropagation();deleteImage(${i})">🗑️ Eliminar</button>`:''}
-    `;
-    item.addEventListener('click',e=>{
-      if(e.target.closest('.gallery-edit'))return;
-      openLightbox(src);
-    });
-    grid.appendChild(item);
-  });
-  if(proj.images.length===0 && !isAdmin){
-    grid.innerHTML='<div class="gallery-item"><div class="gallery-placeholder"><span>🖼️</span><p>Sin imágenes todavía</p></div></div>';
-  }
-  if(isAdmin){
-    const add=document.createElement('div');
-    add.className='gallery-add';
-    add.innerHTML='<span>+</span><span>Agregar imagen</span>';
-    add.addEventListener('click',openAddImage);
-    grid.appendChild(add);
-  }
-  observeReveals();
-}
-function openAddImage(){
-  if(!isAdmin)return;
-  document.getElementById('img-url-in').value='';
-  openM('add-image-m');
-}
-function saveImage(){
-  const url=document.getElementById('img-url-in').value.trim();
-  if(!url)return;
-  proj.images.push(url);
-  persistProj();renderGallery();closeM('add-image-m');
-}
-function deleteImage(i){
-  if(!confirm('¿Eliminar esta imagen?'))return;
-  proj.images.splice(i,1);
-  persistProj();renderGallery();
-}
-
-// ══════════════════════════════════════════════════
-// BACKGROUND COLOR
-// ══════════════════════════════════════════════════
-function openBgModal(){
-  if(!isAdmin)return;
-  document.getElementById('bg-color-in').value=proj.bgColor||'#8B5CF6';
-  openM('bg-m');
-}
-function saveBgColor(){
-  proj.bgColor=document.getElementById('bg-color-in').value;
-  persistProj();closeM('bg-m');
-  location.reload();
-}
-function resetBgColor(){
-  proj.bgColor='';
-  persistProj();closeM('bg-m');
-  location.reload();
-}
-
-// ══════════════════════════════════════════════════
 // LIGHTBOX
 // ══════════════════════════════════════════════════
-function openLightbox(src){
-  document.getElementById('lightbox-img').src=src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('open');
-}
-document.getElementById('lightbox').addEventListener('click',e=>{
-  if(e.target.id==='lightbox')closeLightbox();
-});
+function openLightbox(src){document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+document.getElementById('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
-
-// ══════════════════════════════════════════════════
-// RENDER TAGS
-// ══════════════════════════════════════════════════
-function renderTags(){
-  const wrap=document.getElementById('proj-tags-wrap');
-  wrap.innerHTML='';
-  (proj.tags||'').split(',').map(t=>t.trim()).filter(Boolean).forEach(t=>{
-    const sp=document.createElement('span');sp.className='tag';sp.textContent=t;wrap.appendChild(sp);
-  });
-}
-
-// ══════════════════════════════════════════════════
-// RENDER OTHER PROJECTS (folders, excluding current)
-// ══════════════════════════════════════════════════
-function darken(hex,pct){
-  let c=hex.startsWith('#')?hex.slice(1):hex;
-  if(c.length===3)c=c.split('').map(x=>x+x).join('');
-  const num=parseInt(c,16);
-  let r=(num>>16)&255,g=(num>>8)&255,b=num&255;
-  r=Math.max(0,Math.floor(r*(1-pct)));g=Math.max(0,Math.floor(g*(1-pct)));b=Math.max(0,Math.floor(b*(1-pct)));
-  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1).toUpperCase();
-}
-function renderOtherProjects(){
-  const grid=document.getElementById('folders-grid');
-  grid.innerHTML='';
-  folders.filter(f=>f.id!==projectId).forEach((f,fi)=>{
-    const dk=darken(f.color,.12);
-    const a=document.createElement('a');
-    a.href=`project.html?id=${f.id}`;
-    a.className='folder-item bgc reveal delay-'+(Math.min(fi+1,6));
-    a.innerHTML=`
-      <span class="elight"></span>
-      <div class="fwrap"><div class="fback" style="background:${dk}">
-        <div class="fpaper fp1"></div><div class="fpaper fp2"></div><div class="fpaper fp3"></div>
-        <div class="ffront" style="background:${f.color}"></div>
-      </div></div>
-      <span class="folder-label">${f.name}</span>
-    `;
-    applyGlow(a);
-    grid.appendChild(a);
-  });
-  observeReveals();
-}
-
-// ══════════════════════════════════════════════════
-// ADMIN LOGIN
-// ══════════════════════════════════════════════════
-document.getElementById('admin-fab').classList.remove('hidden');
-document.getElementById('admin-fab').addEventListener('click',()=>{
-  if(isAdmin)openM('edit-m');
-  else openM('auth-m');
-});
-document.getElementById('auth-ok').addEventListener('click',doAuth);
-document.getElementById('auth-in').addEventListener('keydown',e=>{if(e.key==='Enter')doAuth();});
-document.getElementById('auth-toggle').addEventListener('click',()=>{
-  const inp=document.getElementById('auth-in');
-  const btn=document.getElementById('auth-toggle');
-  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.setAttribute('aria-label','Ocultar contraseña');}
-  else{inp.type='password';btn.textContent='👁️';btn.setAttribute('aria-label','Mostrar contraseña');}
-  inp.focus();
-});
-async function doAuth(){
-  const ok=document.getElementById('auth-ok');
-  const entered=document.getElementById('auth-in').value;
-  ok.disabled=true;ok.textContent='Verificando…';
-  try{
-    const {data,error}=await sb.from('pf_admin').select('password').eq('id',1).maybeSingle();
-    const correct = data ? data.password : 'Lourdes01*47593641';
-    if(!error && entered===correct){
-      isAdmin=true;
-      localStorage.setItem('pf4-admin','1');
-      document.getElementById('auth-in').value='';
-      document.getElementById('auth-err').textContent='';
-      document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
-      document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='block');
-      closeM('auth-m');
-      renderGallery();
-    } else {
-      document.getElementById('auth-err').textContent='Contraseña incorrecta.';
-      document.getElementById('auth-in').value='';
-    }
-  }catch(err){
-    document.getElementById('auth-err').textContent='Error de conexión. Probá de nuevo.';
-  }
-  ok.disabled=false;ok.textContent='Entrar';
-}
-function doLogout(){
-  isAdmin=false;
-  localStorage.removeItem('pf4-admin');
-  document.getElementById('admin-fab').textContent='⚙ Editar';
-  document.querySelectorAll('.inline-edit').forEach(el=>el.style.display='');
-  closeM('edit-m');renderGallery();
-}
 
 // ══════════════════════════════════════════════════
 // MODALS
@@ -910,82 +650,380 @@ function closeM(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.moverlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 
 // ══════════════════════════════════════════════════
-// INLINE EDIT
+// VIDEO URL → EMBED
 // ══════════════════════════════════════════════════
-let inlineTarget=null,inlineIsArea=false;
-function openInlineEdit(id,label,isArea){
-  if(!isAdmin)return;
-  inlineTarget=id;inlineIsArea=!!isArea;
-  document.getElementById('inline-m-title').textContent='Editar: '+label;
-  let val='';
-  if(id==='proj-desc')val=proj.desc;
-  else if(id==='proj-about-text')val=proj.about;
-  else if(id==='proj-tags-edit')val=proj.tags;
-  else if(id==='hero-name')val=(folder&&folder.name)||'';
-  else{const el=document.getElementById(id);val=el?el.textContent.trim():'';}
-  const inp=document.getElementById('inline-input');
-  const ta=document.getElementById('inline-textarea');
-  if(isArea){inp.style.display='none';ta.style.display='block';ta.value=val;}
-  else{ta.style.display='none';inp.style.display='block';inp.value=val;}
-  openM('inline-m');
+function toEmbedUrl(url) {
+  if (!url) return '';
+  // YouTube
+  let yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s?]+)/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}?rel=0`;
+  // YouTube already embed
+  if (url.includes('youtube.com/embed/')) return url;
+  // Vimeo
+  let vi = url.match(/vimeo\.com\/(\d+)/);
+  if (vi) return `https://player.vimeo.com/video/${vi[1]}`;
+  return url;
 }
-function saveInlineEdit(){
-  if(!inlineTarget)return;
-  const val=inlineIsArea?document.getElementById('inline-textarea').value:document.getElementById('inline-input').value;
-  if(inlineTarget==='proj-desc'){
-    proj.desc=val;persistProj();
-    const el=document.getElementById('proj-desc');
-    const btns=Array.from(el.querySelectorAll('.inline-edit'));
-    el.textContent=val;btns.forEach(b=>el.appendChild(b));
-  } else if(inlineTarget==='proj-about-text'){
-    proj.about=val;persistProj();
-    const el=document.getElementById('proj-about-text');
-    const btns=Array.from(el.querySelectorAll('.inline-edit'));
-    el.innerHTML='<p>'+val.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>';
-    btns.forEach(b=>el.appendChild(b));
-  } else if(inlineTarget==='proj-tags-edit'){
-    proj.tags=val;persistProj();renderTags();
-  } else if(inlineTarget==='hero-name'){
-    if(folder){
-      folder.name=val;
-      persistFolders();
-      renderName(val);
-      document.title=val+' · Portfolio';
-    }
+
+// ══════════════════════════════════════════════════
+// BLOCK RENDER ENGINE
+// ══════════════════════════════════════════════════
+function renderBlocks() {
+  const container = document.getElementById('blocks-container');
+  container.innerHTML = '';
+  proj.blocks.forEach((block, idx) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'block-wrap reveal';
+    wrap.dataset.blockId = block.id;
+    wrap.innerHTML = renderBlockControls(idx) + renderBlockContent(block, idx);
+    container.appendChild(wrap);
+  });
+  if (isAdmin) document.getElementById('add-block-bar').classList.add('visible');
+  else document.getElementById('add-block-bar').classList.remove('visible');
+  observeReveals();
+  // wire up glow on link rows
+  container.querySelectorAll('.folder-item.bgc').forEach(applyGlow);
+}
+
+function renderBlockControls(idx) {
+  if (!isAdmin) return '';
+  const isFirst = idx === 0;
+  const isLast  = idx === proj.blocks.length - 1;
+  return `<div class="block-controls">
+    <button class="bc-btn up" onclick="moveBlock(${idx},-1)" ${isFirst?'disabled style="opacity:.3"':''}>↑</button>
+    <button class="bc-btn down" onclick="moveBlock(${idx},1)" ${isLast?'disabled style="opacity:.3"':''}>↓</button>
+    <div class="bc-sep"></div>
+    <button class="bc-btn" onclick="editBlock(${idx})">✏️ Editar</button>
+    <div class="bc-sep"></div>
+    <button class="bc-btn danger" onclick="deleteBlock(${idx})">🗑️</button>
+  </div>`;
+}
+
+function renderBlockContent(block, idx) {
+  switch(block.type) {
+    case 'text':    return renderTextBlock(block, idx);
+    case 'gallery': return renderGalleryBlock(block, idx);
+    case 'links':   return renderLinksBlock(block, idx);
+    case 'video':   return renderVideoBlock(block, idx);
+    default: return '';
   }
-  closeM('inline-m');
+}
+
+function renderTextBlock(block, idx) {
+  const title = block.title ? `<h2 class="block-text-title">${block.title}</h2>` : '';
+  const content = (block.content || '').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+  return `<div class="block-text-content reveal">${title}<p>${content}</p></div>`;
+}
+
+function renderGalleryBlock(block, idx) {
+  const title = block.title ? `<div class="sec-hdr"><div><p class="sec-label">Galería</p><h2 class="sec-title">${block.title}</h2></div></div>` : '';
+  const imgs = (block.images || []).map((src, i) =>
+    `<div class="gallery-item reveal-scale delay-${Math.min(i+1,6)}" onclick="openLightbox('${src}')">
+      <img src="${src}" alt="Imagen ${i+1}" loading="lazy">
+      ${isAdmin ? `<button class="gallery-item-del" onclick="event.stopPropagation();deleteGalleryImg(${idx},${i})">🗑️</button>` : ''}
+    </div>`
+  ).join('');
+  const addBtn = isAdmin
+    ? `<div class="gallery-add-img" onclick="openGalleryImgModal(${idx})"><span>+</span><span>Agregar imagen</span></div>`
+    : '';
+  const titleEdit = isAdmin ? `<div style="margin-bottom:1rem"><button class="btn-s" style="font-size:.75rem;padding:.35rem .85rem" onclick="openGalleryTitleModal(${idx})">✏️ Editar título de galería</button></div>` : '';
+  return `${title}${titleEdit}<div class="block-gallery-grid">${imgs}${addBtn}</div>`;
+}
+
+function renderLinksBlock(block, idx) {
+  const title = block.title || 'Links';
+  const items = (block.items || []).map((lk, li) =>
+    `<a href="${lk.url}" target="_blank" rel="noopener" class="link-row">
+      <div class="link-row-left">
+        ${lk.label ? `<div class="link-row-label">${lk.label}</div>` : ''}
+        <div class="link-row-title">${lk.title}</div>
+      </div>
+      <div class="link-row-right">
+        ${isAdmin ? `<button class="link-del-btn" onclick="event.preventDefault();event.stopPropagation();deleteLinkItem(${idx},${li})">🗑️</button>` : ''}
+        <span class="link-arr">↗</span>
+      </div>
+    </a>`
+  ).join('');
+  const addBtn = isAdmin
+    ? `<button class="link-add-btn" onclick="openAddLinkModal(${idx})"><span>+</span><span>Agregar link</span></button>`
+    : '';
+  const titleEdit = isAdmin ? `<div style="margin-bottom:1rem"><button class="btn-s" style="font-size:.75rem;padding:.35rem .85rem" onclick="openLinksTitleModal(${idx})">✏️ Editar título</button></div>` : '';
+  return `<div class="sec-hdr"><div><p class="sec-label">Links</p><h2 class="sec-title">${title}</h2></div></div>
+    ${titleEdit}<div class="links-list reveal">${items}</div>${addBtn}`;
+}
+
+function renderVideoBlock(block, idx) {
+  const title = block.title ? `<div class="sec-hdr"><div><h2 class="sec-title">${block.title}</h2></div></div>` : '';
+  const embedUrl = toEmbedUrl(block.url || '');
+  const video = embedUrl
+    ? `<div class="video-embed-wrap reveal"><iframe src="${embedUrl}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>`
+    : `<div class="video-embed-wrap reveal"><div class="video-placeholder"><span>🎬</span><p>Sin video cargado</p></div></div>`;
+  return `${title}${video}`;
+}
+
+// ══════════════════════════════════════════════════
+// BLOCK OPERATIONS
+// ══════════════════════════════════════════════════
+function genId() { return 'b' + Date.now() + Math.floor(Math.random()*1000); }
+
+function addBlock(type) {
+  const defaults = {
+    text:    { type:'text',    id:genId(), title:'',  content:'' },
+    gallery: { type:'gallery', id:genId(), title:'',  images:[] },
+    links:   { type:'links',   id:genId(), title:'Links', items:[] },
+    video:   { type:'video',   id:genId(), title:'',  url:'' },
+  };
+  proj.blocks.push({ ...defaults[type] });
+  persistProj();
+  renderBlocks();
+  // scroll to new block
+  setTimeout(() => {
+    const wraps = document.querySelectorAll('.block-wrap');
+    if (wraps.length) wraps[wraps.length-1].scrollIntoView({behavior:'smooth',block:'start'});
+  }, 100);
+}
+
+function deleteBlock(idx) {
+  if (!confirm('¿Eliminar esta sección?')) return;
+  proj.blocks.splice(idx, 1);
+  persistProj(); renderBlocks();
+}
+
+function moveBlock(idx, dir) {
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= proj.blocks.length) return;
+  const tmp = proj.blocks[idx];
+  proj.blocks[idx] = proj.blocks[newIdx];
+  proj.blocks[newIdx] = tmp;
+  persistProj(); renderBlocks();
+}
+
+// ══════════════════════════════════════════════════
+// EDIT BLOCK DISPATCHERS
+// ══════════════════════════════════════════════════
+let editingBlockIdx = null;
+
+function editBlock(idx) {
+  editingBlockIdx = idx;
+  const block = proj.blocks[idx];
+  switch(block.type) {
+    case 'text':    openTextBlockModal(block); break;
+    case 'gallery': openGalleryTitleModal(idx); break;
+    case 'links':   openLinksTitleModal(idx); break;
+    case 'video':   openVideoBlockModal(block); break;
+  }
+}
+
+// ── TEXT BLOCK ──
+function openTextBlockModal(block) {
+  document.getElementById('text-block-m-title').textContent = block.title ? 'Editar texto' : 'Bloque de texto';
+  document.getElementById('tb-title').value = block.title || '';
+  document.getElementById('tb-content').value = block.content || '';
+  openM('text-block-m');
+}
+function saveTextBlock() {
+  const b = proj.blocks[editingBlockIdx];
+  b.title = document.getElementById('tb-title').value;
+  b.content = document.getElementById('tb-content').value;
+  persistProj(); renderBlocks(); closeM('text-block-m');
+}
+
+// ── GALLERY BLOCK ──
+function openGalleryTitleModal(idx) {
+  editingBlockIdx = idx;
+  document.getElementById('gt-title').value = proj.blocks[idx].title || '';
+  openM('gallery-title-m');
+}
+function saveGalleryTitle() {
+  proj.blocks[editingBlockIdx].title = document.getElementById('gt-title').value;
+  persistProj(); renderBlocks(); closeM('gallery-title-m');
+}
+function openGalleryImgModal(idx) {
+  editingBlockIdx = idx;
+  document.getElementById('gi-url').value = '';
+  openM('gallery-img-m');
+}
+function saveGalleryImg() {
+  const url = document.getElementById('gi-url').value.trim();
+  if (!url) return;
+  if (!proj.blocks[editingBlockIdx].images) proj.blocks[editingBlockIdx].images = [];
+  proj.blocks[editingBlockIdx].images.push(url);
+  persistProj(); renderBlocks(); closeM('gallery-img-m');
+}
+function deleteGalleryImg(blockIdx, imgIdx) {
+  if (!confirm('¿Eliminar esta imagen?')) return;
+  proj.blocks[blockIdx].images.splice(imgIdx, 1);
+  persistProj(); renderBlocks();
+}
+
+// ── LINKS BLOCK ──
+function openLinksTitleModal(idx) {
+  editingBlockIdx = idx;
+  document.getElementById('lt-title').value = proj.blocks[idx].title || 'Links';
+  openM('links-title-m');
+}
+function saveLinksTitle() {
+  proj.blocks[editingBlockIdx].title = document.getElementById('lt-title').value || 'Links';
+  persistProj(); renderBlocks(); closeM('links-title-m');
+}
+function openAddLinkModal(idx) {
+  editingBlockIdx = idx;
+  document.getElementById('add-link-m-title').textContent = 'Agregar link';
+  document.getElementById('lk-title').value = '';
+  document.getElementById('lk-label').value = '';
+  document.getElementById('lk-url').value = '';
+  openM('add-link-m');
+}
+function saveLinkItem() {
+  const title = document.getElementById('lk-title').value.trim();
+  const url   = document.getElementById('lk-url').value.trim();
+  if (!title || !url) return;
+  if (!proj.blocks[editingBlockIdx].items) proj.blocks[editingBlockIdx].items = [];
+  proj.blocks[editingBlockIdx].items.push({
+    title, label: document.getElementById('lk-label').value, url
+  });
+  persistProj(); renderBlocks(); closeM('add-link-m');
+}
+function deleteLinkItem(blockIdx, itemIdx) {
+  if (!confirm('¿Eliminar este link?')) return;
+  proj.blocks[blockIdx].items.splice(itemIdx, 1);
+  persistProj(); renderBlocks();
+}
+
+// ── VIDEO BLOCK ──
+function openVideoBlockModal(block) {
+  document.getElementById('vb-title').value = block.title || '';
+  document.getElementById('vb-url').value = block.url || '';
+  openM('video-block-m');
+}
+function saveVideoBlock() {
+  const b = proj.blocks[editingBlockIdx];
+  b.title = document.getElementById('vb-title').value;
+  b.url   = document.getElementById('vb-url').value.trim();
+  persistProj(); renderBlocks(); closeM('video-block-m');
+}
+
+// ══════════════════════════════════════════════════
+// HERO EDIT
+// ══════════════════════════════════════════════════
+function openHeroEditModal() {
+  document.getElementById('he-desc').value = proj.desc || '';
+  document.getElementById('he-tags').value = proj.tags || '';
+  openM('hero-edit-m');
+}
+function saveHeroEdit() {
+  proj.desc = document.getElementById('he-desc').value;
+  proj.tags  = document.getElementById('he-tags').value;
+  persistProj();
+  // update display
+  document.getElementById('proj-desc').textContent = proj.desc;
+  renderTags();
+  closeM('hero-edit-m');
+}
+function renderTags() {
+  const wrap = document.getElementById('proj-tags-wrap');
+  wrap.innerHTML = '';
+  (proj.tags || '').split(',').map(t=>t.trim()).filter(Boolean).forEach(t => {
+    const sp = document.createElement('span'); sp.className='tag'; sp.textContent=t; wrap.appendChild(sp);
+  });
+}
+
+// ══════════════════════════════════════════════════
+// OTHER PROJECTS
+// ══════════════════════════════════════════════════
+function darken(hex,p){let c=hex.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');const n=parseInt(c,16);return '#'+[[(n>>16)&255],[(n>>8)&255],[n&255]].map(([v])=>{const r=Math.max(0,Math.floor(v*(1-p))).toString(16);return r.length===1?'0'+r:r;}).join('');}
+function renderOtherProjects() {
+  const others = folders.filter(f => f.id !== projectId);
+  const section = document.getElementById('more-projects');
+  if (!others.length) { section.style.display='none'; return; }
+  section.style.display = '';
+  const grid = document.getElementById('folders-grid');
+  grid.innerHTML = '';
+  others.forEach((f, fi) => {
+    const dk = darken(f.color, .12);
+    const a = document.createElement('a');
+    a.href = `project.html?id=${f.id}`;
+    a.className = 'folder-item bgc reveal delay-' + Math.min(fi+1,6);
+    a.innerHTML = `<span class="elight"></span><div class="fwrap"><div class="fback" style="background:${dk}"><div class="fpaper fp1"></div><div class="fpaper fp2"></div><div class="fpaper fp3"></div><div class="ffront" style="background:${f.color}"></div></div></div><span class="folder-label">${f.name}</span>`;
+    applyGlow(a); grid.appendChild(a);
+  });
+  observeReveals();
+}
+
+// ══════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════
+document.getElementById('admin-fab').addEventListener('click', () => {
+  if (isAdmin) openHeroEditModal();
+  else openM('auth-m');
+});
+document.getElementById('auth-ok').addEventListener('click', doAuth);
+document.getElementById('auth-in').addEventListener('keydown', e => { if (e.key==='Enter') doAuth(); });
+document.getElementById('auth-toggle').addEventListener('click', () => {
+  const inp = document.getElementById('auth-in'), btn = document.getElementById('auth-toggle');
+  if (inp.type==='password') { inp.type='text'; btn.textContent='🙈'; } else { inp.type='password'; btn.textContent='👁️'; }
+  inp.focus();
+});
+async function doAuth() {
+  const ok = document.getElementById('auth-ok');
+  const entered = document.getElementById('auth-in').value;
+  ok.disabled=true; ok.textContent='Verificando…';
+  try {
+    const {data, error} = await sb.from('pf_admin').select('password').eq('id',1).maybeSingle();
+    const correct = data ? data.password : 'Lourdes01*47593641';
+    if (!error && entered === correct) {
+      isAdmin = true;
+      localStorage.setItem('pf4-admin','1');
+      document.getElementById('auth-in').value = '';
+      document.getElementById('auth-err').textContent = '';
+      document.getElementById('admin-fab').textContent = '⚙ Editar proyecto';
+      closeM('auth-m');
+      renderBlocks();
+      renderOtherProjects();
+    } else {
+      document.getElementById('auth-err').textContent = 'Contraseña incorrecta.';
+      document.getElementById('auth-in').value = '';
+    }
+  } catch(err) {
+    document.getElementById('auth-err').textContent = 'Error de conexión.';
+  }
+  ok.disabled=false; ok.textContent='Entrar';
 }
 
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
-(async function init(){
-  if(localStorage.getItem('pf4-admin')==='1'){
-    isAdmin=true;
-    document.getElementById('admin-fab').textContent='⚙ Editar (admin)';
+(async function init() {
+  if (localStorage.getItem('pf4-admin') === '1') {
+    isAdmin = true;
+    document.getElementById('admin-fab').textContent = '⚙ Editar proyecto';
   }
   await loadData();
-  initDither();
-  initAscii();
-  checkNotFound();
-  if(folder){
-    renderName(folder.name);
-    document.title=folder.name+' · Portfolio';
-    document.getElementById('proj-desc').childNodes[0].textContent=proj.desc;
-    document.getElementById('proj-about-text').innerHTML='<p>'+proj.about.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>'
-      +'<button class="inline-edit" onclick="openInlineEdit(\'proj-about-text\',\'Detalles del proyecto\',true)">✏️</button>';
-    renderTags();
-    renderGallery();
+
+  if (!folder) {
+    document.querySelector('.page').innerHTML = `<div class="not-found reveal visible"><h2>Proyecto no encontrado</h2><p style="color:var(--cream2);margin-bottom:1.5rem">El proyecto que buscás no existe o fue eliminado.</p><a href="index.html#works">← Volver a carpetas</a></div>`;
+    const ov = document.getElementById('loading-overlay');
+    ov.style.opacity='0'; setTimeout(()=>ov.remove(),420);
+    return;
   }
+
+  document.title = folder.name + ' · Portfolio';
+  document.getElementById('nav-logo').textContent = globalCfg.name || 'Portfolio';
+  document.getElementById('proj-desc').textContent = proj.desc || '';
+  renderTags();
+  renderName(folder.name);
+  initAscii(folder.name);
+  renderBlocks();
   renderOtherProjects();
-  if(cfg['footer-copy'])document.getElementById('footer-copy').textContent=cfg['footer-copy'];
-  if(cfg.be)document.getElementById('m-be').href=cfg.be;
-  if(cfg.ig)document.getElementById('m-ig').href=cfg.ig;
-  if(cfg.li)document.getElementById('m-li').href=cfg.li;
+
+  if (globalCfg['footer-copy']) document.getElementById('footer-copy').textContent = globalCfg['footer-copy'];
+  if (globalCfg.be) document.getElementById('m-be').href = globalCfg.be;
+  if (globalCfg.ig) document.getElementById('m-ig').href = globalCfg.ig;
+  if (globalCfg.li) document.getElementById('m-li').href = globalCfg.li;
+
   observeReveals();
-  document.querySelectorAll('.inline-edit').forEach(el=>el.style.display=isAdmin?'block':'none');
-  const ov=document.getElementById('loading-overlay');
-  if(ov){ov.style.opacity='0';setTimeout(()=>ov.remove(),420);}
+  const ov = document.getElementById('loading-overlay');
+  ov.style.opacity='0'; setTimeout(()=>ov.remove(),420);
 })();
 </script>
 </body>
