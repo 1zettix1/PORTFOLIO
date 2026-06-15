@@ -347,6 +347,13 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
     <h3 class="mtitle">Editar información del proyecto</h3>
     <div class="fg"><label class="flbl">Descripción</label><textarea class="ftarea" id="he-desc" style="min-height:90px"></textarea></div>
     <div class="fg"><label class="flbl">Tags (separados por coma)</label><input class="finput" id="he-tags" type="text" placeholder="Procreate, 2024, Personal"></div>
+    <div class="fg"><label class="flbl">Color del fondo animado</label>
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <input type="color" id="he-bgcolor" value="#8B5CF6" style="width:48px;height:42px;padding:2px;border-radius:3px;border:.5px solid var(--border2);background:var(--bg3);cursor:pointer;flex-shrink:0">
+        <span style="font-size:.82rem;color:var(--cream2)">Cambia el tono del dither de esta página.</span>
+        <button class="btn-c" onclick="document.getElementById('he-bgcolor').value='#8B5CF6'" style="flex-shrink:0;padding:.35rem .7rem;font-size:.75rem">Reset</button>
+      </div>
+    </div>
     <div class="btn-row">
       <button class="btn-c" onclick="closeM('hero-edit-m')">Cancelar</button>
       <button class="btn-s" onclick="saveHeroEdit()">Guardar</button>
@@ -516,7 +523,7 @@ async function persistProj() {
   function resize(){cv.width=innerWidth;cv.height=innerHeight;gl.viewport(0,0,cv.width,cv.height);}
   resize(); window.addEventListener('resize',resize);
   const VS=`attribute vec2 p;void main(){gl_Position=vec4(p,0,1);}`;
-  const FS=`precision highp float;uniform vec2 R;uniform float T;uniform vec2 M;
+  const FS=`precision highp float;uniform vec2 R;uniform float T;uniform vec2 M;uniform vec3 WC;
 vec4 m9(vec4 x){return x-floor(x*(1./289.))*289.;}
 vec4 pm(vec4 x){return m9(((x*34.)+1.)*x);}
 vec4 ti(vec4 r){return 1.79284291400159-0.85373472095314*r;}
@@ -524,15 +531,33 @@ vec2 fd(vec2 t){return t*t*t*(t*(t*6.-15.)+10.);}
 float cn(vec2 P){vec4 Pi=floor(P.xyxy)+vec4(0,0,1,1);vec4 Pf=fract(P.xyxy)-vec4(0,0,1,1);Pi=m9(Pi);vec4 ix=Pi.xzxz,iy=Pi.yyww,fx=Pf.xzxz,fy=Pf.yyww;vec4 i=pm(pm(ix)+iy);vec4 gx=fract(i*(1./41.))*2.-1.;vec4 gy=abs(gx)-.5;gx-=floor(gx+.5);vec2 g00=vec2(gx.x,gy.x),g10=vec2(gx.y,gy.y),g01=vec2(gx.z,gy.z),g11=vec2(gx.w,gy.w);vec4 n=ti(vec4(dot(g00,g00),dot(g01,g01),dot(g10,g10),dot(g11,g11)));g00*=n.x;g01*=n.y;g10*=n.z;g11*=n.w;vec2 f=fd(Pf.xy);return 2.3*mix(mix(dot(g00,vec2(fx.x,fy.x)),dot(g10,vec2(fx.y,fy.y)),f.x),mix(dot(g01,vec2(fx.z,fy.z)),dot(g11,vec2(fx.w,fy.w)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=1.,fr=2.7;for(int i=0;i<4;i++){v+=a*abs(cn(p));p*=fr;a*=.15;}return v;}
 float pat(vec2 p){vec2 p2=p-T*.04;return fbm(p+fbm(p2));}
-void main(){vec2 uv=gl_FragCoord.xy/R,p=uv-.5;p.x*=R.x/R.y;vec2 mn=(M/R-.5)*vec2(1.,-1.);mn.x*=R.x/R.y;float d=length(p-mn),f=pat(p);f-=.5*(1.-smoothstep(0.,.4,d));vec3 wc=vec3(.545,.361,.965);vec3 col=mix(vec3(.04,.03,.07),wc,clamp(f,0.,1.));float cn2=6.6,ps=2.;float bx=mod(gl_FragCoord.x,8.),by=mod(gl_FragCoord.y,8.);col+=(.5/cn2)*sin(bx*1.5+by*1.5);col=clamp(col-.18,0.,1.);col=floor(col*(cn2-1.)+.5)/(cn2-1.);gl_FragColor=vec4(col,1.);}`;
+void main(){vec2 uv=gl_FragCoord.xy/R,p=uv-.5;p.x*=R.x/R.y;vec2 mn=(M/R-.5)*vec2(1.,-1.);mn.x*=R.x/R.y;float d=length(p-mn),f=pat(p);f-=.5*(1.-smoothstep(0.,.4,d));vec3 col=mix(vec3(.04,.03,.07),WC,clamp(f,0.,1.));float cn2=6.6,ps=2.;float bx=mod(gl_FragCoord.x,8.),by=mod(gl_FragCoord.y,8.);col+=(.5/cn2)*sin(bx*1.5+by*1.5);col=clamp(col-.18,0.,1.);col=floor(col*(cn2-1.)+.5)/(cn2-1.);gl_FragColor=vec4(col,1.);}`;
   function mkS(t,s){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);return sh;}
   const prog=gl.createProgram();gl.attachShader(prog,mkS(gl.VERTEX_SHADER,VS));gl.attachShader(prog,mkS(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prog);gl.useProgram(prog);
   const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const al=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
   const uR=gl.getUniformLocation(prog,'R'),uT=gl.getUniformLocation(prog,'T'),uM=gl.getUniformLocation(prog,'M');
+  function hexToRgb(hex){
+    let c=(hex||'#8B5CF6').replace('#','');
+    if(c.length===3)c=c.split('').map(x=>x+x).join('');
+    const n=parseInt(c,16);
+    return [((n>>16)&255)/255,((n>>8)&255)/255,(n&255)/255];
+  }
+  let waveColor = hexToRgb(proj.bgColor || '#8B5CF6');
+  const uWC = gl.getUniformLocation(prog,'WC');
+  // expose setter for live color change
+  window._ditherSetColor = function(hex){ waveColor = hexToRgb(hex); };
   let mx=0,my=0;window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
   const t0=performance.now();
-  (function loop(){const t=(performance.now()-t0)/1000;gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,cv.height-my);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(loop);})();
+  (function loop(){
+    const t=(performance.now()-t0)/1000;
+    gl.uniform2f(uR,cv.width,cv.height);
+    gl.uniform1f(uT,t);
+    gl.uniform2f(uM,mx,cv.height-my);
+    if(uWC)gl.uniform3f(uWC,waveColor[0],waveColor[1],waveColor[2]);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    requestAnimationFrame(loop);
+  })();
 })();
 
 // ══════════════════════════════════════════════════
@@ -907,18 +932,23 @@ function saveVideoBlock() {
 // HERO EDIT
 // ══════════════════════════════════════════════════
 function openHeroEditModal() {
-  document.getElementById('he-desc').value = proj.desc || '';
-  document.getElementById('he-tags').value = proj.tags || '';
+  document.getElementById('he-desc').value    = proj.desc || '';
+  document.getElementById('he-tags').value    = proj.tags || '';
+  document.getElementById('he-bgcolor').value = proj.bgColor || '#8B5CF6';
   openM('hero-edit-m');
 }
 function saveHeroEdit() {
-  proj.desc = document.getElementById('he-desc').value;
-  proj.tags  = document.getElementById('he-tags').value;
+  const newColor = document.getElementById('he-bgcolor').value;
+  const colorChanged = newColor !== (proj.bgColor || '#8B5CF6');
+  proj.desc    = document.getElementById('he-desc').value;
+  proj.tags    = document.getElementById('he-tags').value;
+  proj.bgColor = newColor;
   persistProj();
-  // update display
   document.getElementById('proj-desc').textContent = proj.desc;
   renderTags();
   closeM('hero-edit-m');
+  // live-update dither color without reload
+  if (colorChanged && window._ditherSetColor) window._ditherSetColor(newColor);
 }
 function renderTags() {
   const wrap = document.getElementById('proj-tags-wrap');
