@@ -1029,6 +1029,7 @@ async function doAuth() {
     document.getElementById('admin-fab').textContent = '⚙ Editar proyecto';
   }
   await loadData();
+  if (proj.bgColor && window._ditherSetColor) window._ditherSetColor(proj.bgColor); // ← NUEVO
 
   if (!folder) {
     document.querySelector('.page').innerHTML = `<div class="not-found reveal visible"><h2>Proyecto no encontrado</h2><p style="color:var(--cream2);margin-bottom:1.5rem">El proyecto que buscás no existe o fue eliminado.</p><a href="index.html#works">← Volver a carpetas</a></div>`;
