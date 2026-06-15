@@ -1480,7 +1480,12 @@ function applyConfig(){
     if(/^mailto:/i.test(u))return u;
     return 'https://'+u.replace(/^\/+/,'');
   }
-  if(c.email)setLink('c-email','mailto:'+c.email,'cv-email',c.email);
+  if(c.email){
+  const gmailUrl = 'https://mail.google.com/mail/?view=cm&to=' + encodeURIComponent(c.email);
+  setLink('c-email', gmailUrl, 'cv-email', c.email);
+  document.getElementById('c-email').target = '_blank';
+  document.getElementById('c-email').rel = 'noopener';
+}
   if(c.be){const url=normUrl(c.be);setLink('c-be',url,'cv-be',c.be.replace(/^https?:\/\//,''));document.getElementById('c-be').target='_blank';document.getElementById('c-be').rel='noopener';document.getElementById('m-be').href=url;document.getElementById('m-be').target='_blank';}
   if(c.ig){const url=normUrl(c.ig);const u='@'+(c.ig.split('/').filter(Boolean).pop()||'usuario');setLink('c-ig',url,'cv-ig',u);document.getElementById('c-ig').target='_blank';document.getElementById('c-ig').rel='noopener';document.getElementById('m-ig').href=url;document.getElementById('m-ig').target='_blank';}
   if(c.li){const url=normUrl(c.li);setLink('c-li',url,'cv-li',c.li.replace(/^https?:\/\//,''));document.getElementById('c-li').target='_blank';document.getElementById('c-li').rel='noopener';document.getElementById('m-li').href=url;document.getElementById('m-li').target='_blank';}
