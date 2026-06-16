@@ -155,7 +155,30 @@ section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;
 .viewer3d-loading.hidden{opacity:0;pointer-events:none}
 .vl-spinner{width:32px;height:32px;border:2.5px solid rgba(139,92,246,.2);border-top-color:var(--violet);border-radius:50%;animation:spin .8s linear infinite}
 .vl-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream3)}
-@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── 3D CAROUSEL ── */
+.car3d-wrap{position:relative;width:100%;max-width:960px}
+.car3d-viewer{position:relative;width:100%;height:520px;background:var(--bg2);border-radius:12px;overflow:hidden;border:.5px solid var(--border2);cursor:grab}
+.car3d-viewer:active{cursor:grabbing}
+.car3d-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem}
+.car3d-title-wrap{display:flex;flex-direction:column;gap:.15rem}
+.car3d-model-name{font-family:'Space Grotesk',sans-serif;font-size:1.35rem;font-weight:600;color:var(--cream);letter-spacing:-.02em;transition:opacity .3s}
+.car3d-counter{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cream3)}
+.car3d-nav{display:flex;align-items:center;gap:.5rem}
+.car3d-arrow{width:40px;height:40px;border-radius:50%;border:.5px solid var(--border2);background:var(--bg2);color:var(--cream);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.car3d-arrow:hover{background:var(--violet);border-color:var(--violet);color:#fff;transform:scale(1.08)}
+.car3d-dots{display:flex;gap:.4rem;align-items:center}
+.car3d-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);border:none;cursor:pointer;padding:0;transition:all .3s}
+.car3d-dot.active{background:var(--violet);width:18px;border-radius:3px}
+.car3d-bar{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.25rem;background:rgba(13,13,13,.75);position:absolute;bottom:0;left:0;right:0;backdrop-filter:blur(8px)}
+.car3d-hint{font-size:.7rem;color:var(--cream3);letter-spacing:.05em}
+.car3d-badge{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--violet2);border:.5px solid rgba(139,92,246,.3);border-radius:100px;padding:.2rem .65rem}
+.car3d-add-btn{display:flex;align-items:center;gap:.5rem;background:transparent;border:1.5px dashed var(--border2);color:var(--cream3);font-family:'Inter',sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:.85rem 1.5rem;transition:all .2s;width:100%;max-width:960px;margin-top:.75rem;border-radius:6px}
+.car3d-add-btn:hover{color:var(--violet2);border-color:var(--violet2)}
+.car3d-item-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.car3d-item-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);padding:.65rem 1rem;border-radius:4px;gap:.5rem}
+.car3d-item-row span{font-size:.85rem;color:var(--cream)}
+@media(max-width:768px){.car3d-viewer{height:340px}}
 
 /* FOLDERS */
 .folders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:2rem 1.75rem}
@@ -888,43 +911,210 @@ function renderUnityBlock(block) {
   return `${title}${content}`;
 }
 
-// ── 3D MODEL ──
-function renderModel3dBlock(block) {
-  const title = block.title ? `<div class="sec-hdr"><div><p class="sec-label">Modelo 3D interactivo</p><h2 class="sec-title">${block.title}</h2></div></div>` : `<div class="sec-hdr"><div><p class="sec-label">Modelo 3D interactivo</p></div></div>`;
+// ── 3D MODEL CAROUSEL ──
+function renderModel3dBlock(block, blockIdx) {
+  const secTitle = block.title
+    ? `<div class="sec-hdr"><div><p class="sec-label">Modelos 3D interactivos</p><h2 class="sec-title">${block.title}</h2></div></div>`
+    : `<div class="sec-hdr"><div><p class="sec-label">Modelos 3D interactivos</p></div></div>`;
 
-  if (!block.url && !block.sfUrl) {
-    return `${title}<div class="viewer3d-wrap reveal"><div class="viewer3d-placeholder"><span>🧊</span><p>Sin modelo cargado</p></div></div>`;
+  const models = block.models || [];
+  const uid = 'car3d_' + block.id;
+
+  if (!models.length) {
+    const addBtn = isAdmin
+      ? `<button class="car3d-add-btn" onclick="openAdd3dModelModal(${blockIdx}, null)">+ Agregar primer modelo</button>`
+      : '';
+    return `${secTitle}<div style="max-width:960px;height:200px;background:var(--bg2);border-radius:12px;border:.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;color:var(--cream3)"><span style="font-size:2.5rem;opacity:.25">🧊</span><p style="font-size:.78rem;letter-spacing:.1em;text-transform:uppercase">Sin modelos cargados</p></div>${addBtn}`;
   }
 
-  // Sketchfab embed
-  if (block.modelType === 'sketchfab' && block.sfUrl) {
-    const embedUrl = toSketchfabEmbed(block.sfUrl);
-    return `${title}
-      <div class="reveal" style="position:relative;width:100%;max-width:960px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:.5px solid var(--border2)">
-        <iframe src="${embedUrl}"
-          style="position:absolute;inset:0;width:100%;height:100%;border:none"
-          allowfullscreen
-          allow="autoplay; fullscreen; xr-spatial-tracking">
-        </iframe>
-      </div>`;
-  }
+  const first = models[0];
+  const dotsHtml = models.map((_, i) =>
+    `<button class="car3d-dot${i===0?' active':''}" onclick="car3dGoTo('${uid}',${i})"></button>`
+  ).join('');
 
-  // GLB viewer via Three.js
-  const bg = block.bgColor || '#161616';
-  const uid = 'v3d_' + block.id;
-  return `${title}
-    <div class="viewer3d-wrap reveal" id="${uid}" data-glb-url="${block.url}" data-glb-bg="${bg}">
-      <div class="viewer3d-loading" id="${uid}_loading">
-        <div class="vl-spinner"></div>
-        <p class="vl-label">Cargando modelo…</p>
-      </div>
-      <div class="viewer3d-bar">
-        <div class="viewer3d-hint">
-          <span>🖱️ Arrastrar para rotar · Scroll para zoom · Click derecho para mover</span>
+  const viewerHtml = `
+    <div class="car3d-wrap reveal" id="${uid}" data-block-idx="${blockIdx}">
+      <div class="car3d-header">
+        <div class="car3d-title-wrap">
+          <span class="car3d-model-name" id="${uid}_name">${first.name || 'Modelo 3D'}</span>
+          <span class="car3d-counter" id="${uid}_counter">1 / ${models.length}</span>
         </div>
-        <span class="viewer3d-badge">3D · Blender</span>
+        <div class="car3d-nav">
+          <div class="car3d-dots" id="${uid}_dots">${dotsHtml}</div>
+          <button class="car3d-arrow" id="${uid}_prev" onclick="car3dPrev('${uid}')" ${models.length<=1?'disabled':''}>←</button>
+          <button class="car3d-arrow" id="${uid}_next" onclick="car3dNext('${uid}')" ${models.length<=1?'disabled':''}>→</button>
+        </div>
       </div>
+      <div class="car3d-viewer" id="${uid}_viewer">
+        <div class="viewer3d-loading" id="${uid}_loading">
+          <div class="vl-spinner"></div>
+          <p class="vl-label">Cargando modelo…</p>
+        </div>
+        <div class="car3d-bar">
+          <span class="car3d-hint">Arrastrar · Scroll · Click derecho para mover</span>
+          <span class="car3d-badge">3D · Blender</span>
+        </div>
+      </div>
+      ${isAdmin ? `<button class="car3d-add-btn" onclick="openAdd3dModelModal(${blockIdx}, null)">+ Agregar modelo</button>` : ''}
     </div>`;
+
+  return `${secTitle}${viewerHtml}`;
+}
+
+// Estado de carruseles 3D activos
+const car3dState = {};
+
+function car3dInit(uid, block) {
+  const models = block.models || [];
+  if (!models.length) return;
+  car3dState[uid] = { idx: 0, models, block, renderer: null, scene: null, camera: null };
+  car3dLoadModel(uid, 0);
+}
+
+function car3dGoTo(uid, idx) {
+  const s = car3dState[uid];
+  if (!s || idx === s.idx) return;
+  s.idx = idx;
+  car3dUpdateUI(uid);
+  car3dLoadModel(uid, idx);
+}
+function car3dPrev(uid) {
+  const s = car3dState[uid];
+  if (!s) return;
+  car3dGoTo(uid, s.idx > 0 ? s.idx - 1 : s.models.length - 1);
+}
+function car3dNext(uid) {
+  const s = car3dState[uid];
+  if (!s) return;
+  car3dGoTo(uid, s.idx < s.models.length - 1 ? s.idx + 1 : 0);
+}
+
+function car3dUpdateUI(uid) {
+  const s = car3dState[uid];
+  if (!s) return;
+  const nameEl    = document.getElementById(uid + '_name');
+  const counterEl = document.getElementById(uid + '_counter');
+  if (nameEl)    nameEl.textContent    = s.models[s.idx].name || 'Modelo 3D';
+  if (counterEl) counterEl.textContent = `${s.idx + 1} / ${s.models.length}`;
+  document.querySelectorAll(`#${uid}_dots .car3d-dot`).forEach((d, i) => d.classList.toggle('active', i === s.idx));
+}
+
+function car3dLoadModel(uid, idx) {
+  const s = car3dState[uid];
+  if (!s) return;
+  const model = s.models[idx];
+  const container = document.getElementById(uid + '_viewer');
+  if (!container) return;
+
+  // Show loading
+  const loadingEl = document.getElementById(uid + '_loading');
+  if (loadingEl) { loadingEl.style.display = 'flex'; loadingEl.style.opacity = '1'; }
+
+  // Clear old canvas
+  const oldCanvas = container.querySelector('canvas');
+  if (oldCanvas) oldCanvas.remove();
+
+  // Destroy old renderer
+  if (s.renderer) { s.renderer.dispose(); s.renderer = null; }
+
+  if (model.type === 'sketchfab') {
+    if (loadingEl) loadingEl.style.display = 'none';
+    const oldIframe = container.querySelector('iframe.car3d-sf');
+    if (oldIframe) oldIframe.remove();
+    const embedUrl = toSketchfabEmbed(model.sfUrl || '');
+    const iframe = document.createElement('iframe');
+    iframe.className = 'car3d-sf';
+    iframe.src = embedUrl;
+    iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1';
+    iframe.allowFullscreen = true;
+    const bar = container.querySelector('.car3d-bar');
+    container.insertBefore(iframe, bar);
+    return;
+  }
+
+  // Remove sketchfab iframes
+  container.querySelectorAll('iframe.car3d-sf').forEach(f => f.remove());
+
+  if (!model.url) {
+    if (loadingEl) { loadingEl.querySelector('.vl-label').textContent = 'Sin URL de modelo.'; }
+    return;
+  }
+
+  initGLBViewerInto(uid, container, model.url, model.bgColor || '#161616', loadingEl);
+}
+
+function initGLBViewerInto(uid, container, glbUrl, bgColor, loadingEl) {
+  if (!window.THREE) return;
+  if (!window.THREE.GLTFLoader) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js';
+    script.onload = () => initGLBViewerInto(uid, container, glbUrl, bgColor, loadingEl);
+    document.head.appendChild(script);
+    return;
+  }
+
+  const s = car3dState[uid];
+  const W = container.offsetWidth || 960;
+  const H = container.offsetHeight || 520;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W, H);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+  const bgHex = parseInt(bgColor.replace('#', ''), 16);
+  renderer.setClearColor(bgHex, 1);
+  if (s) s.renderer = renderer;
+
+  const bar = container.querySelector('.car3d-bar');
+  renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%!important;height:100%!important;display:block;z-index:0';
+  container.insertBefore(renderer.domElement, bar);
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(bgHex);
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const dir = new THREE.DirectionalLight(0xffffff, 1.2); dir.position.set(5,10,7); scene.add(dir);
+  const rim = new THREE.PointLight(0x8B5CF6, 1.5, 20); rim.position.set(-4,3,-4); scene.add(rim);
+  const fill = new THREE.PointLight(0xA78BFA, 0.6, 15); fill.position.set(4,-2,4); scene.add(fill);
+
+  const loader = new THREE.GLTFLoader();
+  loader.load(glbUrl, (gltf) => {
+    const model = gltf.scene;
+    const box = new THREE.Box3().setFromObject(model);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 2.5 / maxDim;
+    model.scale.setScalar(scale);
+    model.position.sub(center.multiplyScalar(scale));
+    scene.add(model);
+    camera.position.set(0, size.y * scale * 0.3, maxDim * scale * 2.2);
+    camera.lookAt(0, 0, 0);
+    if (loadingEl) { loadingEl.style.opacity = '0'; setTimeout(() => loadingEl.style.display='none', 400); }
+  }, null, (err) => {
+    console.error('Error cargando GLB:', err);
+    if (loadingEl) loadingEl.querySelector('.vl-label').textContent = 'Error al cargar.';
+  });
+
+  // Orbit controls
+  let isDragging=false, isRight=false, prevX=0, prevY=0;
+  let theta=0, phi=Math.PI/3, radius=3.5, panX=0, panY=0, autoRot=true, autoTheta=0;
+  const el = renderer.domElement;
+  function updCam(){camera.position.x=panX+radius*Math.sin(phi)*Math.sin(theta);camera.position.y=panY+radius*Math.cos(phi);camera.position.z=radius*Math.sin(phi)*Math.cos(theta);camera.lookAt(panX,panY,0);}
+  el.addEventListener('mousedown',e=>{isDragging=true;isRight=e.button===2;prevX=e.clientX;prevY=e.clientY;autoRot=false;e.preventDefault();});
+  el.addEventListener('contextmenu',e=>e.preventDefault());
+  window.addEventListener('mousemove',e=>{if(!isDragging)return;const dx=e.clientX-prevX,dy=e.clientY-prevY;if(isRight){panX-=dx*.005;panY+=dy*.005;}else{theta-=dx*.01;phi=Math.max(.1,Math.min(Math.PI-.1,phi-dy*.01));}prevX=e.clientX;prevY=e.clientY;updCam();});
+  window.addEventListener('mouseup',()=>{isDragging=false;});
+  el.addEventListener('wheel',e=>{radius=Math.max(.5,Math.min(20,radius+e.deltaY*.01));updCam();e.preventDefault();},{passive:false});
+  let ltd=0;
+  el.addEventListener('touchstart',e=>{if(e.touches.length===1){isDragging=true;autoRot=false;prevX=e.touches[0].clientX;prevY=e.touches[0].clientY;}else if(e.touches.length===2){ltd=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
+  el.addEventListener('touchmove',e=>{if(e.touches.length===1&&isDragging){const dx=e.touches[0].clientX-prevX,dy=e.touches[0].clientY-prevY;theta-=dx*.012;phi=Math.max(.1,Math.min(Math.PI-.1,phi-dy*.012));prevX=e.touches[0].clientX;prevY=e.touches[0].clientY;updCam();}else if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);radius=Math.max(.5,Math.min(20,radius-(d-ltd)*.02));ltd=d;updCam();}},{passive:true});
+  el.addEventListener('touchend',()=>{isDragging=false;},{passive:true});
+  if(window.ResizeObserver){new ResizeObserver(()=>{const nw=container.offsetWidth,nh=container.offsetHeight;renderer.setSize(nw,nh);camera.aspect=nw/nh;camera.updateProjectionMatrix();}).observe(container);}
+  (function loop(){requestAnimationFrame(loop);if(autoRot&&!isDragging){autoTheta+=.004;camera.position.x=radius*Math.sin(phi)*Math.sin(autoTheta);camera.position.y=radius*Math.cos(phi);camera.position.z=radius*Math.sin(phi)*Math.cos(autoTheta);camera.lookAt(0,0,0);}renderer.render(scene,camera);})();
 }
 
 // ══════════════════════════════════════════════════
