@@ -76,13 +76,11 @@ section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;
 .sec-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:600;letter-spacing:-.02em;color:var(--cream)}
 .sec-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem}
 
-/* ── BLOCK SYSTEM ── */
+/* BLOCK SYSTEM */
 #blocks-container{display:flex;flex-direction:column;gap:0}
-
 .block-wrap{position:relative;border-top:.5px solid var(--border);padding:4rem 3rem}
 .block-wrap:first-child{border-top:none}
 
-/* block admin controls */
 .block-controls{position:absolute;top:1rem;right:1rem;display:none;align-items:center;gap:.4rem;z-index:10;background:rgba(13,13,13,.8);border:.5px solid var(--border2);border-radius:6px;padding:.35rem .5rem}
 .block-wrap:hover .block-controls{display:flex}
 .bc-btn{background:transparent;border:none;color:var(--cream2);cursor:pointer;font-size:.75rem;padding:.2rem .4rem;border-radius:3px;transition:all .2s;white-space:nowrap}
@@ -130,7 +128,36 @@ section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;
 .video-placeholder span{font-size:2.5rem;opacity:.3}
 .video-placeholder p{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
 
-/* OTHER FOLDERS */
+/* ── UNITY GAME BLOCK ── */
+.unity-wrap{position:relative;width:100%;max-width:960px;background:var(--bg2);border-radius:12px;overflow:hidden;border:.5px solid var(--border2)}
+.unity-wrap iframe{width:100%;height:540px;border:none;display:block}
+.unity-placeholder{width:100%;height:360px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;color:var(--cream3)}
+.unity-placeholder span{font-size:3rem;opacity:.25}
+.unity-placeholder p{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+.unity-bar{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.25rem;background:var(--bg3);border-top:.5px solid var(--border)}
+.unity-bar-title{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:500;color:var(--cream2)}
+.unity-fs-btn{background:transparent;border:.5px solid var(--border2);color:var(--cream2);font-size:.72rem;padding:.3rem .75rem;border-radius:4px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:flex;align-items:center;gap:.4rem}
+.unity-fs-btn:hover{border-color:var(--violet2);color:var(--violet2)}
+
+/* ── 3D VIEWER BLOCK ── */
+.viewer3d-wrap{position:relative;width:100%;max-width:960px;height:520px;background:var(--bg2);border-radius:12px;overflow:hidden;border:.5px solid var(--border2);cursor:grab}
+.viewer3d-wrap:active{cursor:grabbing}
+.viewer3d-wrap canvas{width:100%!important;height:100%!important;display:block}
+.viewer3d-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;color:var(--cream3)}
+.viewer3d-placeholder span{font-size:3rem;opacity:.25}
+.viewer3d-placeholder p{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+.viewer3d-bar{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.25rem;background:rgba(13,13,13,.7);position:absolute;bottom:0;left:0;right:0;backdrop-filter:blur(8px)}
+.viewer3d-hint{font-size:.7rem;color:var(--cream3);letter-spacing:.06em;display:flex;align-items:center;gap:.5rem}
+.viewer3d-hint span{opacity:.5}
+.viewer3d-badge{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--violet2);border:.5px solid rgba(139,92,246,.3);border-radius:100px;padding:.2rem .65rem}
+/* loading bar inside viewer */
+.viewer3d-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;background:var(--bg2);z-index:5;transition:opacity .4s}
+.viewer3d-loading.hidden{opacity:0;pointer-events:none}
+.vl-spinner{width:32px;height:32px;border:2.5px solid rgba(139,92,246,.2);border-top-color:var(--violet);border-radius:50%;animation:spin .8s linear infinite}
+.vl-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream3)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FOLDERS */
 .folders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:2rem 1.75rem}
 .folder-item{display:flex;flex-direction:column;align-items:center;gap:.85rem;cursor:pointer;text-decoration:none;padding:.85rem;border-radius:14px;transition:background .25s;position:relative}
 .folder-item:hover{background:rgba(139,92,246,.07)}
@@ -141,12 +168,8 @@ section{padding:5rem 3rem;border-top:.5px solid var(--border);position:relative;
 .fback{position:relative;width:100px;height:80px;border-radius:0 10px 10px 10px}
 .fback::after{content:'';position:absolute;bottom:98%;left:0;width:30px;height:10px;border-radius:5px 5px 0 0;background:inherit}
 .fpaper{position:absolute;z-index:2;bottom:10%;left:50%;transform:translate(-50%,10%);border-radius:10px;transition:transform .3s ease-in-out}
-.fp1{width:70%;height:80%;background:#e6e6e6}
-.fp2{width:80%;height:70%;background:#f2f2f2}
-.fp3{width:90%;height:60%;background:#fff}
-.folder-item:hover .fp1{transform:translate(-50%,0%)}
-.folder-item:hover .fp2{transform:translate(-50%,0%)}
-.folder-item:hover .fp3{transform:translate(-50%,0%)}
+.fp1{width:70%;height:80%;background:#e6e6e6}.fp2{width:80%;height:70%;background:#f2f2f2}.fp3{width:90%;height:60%;background:#fff}
+.folder-item:hover .fp1{transform:translate(-50%,0%)}.folder-item:hover .fp2{transform:translate(-50%,0%)}.folder-item:hover .fp3{transform:translate(-50%,0%)}
 .ffront{position:absolute;z-index:3;width:100%;height:100%;border-radius:5px 10px 10px 10px;transform-origin:bottom;transition:transform .3s ease-in-out}
 .folder-item:hover .ffront{transform:skew(15deg) scaleY(.6)}
 
@@ -178,7 +201,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 .admin-fab{position:fixed;bottom:2rem;right:2rem;z-index:200;background:var(--violet);color:#fff;border:none;border-radius:100px;padding:.7rem 1.4rem;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.4rem;box-shadow:0 4px 22px rgba(139,92,246,.45);transition:all .2s}
 .admin-fab:hover{transform:translateY(-2px);box-shadow:0 7px 30px rgba(139,92,246,.55)}
 
-/* ADD BLOCK BAR (admin only) */
+/* ADD BLOCK BAR */
 .add-block-bar{display:none;position:relative;z-index:1;padding:1.5rem 3rem;border-top:.5px solid var(--border);background:rgba(139,92,246,.04)}
 .add-block-bar.visible{display:block}
 .add-block-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--violet2);margin-bottom:1rem}
@@ -205,15 +228,11 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 .btn-c:hover{border-color:var(--cream2);color:var(--cream)}
 .btn-s{background:var(--violet);border:none;color:#fff;padding:.55rem 1.3rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;font-weight:500;cursor:pointer;transition:background .2s}
 .btn-s:hover{background:var(--violet2)}
-.btn-danger{background:#ef4444;border:none;color:#fff;padding:.55rem 1.1rem;border-radius:3px;font-family:'Inter',sans-serif;font-size:.83rem;cursor:pointer;transition:background .2s}
-.btn-danger:hover{background:#dc2626}
 .auth-err{font-size:.8rem;color:#f87171;margin-top:.5rem;min-height:1.1em}
 .pw-toggle{position:absolute;top:0;right:0;height:100%;width:2.6rem;background:transparent;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--cream3);transition:color .2s}
 .pw-toggle:hover{color:var(--cream)}
-.not-found{padding:8rem 3rem;text-align:center}
-.not-found h2{font-family:'Space Grotesk',sans-serif;font-size:2rem;color:var(--cream);margin-bottom:1rem}
-.not-found a{color:var(--violet2);text-decoration:none}
-.inline-edit-btn{display:none;background:rgba(139,92,246,.15);border:none;border-radius:3px;color:var(--violet2);font-size:.7rem;padding:.2rem .5rem;cursor:pointer;margin-left:.5rem}
+.hint-box{background:rgba(139,92,246,.08);border:.5px solid rgba(139,92,246,.25);border-radius:4px;padding:.85rem 1rem;font-size:.78rem;color:var(--cream2);line-height:1.6;margin-bottom:1rem}
+.hint-box strong{color:var(--violet2)}
 
 @media(max-width:768px){
   .hero{padding:0 1.5rem 3rem}
@@ -222,6 +241,8 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   section{padding:4rem 1.5rem}
   .sm-header{padding:1.25rem 1.5rem}
   footer{flex-direction:column;gap:.75rem;text-align:center;padding:2rem 1.5rem}
+  .unity-wrap iframe{height:320px}
+  .viewer3d-wrap{height:360px}
 }
 </style>
 </head>
@@ -229,7 +250,6 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
 
 <canvas id="dither-canvas"></canvas>
 
-<!-- LOADING -->
 <div id="loading-overlay" style="position:fixed;inset:0;z-index:500;background:#0D0D0D;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity .4s">
   <div style="width:36px;height:36px;border:3px solid rgba(240,235,224,.15);border-top-color:#8B5CF6;border-radius:50%;animation:spin .8s linear infinite"></div>
   <p style="font-family:'Inter',sans-serif;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:#B8B3A8">Cargando…</p>
@@ -293,6 +313,8 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
     <button class="add-block-btn" onclick="addBlock('gallery')">🖼️ Galería</button>
     <button class="add-block-btn" onclick="addBlock('links')">🔗 Links</button>
     <button class="add-block-btn" onclick="addBlock('video')">🎬 Video</button>
+    <button class="add-block-btn" onclick="addBlock('unity')">🎮 Juego Unity</button>
+    <button class="add-block-btn" onclick="addBlock('model3d')">🧊 Modelo 3D</button>
   </div>
 </div>
 
@@ -375,7 +397,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   </div>
 </div>
 
-<!-- EDIT GALLERY BLOCK MODAL (add image) -->
+<!-- GALLERY IMG MODAL -->
 <div class="moverlay" id="gallery-img-m">
   <div class="mbox" style="max-width:440px">
     <button class="mclose" onclick="closeM('gallery-img-m')">✕</button>
@@ -388,7 +410,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   </div>
 </div>
 
-<!-- EDIT GALLERY BLOCK TITLE MODAL -->
+<!-- GALLERY TITLE MODAL -->
 <div class="moverlay" id="gallery-title-m">
   <div class="mbox" style="max-width:440px">
     <button class="mclose" onclick="closeM('gallery-title-m')">✕</button>
@@ -416,7 +438,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   </div>
 </div>
 
-<!-- EDIT LINKS BLOCK TITLE MODAL -->
+<!-- LINKS TITLE MODAL -->
 <div class="moverlay" id="links-title-m">
   <div class="mbox" style="max-width:440px">
     <button class="mclose" onclick="closeM('links-title-m')">✕</button>
@@ -429,7 +451,7 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   </div>
 </div>
 
-<!-- EDIT VIDEO BLOCK MODAL -->
+<!-- VIDEO BLOCK MODAL -->
 <div class="moverlay" id="video-block-m">
   <div class="mbox" style="max-width:520px">
     <button class="mclose" onclick="closeM('video-block-m')">✕</button>
@@ -444,6 +466,73 @@ footer{padding:2rem 3rem;border-top:.5px solid var(--border);display:flex;justif
   </div>
 </div>
 
+<!-- ── UNITY GAME MODAL ── -->
+<div class="moverlay" id="unity-block-m">
+  <div class="mbox" style="max-width:560px">
+    <button class="mclose" onclick="closeM('unity-block-m')">✕</button>
+    <h3 class="mtitle">Juego Unity WebGL</h3>
+    <div class="hint-box">
+      <strong>¿Cómo exportar desde Unity?</strong><br>
+      1. File → Build Settings → WebGL → Switch Platform<br>
+      2. Player Settings → Publishing Settings → Compression: <strong>Disabled</strong><br>
+      3. Build → subí la carpeta a <strong>itch.io</strong> o <strong>GitHub Pages</strong><br>
+      4. En itch.io copiá la URL del embed (Edit → Embed)
+    </div>
+    <div class="fg"><label class="flbl">Título (opcional)</label><input class="finput" id="ub-title" type="text" placeholder="Jugá acá"></div>
+    <div class="fg"><label class="flbl">URL del juego</label><input class="finput" id="ub-url" type="text" placeholder="https://itch.io/embed-upload/..."></div>
+    <div class="fg"><label class="flbl">Altura del visor (px)</label>
+      <select class="fsel" id="ub-height">
+        <option value="480">480px — compacto</option>
+        <option value="540" selected>540px — estándar</option>
+        <option value="620">620px — grande</option>
+        <option value="720">720px — muy grande</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('unity-block-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveUnityBlock()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 3D MODEL MODAL ── -->
+<div class="moverlay" id="model3d-block-m">
+  <div class="mbox" style="max-width:560px">
+    <button class="mclose" onclick="closeM('model3d-block-m')">✕</button>
+    <h3 class="mtitle">Modelo 3D de Blender</h3>
+    <div class="hint-box">
+      <strong>¿Cómo exportar desde Blender?</strong><br>
+      File → Export → <strong>glTF 2.0 (.glb/.gltf)</strong><br>
+      Elegí formato <strong>GLB</strong> (un solo archivo).<br>
+      Subí el .glb a GitHub, Google Drive (link directo) o cualquier host.<br><br>
+      <strong>Alternativa más fácil:</strong> subí a <strong>sketchfab.com</strong> y pegá la URL del embed.
+    </div>
+    <div class="fg"><label class="flbl">Título (opcional)</label><input class="finput" id="mb-title" type="text" placeholder="Modelo 3D"></div>
+    <div class="fg"><label class="flbl">Tipo de fuente</label>
+      <select class="fsel" id="mb-type" onchange="toggle3dType()">
+        <option value="glb">Archivo .glb / .gltf (URL directa)</option>
+        <option value="sketchfab">Embed de Sketchfab</option>
+      </select>
+    </div>
+    <div id="mb-glb-group">
+      <div class="fg"><label class="flbl">URL del archivo .glb</label><input class="finput" id="mb-url" type="text" placeholder="https://...modelo.glb"></div>
+      <div class="fg"><label class="flbl">Color de fondo del visor</label>
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <input type="color" id="mb-bg" value="#161616" style="width:48px;height:42px;padding:2px;border-radius:3px;border:.5px solid var(--border2);background:var(--bg3);cursor:pointer">
+          <span style="font-size:.82rem;color:var(--cream2)">Por defecto coincide con tu portfolio.</span>
+        </div>
+      </div>
+    </div>
+    <div id="mb-sketchfab-group" style="display:none">
+      <div class="fg"><label class="flbl">URL de Sketchfab (modelo o embed)</label><input class="finput" id="mb-sf-url" type="text" placeholder="https://sketchfab.com/models/..."></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-c" onclick="closeM('model3d-block-m')">Cancelar</button>
+      <button class="btn-s" onclick="saveModel3dBlock()">Guardar</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
@@ -454,39 +543,18 @@ const SUPABASE_URL = 'https://pxongmsjumipaaouetdi.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_LrnKJaAvYkLptp3qMcFoQg_mmn3kqEv';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ══════════════════════════════════════════════════
-// DATA
-// ══════════════════════════════════════════════════
 let isAdmin = false;
 const params = new URLSearchParams(location.search);
 const projectId = parseInt(params.get('id'), 10);
 
 const DEF_GLOBAL_CFG = { name:'Portfolio', be:'', ig:'', li:'', 'footer-copy':'© 2025 Portfolio · Todos los derechos reservados' };
 let globalCfg = Object.assign({}, DEF_GLOBAL_CFG);
-let folders = [
-  {id:1,name:'Una Noche en Marte',color:'#8B5CF6'},
-  {id:2,name:'Vostok',color:'#3B82F6'},
-  {id:3,name:'Expedition_to_Mars',color:'#F97316'},
-  {id:4,name:'Modelados 3D',color:'#10B981'},
-  {id:5,name:'Infografías',color:'#F59E0B'},
-  {id:6,name:'Enchanted Chaos',color:'#EC4899'},
-  {id:7,name:'The Unknown Shards',color:'#A78BFA'},
-];
-let folder = folders.find(f => f.id === projectId);
-
-// Project data: hero info + array of blocks
-// Block types: { type:'text', id, title, content }
-//              { type:'gallery', id, title, images:[] }
-//              { type:'links', id, title, items:[{title,label,url}] }
-//              { type:'video', id, title, url }
-let proj = {
-  desc: 'Descripción del proyecto.',
-  tags: '',
-  blocks: []
-};
+let folders = [];
+let folder = null;
+let proj = { desc: '', tags: '', blocks: [] };
 
 // ══════════════════════════════════════════════════
-// SUPABASE LOAD / SAVE
+// LOAD / SAVE
 // ══════════════════════════════════════════════════
 async function loadData() {
   try {
@@ -497,7 +565,7 @@ async function loadData() {
     ]);
     if (cfgRes.data?.data) globalCfg = Object.assign({}, DEF_GLOBAL_CFG, cfgRes.data.data);
     if (foldersRes.data?.length) folders = foldersRes.data.map(f=>({id:f.id,name:f.name,color:f.color}));
-    folder = folders.find(f => f.id === projectId);
+    folder = folders.find(f => f.id === projectId) || null;
     if (projRes.data?.data) proj = Object.assign({desc:'',tags:'',blocks:[]}, projRes.data.data);
     if (!proj.blocks) proj.blocks = [];
   } catch(err) {
@@ -507,9 +575,14 @@ async function loadData() {
 
 async function persistProj() {
   try {
-    await sb.from('pf_projects').upsert({ folder_id: projectId, data: proj });
+    const { error } = await sb.from('pf_projects').upsert({ folder_id: projectId, data: proj });
+    if (error) {
+      console.error('Supabase error:', error);
+      alert('Error al guardar: ' + error.message);
+    }
   } catch(err) {
-    console.error('Error guardando proyecto:', err);
+    console.error('Error guardando:', err);
+    alert('Error de conexión al guardar.');
   }
 }
 
@@ -537,26 +610,17 @@ void main(){vec2 uv=gl_FragCoord.xy/R,p=uv-.5;p.x*=R.x/R.y;vec2 mn=(M/R-.5)*vec2
   const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const al=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
   const uR=gl.getUniformLocation(prog,'R'),uT=gl.getUniformLocation(prog,'T'),uM=gl.getUniformLocation(prog,'M');
-  function hexToRgb(hex){
-    let c=(hex||'#8B5CF6').replace('#','');
-    if(c.length===3)c=c.split('').map(x=>x+x).join('');
-    const n=parseInt(c,16);
-    return [((n>>16)&255)/255,((n>>8)&255)/255,(n&255)/255];
-  }
-  let waveColor = hexToRgb(proj.bgColor || '#8B5CF6');
+  function hexToRgb(hex){let c=(hex||'#8B5CF6').replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');const n=parseInt(c,16);return [((n>>16)&255)/255,((n>>8)&255)/255,(n&255)/255];}
+  let waveColor = hexToRgb('#8B5CF6');
   const uWC = gl.getUniformLocation(prog,'WC');
-  // expose setter for live color change
   window._ditherSetColor = function(hex){ waveColor = hexToRgb(hex); };
   let mx=0,my=0;window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
   const t0=performance.now();
   (function loop(){
     const t=(performance.now()-t0)/1000;
-    gl.uniform2f(uR,cv.width,cv.height);
-    gl.uniform1f(uT,t);
-    gl.uniform2f(uM,mx,cv.height-my);
+    gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,t);gl.uniform2f(uM,mx,cv.height-my);
     if(uWC)gl.uniform3f(uWC,waveColor[0],waveColor[1],waveColor[2]);
-    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-    requestAnimationFrame(loop);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(loop);
   })();
 })();
 
@@ -665,7 +729,7 @@ function applyGlow(el) {
 function openLightbox(src){document.getElementById('lb-img').src=src;document.getElementById('lightbox').classList.add('open');}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
 document.getElementById('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();document.querySelectorAll('.moverlay.open').forEach(m=>m.classList.remove('open'));}});
 
 // ══════════════════════════════════════════════════
 // MODALS
@@ -679,14 +743,24 @@ document.querySelectorAll('.moverlay').forEach(m=>m.addEventListener('click',e=>
 // ══════════════════════════════════════════════════
 function toEmbedUrl(url) {
   if (!url) return '';
-  // YouTube
   let yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s?]+)/);
   if (yt) return `https://www.youtube.com/embed/${yt[1]}?rel=0`;
-  // YouTube already embed
   if (url.includes('youtube.com/embed/')) return url;
-  // Vimeo
   let vi = url.match(/vimeo\.com\/(\d+)/);
   if (vi) return `https://player.vimeo.com/video/${vi[1]}`;
+  return url;
+}
+
+// ══════════════════════════════════════════════════
+// SKETCHFAB URL → EMBED
+// ══════════════════════════════════════════════════
+function toSketchfabEmbed(url) {
+  if (!url) return '';
+  // already an embed URL
+  if (url.includes('/embed')) return url;
+  // model page: https://sketchfab.com/3d-models/NAME-ID or /models/ID
+  const m = url.match(/sketchfab\.com\/(?:3d-models\/[^/]+-|models\/)([a-f0-9]{32})/i);
+  if (m) return `https://sketchfab.com/models/${m[1]}/embed?autospin=0.3&autostart=1&ui_theme=dark&ui_infos=0&ui_watermark=0`;
   return url;
 }
 
@@ -706,14 +780,18 @@ function renderBlocks() {
   if (isAdmin) document.getElementById('add-block-bar').classList.add('visible');
   else document.getElementById('add-block-bar').classList.remove('visible');
   observeReveals();
-  // wire up glow on link rows
   container.querySelectorAll('.folder-item.bgc').forEach(applyGlow);
+  // Init 3D viewers after render
+  setTimeout(() => {
+    container.querySelectorAll('[data-glb-url]').forEach(el => {
+      initGLBViewer(el, el.dataset.glbUrl, el.dataset.glbBg || '#161616');
+    });
+  }, 100);
 }
 
 function renderBlockControls(idx) {
   if (!isAdmin) return '';
-  const isFirst = idx === 0;
-  const isLast  = idx === proj.blocks.length - 1;
+  const isFirst = idx === 0, isLast = idx === proj.blocks.length - 1;
   return `<div class="block-controls">
     <button class="bc-btn up" onclick="moveBlock(${idx},-1)" ${isFirst?'disabled style="opacity:.3"':''}>↑</button>
     <button class="bc-btn down" onclick="moveBlock(${idx},1)" ${isLast?'disabled style="opacity:.3"':''}>↓</button>
@@ -726,20 +804,24 @@ function renderBlockControls(idx) {
 
 function renderBlockContent(block, idx) {
   switch(block.type) {
-    case 'text':    return renderTextBlock(block, idx);
+    case 'text':    return renderTextBlock(block);
     case 'gallery': return renderGalleryBlock(block, idx);
     case 'links':   return renderLinksBlock(block, idx);
-    case 'video':   return renderVideoBlock(block, idx);
+    case 'video':   return renderVideoBlock(block);
+    case 'unity':   return renderUnityBlock(block);
+    case 'model3d': return renderModel3dBlock(block);
     default: return '';
   }
 }
 
-function renderTextBlock(block, idx) {
+// ── TEXT ──
+function renderTextBlock(block) {
   const title = block.title ? `<h2 class="block-text-title">${block.title}</h2>` : '';
   const content = (block.content || '').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
   return `<div class="block-text-content reveal">${title}<p>${content}</p></div>`;
 }
 
+// ── GALLERY ──
 function renderGalleryBlock(block, idx) {
   const title = block.title ? `<div class="sec-hdr"><div><p class="sec-label">Galería</p><h2 class="sec-title">${block.title}</h2></div></div>` : '';
   const imgs = (block.images || []).map((src, i) =>
@@ -748,13 +830,12 @@ function renderGalleryBlock(block, idx) {
       ${isAdmin ? `<button class="gallery-item-del" onclick="event.stopPropagation();deleteGalleryImg(${idx},${i})">🗑️</button>` : ''}
     </div>`
   ).join('');
-  const addBtn = isAdmin
-    ? `<div class="gallery-add-img" onclick="openGalleryImgModal(${idx})"><span>+</span><span>Agregar imagen</span></div>`
-    : '';
+  const addBtn = isAdmin ? `<div class="gallery-add-img" onclick="openGalleryImgModal(${idx})"><span>+</span><span>Agregar imagen</span></div>` : '';
   const titleEdit = isAdmin ? `<div style="margin-bottom:1rem"><button class="btn-s" style="font-size:.75rem;padding:.35rem .85rem" onclick="openGalleryTitleModal(${idx})">✏️ Editar título de galería</button></div>` : '';
   return `${title}${titleEdit}<div class="block-gallery-grid">${imgs}${addBtn}</div>`;
 }
 
+// ── LINKS ──
 function renderLinksBlock(block, idx) {
   const title = block.title || 'Links';
   const items = (block.items || []).map((lk, li) =>
@@ -769,21 +850,284 @@ function renderLinksBlock(block, idx) {
       </div>
     </a>`
   ).join('');
-  const addBtn = isAdmin
-    ? `<button class="link-add-btn" onclick="openAddLinkModal(${idx})"><span>+</span><span>Agregar link</span></button>`
-    : '';
+  const addBtn = isAdmin ? `<button class="link-add-btn" onclick="openAddLinkModal(${idx})"><span>+</span><span>Agregar link</span></button>` : '';
   const titleEdit = isAdmin ? `<div style="margin-bottom:1rem"><button class="btn-s" style="font-size:.75rem;padding:.35rem .85rem" onclick="openLinksTitleModal(${idx})">✏️ Editar título</button></div>` : '';
   return `<div class="sec-hdr"><div><p class="sec-label">Links</p><h2 class="sec-title">${title}</h2></div></div>
     ${titleEdit}<div class="links-list reveal">${items}</div>${addBtn}`;
 }
 
-function renderVideoBlock(block, idx) {
+// ── VIDEO ──
+function renderVideoBlock(block) {
   const title = block.title ? `<div class="sec-hdr"><div><h2 class="sec-title">${block.title}</h2></div></div>` : '';
   const embedUrl = toEmbedUrl(block.url || '');
   const video = embedUrl
     ? `<div class="video-embed-wrap reveal"><iframe src="${embedUrl}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>`
     : `<div class="video-embed-wrap reveal"><div class="video-placeholder"><span>🎬</span><p>Sin video cargado</p></div></div>`;
   return `${title}${video}`;
+}
+
+// ── UNITY GAME ──
+function renderUnityBlock(block) {
+  const title = block.title ? `<div class="sec-hdr"><div><p class="sec-label">Juego interactivo</p><h2 class="sec-title">${block.title}</h2></div></div>` : `<div class="sec-hdr"><div><p class="sec-label">Juego interactivo</p></div></div>`;
+  const h = block.height || 540;
+  const content = block.url
+    ? `<div class="unity-wrap reveal">
+        <iframe
+          src="${block.url}"
+          style="height:${h}px"
+          allowfullscreen
+          allow="autoplay; fullscreen; microphone; accelerometer; gyroscope"
+          loading="lazy">
+        </iframe>
+        <div class="unity-bar">
+          <span class="unity-bar-title">${block.title || 'Juego Unity WebGL'}</span>
+          <button class="unity-fs-btn" onclick="this.closest('.unity-wrap').querySelector('iframe').requestFullscreen()">⛶ Pantalla completa</button>
+        </div>
+      </div>`
+    : `<div class="unity-wrap reveal"><div class="unity-placeholder"><span>🎮</span><p>Sin juego cargado</p></div></div>`;
+  return `${title}${content}`;
+}
+
+// ── 3D MODEL ──
+function renderModel3dBlock(block) {
+  const title = block.title ? `<div class="sec-hdr"><div><p class="sec-label">Modelo 3D interactivo</p><h2 class="sec-title">${block.title}</h2></div></div>` : `<div class="sec-hdr"><div><p class="sec-label">Modelo 3D interactivo</p></div></div>`;
+
+  if (!block.url && !block.sfUrl) {
+    return `${title}<div class="viewer3d-wrap reveal"><div class="viewer3d-placeholder"><span>🧊</span><p>Sin modelo cargado</p></div></div>`;
+  }
+
+  // Sketchfab embed
+  if (block.modelType === 'sketchfab' && block.sfUrl) {
+    const embedUrl = toSketchfabEmbed(block.sfUrl);
+    return `${title}
+      <div class="reveal" style="position:relative;width:100%;max-width:960px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:.5px solid var(--border2)">
+        <iframe src="${embedUrl}"
+          style="position:absolute;inset:0;width:100%;height:100%;border:none"
+          allowfullscreen
+          allow="autoplay; fullscreen; xr-spatial-tracking">
+        </iframe>
+      </div>`;
+  }
+
+  // GLB viewer via Three.js
+  const bg = block.bgColor || '#161616';
+  const uid = 'v3d_' + block.id;
+  return `${title}
+    <div class="viewer3d-wrap reveal" id="${uid}" data-glb-url="${block.url}" data-glb-bg="${bg}">
+      <div class="viewer3d-loading" id="${uid}_loading">
+        <div class="vl-spinner"></div>
+        <p class="vl-label">Cargando modelo…</p>
+      </div>
+      <div class="viewer3d-bar">
+        <div class="viewer3d-hint">
+          <span>🖱️ Arrastrar para rotar · Scroll para zoom · Click derecho para mover</span>
+        </div>
+        <span class="viewer3d-badge">3D · Blender</span>
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// THREE.JS GLB VIEWER
+// ══════════════════════════════════════════════════
+function initGLBViewer(container, glbUrl, bgColor) {
+  if (!glbUrl || !window.THREE) return;
+
+  // We need GLTFLoader — load it dynamically
+  if (!window.THREE.GLTFLoader) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js';
+    script.onload = () => initGLBViewer(container, glbUrl, bgColor);
+    document.head.appendChild(script);
+    return;
+  }
+
+  const W = container.offsetWidth || 960;
+  const H = container.offsetHeight || 520;
+
+  // Renderer
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W, H);
+  renderer.shadowMap.enabled = true;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+
+  // Parse bg color
+  const bgHex = parseInt(bgColor.replace('#',''), 16);
+  renderer.setClearColor(bgHex, 1);
+
+  // Insert canvas before the bar
+  const bar = container.querySelector('.viewer3d-bar');
+  container.insertBefore(renderer.domElement, bar);
+  renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%!important;height:calc(100% - 0px)!important;display:block';
+
+  // Scene
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(bgHex);
+
+  // Camera
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
+  camera.position.set(0, 1, 3);
+
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  dirLight.position.set(5, 10, 7);
+  dirLight.castShadow = true;
+  scene.add(dirLight);
+
+  // Violet rim light to match portfolio aesthetic
+  const rimLight = new THREE.PointLight(0x8B5CF6, 1.5, 20);
+  rimLight.position.set(-4, 3, -4);
+  scene.add(rimLight);
+
+  const fillLight = new THREE.PointLight(0xA78BFA, 0.6, 15);
+  fillLight.position.set(4, -2, 4);
+  scene.add(fillLight);
+
+  // Load model
+  const loader = new THREE.GLTFLoader();
+  loader.load(
+    glbUrl,
+    (gltf) => {
+      const model = gltf.scene;
+
+      // Center & scale model
+      const box = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 2.5 / maxDim;
+      model.scale.setScalar(scale);
+      model.position.sub(center.multiplyScalar(scale));
+
+      scene.add(model);
+
+      // Fit camera
+      camera.position.set(0, size.y * scale * 0.3, maxDim * scale * 2.2);
+      camera.lookAt(0, 0, 0);
+
+      // Hide loading overlay
+      const loading = container.querySelector('.viewer3d-loading');
+      if (loading) { loading.style.opacity = '0'; setTimeout(() => loading.style.display='none', 400); }
+
+      // Animate rotations
+      let autoRotate = true;
+      model.userData.autoRotate = true;
+
+      // Store model ref for orbit controls
+      container._model = model;
+    },
+    (xhr) => {
+      // progress
+    },
+    (err) => {
+      console.error('Error cargando GLB:', err);
+      const loading = container.querySelector('.viewer3d-loading');
+      if (loading) loading.querySelector('.vl-label').textContent = 'Error al cargar el modelo.';
+    }
+  );
+
+  // ── ORBIT CONTROLS (manual, no dep) ──
+  let isDragging = false, isRightDrag = false;
+  let prevX = 0, prevY = 0;
+  let theta = 0, phi = Math.PI / 3;
+  let radius = 3.5;
+  let panX = 0, panY = 0;
+  let autoRot = true;
+
+  function updateCamera() {
+    camera.position.x = panX + radius * Math.sin(phi) * Math.sin(theta);
+    camera.position.y = panY + radius * Math.cos(phi);
+    camera.position.z = radius * Math.sin(phi) * Math.cos(theta);
+    camera.lookAt(panX, panY, 0);
+  }
+
+  const el = renderer.domElement;
+
+  el.addEventListener('mousedown', e => {
+    isDragging = true;
+    isRightDrag = e.button === 2;
+    prevX = e.clientX; prevY = e.clientY;
+    autoRot = false;
+    e.preventDefault();
+  });
+  el.addEventListener('contextmenu', e => e.preventDefault());
+
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const dx = e.clientX - prevX, dy = e.clientY - prevY;
+    if (isRightDrag) {
+      panX -= dx * 0.005;
+      panY += dy * 0.005;
+    } else {
+      theta -= dx * 0.01;
+      phi = Math.max(0.1, Math.min(Math.PI - 0.1, phi - dy * 0.01));
+    }
+    prevX = e.clientX; prevY = e.clientY;
+    updateCamera();
+  });
+
+  window.addEventListener('mouseup', () => { isDragging = false; });
+
+  el.addEventListener('wheel', e => {
+    radius = Math.max(0.5, Math.min(20, radius + e.deltaY * 0.01));
+    updateCamera();
+    e.preventDefault();
+  }, { passive: false });
+
+  // Touch support
+  let lastTouchDist = 0;
+  el.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) {
+      isDragging = true; autoRot = false;
+      prevX = e.touches[0].clientX; prevY = e.touches[0].clientY;
+    } else if (e.touches.length === 2) {
+      lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    }
+  }, { passive: true });
+  el.addEventListener('touchmove', e => {
+    if (e.touches.length === 1 && isDragging) {
+      const dx = e.touches[0].clientX - prevX, dy = e.touches[0].clientY - prevY;
+      theta -= dx * 0.012; phi = Math.max(0.1, Math.min(Math.PI-0.1, phi - dy * 0.012));
+      prevX = e.touches[0].clientX; prevY = e.touches[0].clientY;
+      updateCamera();
+    } else if (e.touches.length === 2) {
+      const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      radius = Math.max(0.5, Math.min(20, radius - (dist - lastTouchDist) * 0.02));
+      lastTouchDist = dist;
+      updateCamera();
+    }
+  }, { passive: true });
+  el.addEventListener('touchend', () => { isDragging = false; }, { passive: true });
+
+  // Resize observer
+  if (window.ResizeObserver) {
+    new ResizeObserver(() => {
+      const nw = container.offsetWidth, nh = container.offsetHeight;
+      renderer.setSize(nw, nh);
+      camera.aspect = nw / nh;
+      camera.updateProjectionMatrix();
+    }).observe(container);
+  }
+
+  // Render loop
+  let autoTheta = 0;
+  (function loop() {
+    requestAnimationFrame(loop);
+    if (autoRot && !isDragging) {
+      autoTheta += 0.004;
+      camera.position.x = radius * Math.sin(phi) * Math.sin(autoTheta);
+      camera.position.y = radius * Math.cos(phi);
+      camera.position.z = radius * Math.sin(phi) * Math.cos(autoTheta);
+      camera.lookAt(0, 0, 0);
+    }
+    renderer.render(scene, camera);
+  })();
 }
 
 // ══════════════════════════════════════════════════
@@ -793,15 +1137,16 @@ function genId() { return 'b' + Date.now() + Math.floor(Math.random()*1000); }
 
 function addBlock(type) {
   const defaults = {
-    text:    { type:'text',    id:genId(), title:'',  content:'' },
-    gallery: { type:'gallery', id:genId(), title:'',  images:[] },
+    text:    { type:'text',    id:genId(), title:'', content:'' },
+    gallery: { type:'gallery', id:genId(), title:'', images:[] },
     links:   { type:'links',   id:genId(), title:'Links', items:[] },
-    video:   { type:'video',   id:genId(), title:'',  url:'' },
+    video:   { type:'video',   id:genId(), title:'', url:'' },
+    unity:   { type:'unity',   id:genId(), title:'', url:'', height:540 },
+    model3d: { type:'model3d', id:genId(), title:'', modelType:'glb', url:'', sfUrl:'', bgColor:'#161616' },
   };
   proj.blocks.push({ ...defaults[type] });
   persistProj();
   renderBlocks();
-  // scroll to new block
   setTimeout(() => {
     const wraps = document.querySelectorAll('.block-wrap');
     if (wraps.length) wraps[wraps.length-1].scrollIntoView({behavior:'smooth',block:'start'});
@@ -817,14 +1162,12 @@ function deleteBlock(idx) {
 function moveBlock(idx, dir) {
   const newIdx = idx + dir;
   if (newIdx < 0 || newIdx >= proj.blocks.length) return;
-  const tmp = proj.blocks[idx];
-  proj.blocks[idx] = proj.blocks[newIdx];
-  proj.blocks[newIdx] = tmp;
+  [proj.blocks[idx], proj.blocks[newIdx]] = [proj.blocks[newIdx], proj.blocks[idx]];
   persistProj(); renderBlocks();
 }
 
 // ══════════════════════════════════════════════════
-// EDIT BLOCK DISPATCHERS
+// EDIT DISPATCHERS
 // ══════════════════════════════════════════════════
 let editingBlockIdx = null;
 
@@ -836,12 +1179,13 @@ function editBlock(idx) {
     case 'gallery': openGalleryTitleModal(idx); break;
     case 'links':   openLinksTitleModal(idx); break;
     case 'video':   openVideoBlockModal(block); break;
+    case 'unity':   openUnityBlockModal(block); break;
+    case 'model3d': openModel3dBlockModal(block); break;
   }
 }
 
-// ── TEXT BLOCK ──
+// ── TEXT ──
 function openTextBlockModal(block) {
-  document.getElementById('text-block-m-title').textContent = block.title ? 'Editar texto' : 'Bloque de texto';
   document.getElementById('tb-title').value = block.title || '';
   document.getElementById('tb-content').value = block.content || '';
   openM('text-block-m');
@@ -853,7 +1197,7 @@ function saveTextBlock() {
   persistProj(); renderBlocks(); closeM('text-block-m');
 }
 
-// ── GALLERY BLOCK ──
+// ── GALLERY ──
 function openGalleryTitleModal(idx) {
   editingBlockIdx = idx;
   document.getElementById('gt-title').value = proj.blocks[idx].title || '';
@@ -881,7 +1225,7 @@ function deleteGalleryImg(blockIdx, imgIdx) {
   persistProj(); renderBlocks();
 }
 
-// ── LINKS BLOCK ──
+// ── LINKS ──
 function openLinksTitleModal(idx) {
   editingBlockIdx = idx;
   document.getElementById('lt-title').value = proj.blocks[idx].title || 'Links';
@@ -893,7 +1237,6 @@ function saveLinksTitle() {
 }
 function openAddLinkModal(idx) {
   editingBlockIdx = idx;
-  document.getElementById('add-link-m-title').textContent = 'Agregar link';
   document.getElementById('lk-title').value = '';
   document.getElementById('lk-label').value = '';
   document.getElementById('lk-url').value = '';
@@ -926,7 +1269,7 @@ function deleteLinkItem(blockIdx, itemIdx) {
   persistProj(); renderBlocks();
 }
 
-// ── VIDEO BLOCK ──
+// ── VIDEO ──
 function openVideoBlockModal(block) {
   document.getElementById('vb-title').value = block.title || '';
   document.getElementById('vb-url').value = block.url || '';
@@ -937,6 +1280,54 @@ function saveVideoBlock() {
   b.title = document.getElementById('vb-title').value;
   b.url   = document.getElementById('vb-url').value.trim();
   persistProj(); renderBlocks(); closeM('video-block-m');
+}
+
+// ── UNITY ──
+function openUnityBlockModal(block) {
+  document.getElementById('ub-title').value = block.title || '';
+  document.getElementById('ub-url').value = block.url || '';
+  document.getElementById('ub-height').value = block.height || 540;
+  openM('unity-block-m');
+}
+function saveUnityBlock() {
+  const url = document.getElementById('ub-url').value.trim();
+  if (!url) { alert('Pegá la URL del juego.'); return; }
+  const b = proj.blocks[editingBlockIdx];
+  b.title  = document.getElementById('ub-title').value;
+  b.url    = url;
+  b.height = parseInt(document.getElementById('ub-height').value) || 540;
+  persistProj(); renderBlocks(); closeM('unity-block-m');
+}
+
+// ── 3D MODEL ──
+function toggle3dType() {
+  const t = document.getElementById('mb-type').value;
+  document.getElementById('mb-glb-group').style.display      = t === 'glb' ? '' : 'none';
+  document.getElementById('mb-sketchfab-group').style.display = t === 'sketchfab' ? '' : 'none';
+}
+function openModel3dBlockModal(block) {
+  document.getElementById('mb-title').value = block.title || '';
+  document.getElementById('mb-type').value  = block.modelType || 'glb';
+  document.getElementById('mb-url').value   = block.url || '';
+  document.getElementById('mb-bg').value    = block.bgColor || '#161616';
+  document.getElementById('mb-sf-url').value = block.sfUrl || '';
+  toggle3dType();
+  openM('model3d-block-m');
+}
+function saveModel3dBlock() {
+  const type = document.getElementById('mb-type').value;
+  const b = proj.blocks[editingBlockIdx];
+  b.title     = document.getElementById('mb-title').value;
+  b.modelType = type;
+  b.bgColor   = document.getElementById('mb-bg').value;
+  if (type === 'glb') {
+    b.url = document.getElementById('mb-url').value.trim();
+    if (!b.url) { alert('Pegá la URL del archivo .glb.'); return; }
+  } else {
+    b.sfUrl = document.getElementById('mb-sf-url').value.trim();
+    if (!b.sfUrl) { alert('Pegá la URL de Sketchfab.'); return; }
+  }
+  persistProj(); renderBlocks(); closeM('model3d-block-m');
 }
 
 // ══════════════════════════════════════════════════
@@ -950,7 +1341,6 @@ function openHeroEditModal() {
 }
 function saveHeroEdit() {
   const newColor = document.getElementById('he-bgcolor').value;
-  const colorChanged = newColor !== (proj.bgColor || '#8B5CF6');
   proj.desc    = document.getElementById('he-desc').value;
   proj.tags    = document.getElementById('he-tags').value;
   proj.bgColor = newColor;
@@ -958,8 +1348,7 @@ function saveHeroEdit() {
   document.getElementById('proj-desc').textContent = proj.desc;
   renderTags();
   closeM('hero-edit-m');
-  // live-update dither color without reload
-  if (colorChanged && window._ditherSetColor) window._ditherSetColor(newColor);
+  if (window._ditherSetColor) window._ditherSetColor(newColor);
 }
 function renderTags() {
   const wrap = document.getElementById('proj-tags-wrap');
@@ -1040,20 +1429,19 @@ async function doAuth() {
     document.getElementById('admin-fab').textContent = '⚙ Editar proyecto';
   }
   await loadData();
-  if (proj.bgColor && window._ditherSetColor) window._ditherSetColor(proj.bgColor); // ← NUEVO
-if (globalCfg.favicon) {
-  let faviconEl = document.getElementById('favicon-link');
-  if (!faviconEl) {
-    faviconEl = document.createElement('link');
-    faviconEl.rel = 'icon';
-    faviconEl.id = 'favicon-link';
-    document.head.appendChild(faviconEl);
+
+  // Apply favicon from globalCfg
+  if (globalCfg.favicon) {
+    let fav = document.getElementById('favicon-link') || document.createElement('link');
+    fav.rel = 'icon'; fav.id = 'favicon-link';
+    if (!fav.parentNode) document.head.appendChild(fav);
+    fav.href = globalCfg.favicon;
   }
-  faviconEl.href = globalCfg.favicon;
-}
+
+  if (proj.bgColor && window._ditherSetColor) window._ditherSetColor(proj.bgColor);
 
   if (!folder) {
-    document.querySelector('.page').innerHTML = `<div class="not-found reveal visible"><h2>Proyecto no encontrado</h2><p style="color:var(--cream2);margin-bottom:1.5rem">El proyecto que buscás no existe o fue eliminado.</p><a href="index.html#works">← Volver a carpetas</a></div>`;
+    document.querySelector('.page').innerHTML = `<div style="padding:8rem 3rem;text-align:center"><h2 style="font-family:'Space Grotesk',sans-serif;font-size:2rem;color:var(--cream);margin-bottom:1rem">Proyecto no encontrado</h2><p style="color:var(--cream2);margin-bottom:1.5rem">El proyecto que buscás no existe o fue eliminado.</p><a href="index.html#works" style="color:var(--violet2);text-decoration:none">← Volver a carpetas</a></div>`;
     const ov = document.getElementById('loading-overlay');
     ov.style.opacity='0'; setTimeout(()=>ov.remove(),420);
     return;
