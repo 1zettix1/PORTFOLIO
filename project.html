@@ -686,6 +686,20 @@ document.getElementById('lightbox').addEventListener('click',e=>{
   if(e.target.id==='lightbox')closeLightbox();
 });
 
+// Delegated click para galería (evita problemas con JSON en onclick inline)
+document.addEventListener('click', e=>{
+  const item = e.target.closest('.gallery-item');
+  if(!item) return;
+  // Si el click fue en el botón de eliminar, ignorar
+  if(e.target.closest('.gallery-item-del')) return;
+  const blockKey = item.dataset.blockKey;
+  const imgIndex = parseInt(item.dataset.imgIndex, 10);
+  if(!blockKey || isNaN(imgIndex)) return;
+  const images = (window._galleryBlocks && window._galleryBlocks[blockKey]) || [];
+  if(!images.length) return;
+  openLightbox(images[imgIndex], images);
+});
+
 // Swipe en mobile
 (function(){
   let sx=0;
@@ -775,10 +789,12 @@ function renderTextBlock(block){
 function renderGalleryBlock(block,idx){
   const title=block.title?`<div class="sec-hdr"><div><p class="sec-label">Galería</p><h2 class="sec-title">${block.title}</h2></div></div>`:'';
   const images=block.images||[];
-  // Serializar para inline-onclick de forma segura
-  const allJSON=JSON.stringify(images).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  // Guardamos las imágenes del bloque en un mapa global para acceder desde onclick
+  window._galleryBlocks = window._galleryBlocks || {};
+  window._galleryBlocks['block_'+block.id] = images;
+  const blockKey = 'block_'+block.id;
   const imgs=images.map((src,i)=>
-    `<div class="gallery-item reveal-scale delay-${Math.min(i+1,6)}" onclick="openLightbox('${src.replace(/'/g,"\\'")}',JSON.parse('${allJSON}'))">
+    `<div class="gallery-item reveal-scale delay-${Math.min(i+1,6)}" data-block-key="${blockKey}" data-img-index="${i}">
       <img src="${src}" alt="Imagen ${i+1}" loading="lazy">
       ${isAdmin?`<button class="gallery-item-del" onclick="event.stopPropagation();deleteGalleryImg(${idx},${i})">🗑️</button>`:''}
     </div>`
